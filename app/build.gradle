@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+def PLACES_API_KEY = '"' + GOOGLE_PLACES_API_KEY + '"' ?: '"Missing The Google Places API Key"';
 
 android {
     compileSdkVersion 23
@@ -12,6 +13,9 @@ android {
         versionName "1.0"
     }
     buildTypes {
+        all {
+            buildConfigField 'String', 'PLACES_API_KEY', PLACES_API_KEY
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
