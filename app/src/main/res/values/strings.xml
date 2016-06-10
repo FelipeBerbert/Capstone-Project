@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Capstone</string>
+
+    <string name="lb_meter">%d m</string>
+
+
+
+    //Content Description
+
+    <string name="cd_place_image">Place picture</string>
 </resources>

@@ -9,8 +9,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="br.com.berbert.capstone.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+    <fragment
+        android:id="@+id/frag_places_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="br.com.berbert.capstone.fragments.PlacesFragment"
+        tools:layout="@layout/fragment_places" />
 </RelativeLayout>
