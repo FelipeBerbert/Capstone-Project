@@ -63,7 +63,6 @@ public class PlacesFragment extends Fragment {
         placesList.add(elevadorLacerda);
         placesList.add(elevadorLacerda);
         placesList.add(elevadorLacerda);
-        placesList.add(elevadorLacerda);
         placesAdapter = new PlacesAdapter(getContext(), placesList, new PlacesAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Place item) {

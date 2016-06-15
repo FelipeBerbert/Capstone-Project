@@ -8,8 +8,14 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.Detail" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme.Detail" >
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
+    <style name="AppTheme.Detail.Title">
+        <item name="android:textSize">26sp</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
 </resources>
