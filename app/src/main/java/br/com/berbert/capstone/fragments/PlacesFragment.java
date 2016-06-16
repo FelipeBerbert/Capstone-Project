@@ -1,5 +1,6 @@
 package br.com.berbert.capstone.fragments;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -65,10 +66,16 @@ public class PlacesFragment extends Fragment {
         placesList.add(elevadorLacerda);
         placesAdapter = new PlacesAdapter(getContext(), placesList, new PlacesAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Place item) {
+            public void onItemClick(Place item, View view) {
                 Intent intent = new Intent(getContext(), DetailActivity.class);
                 intent.putExtra(DetailActivity.PARAM_PLACE, item);
-                startActivity(intent);
+                if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
+                    String transitionName = getString(R.string.transition_detail);
+                    View sharedView = view.findViewById(R.id.iv_place_picture);
+                    ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(getActivity(), sharedView, transitionName);
+                    startActivity(intent, transitionActivityOptions.toBundle());
+                } else
+                    startActivity(intent);
             }
         });
     }

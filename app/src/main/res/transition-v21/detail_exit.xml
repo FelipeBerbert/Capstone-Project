@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/fast_out_linear_in"
+    android:transitionOrdering="together">
+
+    <fade
+        android:duration="100">
+        <targets>
+            <target android:targetId="@id/app_bar_layout" />
+            <target android:excludeId="@id/fab" />
+        </targets>
+    </fade>
+
+    <slide
+        android:duration="300"
+        android:slideEdge="bottom"
+        android:startDelay="100">
+        <targets>
+            <target android:excludeId="@id/app_bar_layout" />
+        </targets>
+    </slide>
+
+    <autoTransition>
+        <targets>
+            <target android:targetId="@id/fab" />
+        </targets>
+    </autoTransition>
+
+</transitionSet>

@@ -79,14 +79,14 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.onItemClick(place);
+                    listener.onItemClick(place, view);
                 }
             });
         }
     }
 
     public interface OnItemClickListener {
-        void onItemClick(Place item);
+        void onItemClick(Place item, View view);
     }
 
 }

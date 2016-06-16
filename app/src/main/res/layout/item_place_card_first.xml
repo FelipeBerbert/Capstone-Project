@@ -18,6 +18,7 @@
             android:layout_weight="8"
             android:contentDescription="@string/app_name"
             android:scaleType="centerCrop"
+            android:transitionName="@string/transition_detail"
             tools:src="@drawable/elevador_lacerda1" />
 
         <TextView
