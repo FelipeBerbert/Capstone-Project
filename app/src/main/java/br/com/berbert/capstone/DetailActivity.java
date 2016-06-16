@@ -57,10 +57,12 @@ public class DetailActivity extends AppCompatActivity {
             scrimColor = palette.getLightMutedSwatch();
 
         if (scrimColor != null) {
-            //ctl.setContentScrimColor(scrimColor.getRgb());
+            ctl.setContentScrimColor(scrimColor.getRgb());
+            ctl.setStatusBarScrim(null);
             titleBackground.setBackgroundColor(scrimColor.getRgb());
             ctl.setExpandedTitleColor(scrimColor.getTitleTextColor());
-            //ctl.setCollapsedTitleTextColor(scrimColor.getBodyTextColor());
+            ctl.setCollapsedTitleTextColor(scrimColor.getBodyTextColor());
+            //todo Find a way to also change the back arrow color
         }
 
         headerPicture.setImageDrawable(getResources().getDrawable(place.getPicture()));
