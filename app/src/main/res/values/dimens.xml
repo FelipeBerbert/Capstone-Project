@@ -5,4 +5,6 @@
 
     <dimen name="card_height">120dp</dimen>
     <dimen name="first_card_height">180dp</dimen>
+
+    <dimen name="actionbar_with_fab">92dp</dimen> <!-- 64 + 28 -->
 </resources>

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="AppTheme.Main" >
         <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowExitTransition">@transition/main_exit</item>
+
     </style>
 
     <style name="AppTheme.Detail">
@@ -12,7 +11,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowEnterTransition">@transition/detail_enter</item>
-        <item name="android:windowReturnTransition">@transition/detail_exit</item>
+        <item name="android:windowReturnTransition">@transition/detail_return</item>
 
     </style>
 </resources>

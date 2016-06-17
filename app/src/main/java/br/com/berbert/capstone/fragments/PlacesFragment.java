@@ -1,7 +1,5 @@
 package br.com.berbert.capstone.fragments;
 
-import android.app.ActivityOptions;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,11 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import java.util.ArrayList;
 
 import br.com.berbert.capstone.BuildConfig;
-import br.com.berbert.capstone.DetailActivity;
 import br.com.berbert.capstone.R;
 import br.com.berbert.capstone.adapters.PlacesAdapter;
 import br.com.berbert.capstone.models.Place;
@@ -24,8 +22,8 @@ import br.com.berbert.capstone.models.Place;
  */
 public class PlacesFragment extends Fragment {
 
-    RecyclerView rvPlacesList;
-    PlacesAdapter placesAdapter;
+    RecyclerView mRvPlacesList;
+    PlacesAdapter mPlacesAdapter;
 
     @Nullable
     @Override
@@ -33,9 +31,9 @@ public class PlacesFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_places, container, false);
 
-        rvPlacesList = (RecyclerView) rootView.findViewById(R.id.rv_places_list);
+        mRvPlacesList = (RecyclerView) rootView.findViewById(R.id.rv_places_list);
 
-        rvPlacesList.setHasFixedSize(true);
+        mRvPlacesList.setHasFixedSize(true);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -43,14 +41,27 @@ public class PlacesFragment extends Fragment {
                 return position == 0 ? 2 : 1;
             }
         });
-        rvPlacesList.setLayoutManager(layoutManager);
+        mRvPlacesList.setLayoutManager(layoutManager);
 
         if (BuildConfig.DEBUG)
             createMocks();
 
-        rvPlacesList.setAdapter(placesAdapter);
+        mRvPlacesList.setAdapter(mPlacesAdapter);
 
         return rootView;
+    }
+
+    public void selectFirstPosition(){
+        ViewTreeObserver vto = mRvPlacesList.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if(mPlacesAdapter.getItemCount() > 0)
+                    mRvPlacesList.findViewHolderForAdapterPosition(0).itemView.performClick();
+                mRvPlacesList.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+
     }
 
     private void createMocks(){
@@ -58,25 +69,40 @@ public class PlacesFragment extends Fragment {
         elevadorLacerda.setName("Elevador lacerda");
         elevadorLacerda.setPicture(R.drawable.elevador_lacerda1);
         elevadorLacerda.setDistance(300);
-        elevadorLacerda.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod metus nunc, in tincidunt elit lacinia at. Vestibulum tincidunt quam a augue placerat, eget viverra odio placerat. Praesent vestibulum dictum tempor. Nunc neque nulla, laoreet id ex eu, congue condimentum eros. Nulla sit amet quam vehicula, faucibus nisi vitae, euismod risus. Mauris non tristique mauris. Fusce nec tristique libero, et malesuada tortor. Sed ut nisl nec ex congue elementum egestas non ligula. Nulla hendrerit, nibh eu lobortis euismod, ante dolor lacinia massa, in maximus ipsum nibh vitae sem. In vel mauris tincidunt, congue ex a, laoreet dolor. Donec vel lacus ut nunc dapibus aliquet. ");
+        elevadorLacerda.setDescription(getString(R.string.huge_lorem_ipsum));
+
+        Place pelourinho = new Place();
+        pelourinho.setName("Pelourinho");
+        pelourinho.setPicture(R.drawable.pelourinho);
+        pelourinho.setDistance(900);
+        pelourinho.setDescription(getString(R.string.huge_lorem_ipsum));
+
+        Place mercado = new Place();
+        mercado.setName("Mercado Modelo");
+        mercado.setPicture(R.drawable.mercado_modelo);
+        mercado.setDistance(700);
+        mercado.setDescription(getString(R.string.huge_lorem_ipsum));
+
+        Place senhorBonfim = new Place();
+        senhorBonfim.setName("Senhor do bonfim");
+        senhorBonfim.setPicture(R.drawable.igreja_bonfim);
+        senhorBonfim.setDistance(1200);
+        senhorBonfim.setDescription(getString(R.string.huge_lorem_ipsum));
+
         ArrayList<Place> placesList = new ArrayList<>();
         placesList.add(elevadorLacerda);
-        placesList.add(elevadorLacerda);
-        placesList.add(elevadorLacerda);
-        placesList.add(elevadorLacerda);
-        placesAdapter = new PlacesAdapter(getContext(), placesList, new PlacesAdapter.OnItemClickListener() {
+        placesList.add(pelourinho);
+        placesList.add(mercado);
+        placesList.add(senhorBonfim);
+        mPlacesAdapter = new PlacesAdapter(getContext(), placesList, new PlacesAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Place item, View view) {
-                Intent intent = new Intent(getContext(), DetailActivity.class);
-                intent.putExtra(DetailActivity.PARAM_PLACE, item);
-                if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
-                    String transitionName = getString(R.string.transition_detail);
-                    View sharedView = view.findViewById(R.id.iv_place_picture);
-                    ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(getActivity(), sharedView, transitionName);
-                    startActivity(intent, transitionActivityOptions.toBundle());
-                } else
-                    startActivity(intent);
+            public void onItemClick(Place item, PlacesAdapter.PlacesViewHolder viewHolder) {
+                ((Callback)getActivity()).onItemSelected(item, viewHolder);
             }
         });
+    }
+
+    public interface Callback {
+        void onItemSelected(Place item, PlacesAdapter.PlacesViewHolder vh);
     }
 }

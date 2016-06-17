@@ -5,8 +5,7 @@
 
     <TextView
         android:id="@+id/tv_description"
-
-        android:textSize="32sp"
+        android:paddingTop="@dimen/activity_vertical_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

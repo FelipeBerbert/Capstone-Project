@@ -23,14 +23,14 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
     private final int TYPE_HEADER = 0;
     private final int TYPE_NORMAL = 1;
 
-    Context context;
-    ArrayList<Place> placesList;
-    private final OnItemClickListener listener;
+    Context mContext;
+    ArrayList<Place> mPlacesList;
+    private final OnItemClickListener mListener;
 
     public PlacesAdapter(Context context, ArrayList<Place> placesList, OnItemClickListener listener) {
-        this.placesList = placesList;
-        this.context = context;
-        this.listener = listener;
+        this.mPlacesList = placesList;
+        this.mContext = context;
+        this.mListener = listener;
     }
 
     @Override
@@ -50,12 +50,12 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
 
     @Override
     public void onBindViewHolder(PlacesViewHolder holder, int position) {
-        holder.bind(placesList.get(position), listener);
+        holder.bind(mPlacesList.get(position), mListener);
     }
 
     @Override
     public int getItemCount() {
-        return placesList.size();
+        return mPlacesList.size();
     }
 
 
@@ -72,21 +72,21 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
             picture = (ImageView) itemView.findViewById(R.id.iv_place_picture);
         }
 
-        public void bind(final Place place, final OnItemClickListener listener) { //TODO add onClickListener here
+        public void bind(final Place place, final OnItemClickListener listener) {
             name.setText(place.getName());
             distance.setText(distance.getContext().getString(R.string.lb_meter, place.getDistance()));
             picture.setImageDrawable(picture.getContext().getResources().getDrawable(place.getPicture()));
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.onItemClick(place, view);
+                    listener.onItemClick(place, PlacesViewHolder.this);
                 }
             });
         }
     }
 
     public interface OnItemClickListener {
-        void onItemClick(Place item, View view);
+        void onItemClick(Place item, PlacesViewHolder vh);
     }
 
 }

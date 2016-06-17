@@ -21,7 +21,7 @@ public class DetailActivity extends AppCompatActivity {
 
     public static final String PARAM_PLACE = "place";
 
-    Toolbar toolbar;
+    Toolbar mToolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,30 +31,30 @@ public class DetailActivity extends AppCompatActivity {
         CollapsingToolbarLayout ctl = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
         ImageView headerPicture = (ImageView) findViewById(R.id.iv_header_picture);
         View titleBackground = findViewById(R.id.title_background);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setupActionBar();
 
-        Place place = (Place) getIntent().getSerializableExtra(PARAM_PLACE);
+        Place place = getIntent().getParcelableExtra(PARAM_PLACE);
         setTitle(place.getName());
-//        Palette.from
 
-        DetailFragment detailFragment = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.frag_detail);
+        if (savedInstanceState == null) {
+
+            Bundle args = new Bundle();
+            args.putParcelable(DetailFragment.ARG_PLACE, place);
+
+            DetailFragment fragment = new DetailFragment();
+            fragment.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.frag_detail, fragment)
+                    .commit();
+
+//            supportPostponeEnterTransition();
+        }
+        //DetailFragment detailFragment = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.frag_detail);
         Bitmap headerBitmap = BitmapFactory.decodeResource(getResources(), place.getPicture());
-        Palette palette = Palette.from(headerBitmap).generate();
-        Palette.Swatch scrimColor = null;
-        if (palette.getDarkVibrantSwatch() != null)
-            scrimColor = palette.getDarkVibrantSwatch();
-        else if (palette.getVibrantSwatch() != null)
-            scrimColor = palette.getVibrantSwatch();
-        else if (palette.getLightVibrantSwatch() != null)
-            scrimColor = palette.getLightVibrantSwatch();
-        else if (palette.getDarkMutedSwatch() != null)
-            scrimColor = palette.getDarkMutedSwatch();
-        else if (palette.getMutedSwatch() != null)
-            scrimColor = palette.getMutedSwatch();
-        else if (palette.getLightMutedSwatch() != null)
-            scrimColor = palette.getLightMutedSwatch();
+        Palette.Swatch scrimColor = Utilities.getColor(headerBitmap);
 
         if (scrimColor != null) {
             ctl.setContentScrimColor(scrimColor.getRgb());
@@ -66,11 +66,11 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         headerPicture.setImageDrawable(getResources().getDrawable(place.getPicture()));
-        detailFragment.setDescription(place.getDescription());
+        //detailFragment.setDescription(place.getDescription());
     }
 
     private void setupActionBar() {
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
