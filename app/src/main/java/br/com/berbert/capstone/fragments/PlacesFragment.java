@@ -5,16 +5,25 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import br.com.berbert.capstone.BuildConfig;
 import br.com.berbert.capstone.R;
 import br.com.berbert.capstone.adapters.PlacesAdapter;
+import br.com.berbert.capstone.conn.VolleyConnection;
 import br.com.berbert.capstone.models.Place;
 
 /**
@@ -48,7 +57,38 @@ public class PlacesFragment extends Fragment {
 
         mRvPlacesList.setAdapter(mPlacesAdapter);
 
+        //requestPlaces();
+
         return rootView;
+    }
+
+    private void requestPlaces(){
+
+        StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+        sb.append("location=" + -13.008348 + "," +  -38.492842);
+        sb.append("&radius=3000");
+        sb.append("&types=" + "amusement_park|aquarium|art_gallery|campground|museum|park|zoo");
+        sb.append("&key=" + BuildConfig.PLACES_API_KEY);
+
+        String url = sb.toString();
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("CAPSTONE PROJECT","Response: " + response.toString());
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
+                        Log.d("CAPSTONE PROJECT","Response: " + error.getMessage());
+                    }
+                });
+
+        VolleyConnection.getInstance(getContext()).addToRequestQueue(jsObjRequest);
     }
 
     public void selectFirstPosition(){
