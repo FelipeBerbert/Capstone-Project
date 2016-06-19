@@ -45,7 +45,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
 
     @Override
     public int getItemViewType(int position) {
-        return position == 0 ? TYPE_HEADER : TYPE_NORMAL;
+        return position == 0 && mContext.getResources().getInteger(R.integer.grid_header_column_spam) > 1 ? TYPE_HEADER : TYPE_NORMAL;
     }
 
     @Override

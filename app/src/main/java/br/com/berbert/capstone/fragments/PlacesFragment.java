@@ -38,7 +38,7 @@ public class PlacesFragment extends Fragment {
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                return position == 0 ? 2 : 1;
+                return position == 0 ? getResources().getInteger(R.integer.grid_header_column_spam) : 1;
             }
         });
         mRvPlacesList.setLayoutManager(layoutManager);

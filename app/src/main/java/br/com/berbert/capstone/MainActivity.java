@@ -59,8 +59,8 @@ public class MainActivity extends AppCompatActivity implements PlacesFragment.Ca
             DetailFragment fragment = new DetailFragment();
             fragment.setArguments(args);
 
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-                TransitionManager.beginDelayedTransition(mDetailContainer);
+//            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+//                TransitionManager.beginDelayedTransition(mDetailContainer);
 
             getSupportFragmentManager().beginTransaction().replace(R.id.detail_fragment_container, fragment, DETAIL_FRAGMENT_TAG).commit();
             mDetailContainer.setVisibility(View.VISIBLE);
