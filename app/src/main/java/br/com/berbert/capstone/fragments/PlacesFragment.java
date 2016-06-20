@@ -11,19 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import br.com.berbert.capstone.BuildConfig;
 import br.com.berbert.capstone.R;
 import br.com.berbert.capstone.adapters.PlacesAdapter;
+import br.com.berbert.capstone.conn.GsonRequest;
 import br.com.berbert.capstone.conn.VolleyConnection;
+import br.com.berbert.capstone.models.NearbySearchResponse;
 import br.com.berbert.capstone.models.Place;
 
 /**
@@ -52,12 +50,13 @@ public class PlacesFragment extends Fragment {
         });
         mRvPlacesList.setLayoutManager(layoutManager);
 
-        if (BuildConfig.DEBUG)
-            createMocks();
+//        if (BuildConfig.DEBUG)
+//            createMocks();
 
-        mRvPlacesList.setAdapter(mPlacesAdapter);
 
-        //requestPlaces();
+        requestPlaces();
+
+
 
         return rootView;
     }
@@ -72,7 +71,29 @@ public class PlacesFragment extends Fragment {
 
         String url = sb.toString();
 
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+        GsonRequest<NearbySearchResponse> request = new GsonRequest<>(url, NearbySearchResponse.class, null, new Response.Listener<NearbySearchResponse>() {
+
+            @Override
+            public void onResponse(NearbySearchResponse response) {
+                Log.d("CAPSTONE PROJECT","Response: " + response.getResults().get(0).getName());
+                mPlacesAdapter = new PlacesAdapter(getContext(), new ArrayList<>(response.getResults()), new PlacesAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(Place item, PlacesAdapter.PlacesViewHolder viewHolder) {
+                        ((Callback) getActivity()).onItemSelected(item, viewHolder);
+                    }
+                });
+                mRvPlacesList.setAdapter(mPlacesAdapter);
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("CAPSTONE PROJECT","Response: " + error.getMessage());
+            }
+        });
+
+
+        /*JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
                     @Override
@@ -86,9 +107,9 @@ public class PlacesFragment extends Fragment {
                         // TODO Auto-generated method stub
                         Log.d("CAPSTONE PROJECT","Response: " + error.getMessage());
                     }
-                });
+                });*/
 
-        VolleyConnection.getInstance(getContext()).addToRequestQueue(jsObjRequest);
+        VolleyConnection.getInstance(getContext()).addToRequestQueue(request);
     }
 
     public void selectFirstPosition(){

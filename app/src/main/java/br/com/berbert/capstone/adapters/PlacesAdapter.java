@@ -75,7 +75,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
         public void bind(final Place place, final OnItemClickListener listener) {
             name.setText(place.getName());
             distance.setText(distance.getContext().getString(R.string.lb_meter, place.getDistance()));
-            picture.setImageDrawable(picture.getContext().getResources().getDrawable(place.getPicture()));
+            //picture.setImageDrawable(picture.getContext().getResources().getDrawable(place.getPicture()));
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

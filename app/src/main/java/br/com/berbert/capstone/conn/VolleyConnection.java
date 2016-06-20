@@ -7,7 +7,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 /**
- * Created by Felipe Berbert for the Udacity Android Nanodegree capstone project on 19/06/2016.
+ * Code Snippet from: https://developer.android.com/training/volley/requestqueue.html
  */
 public class VolleyConnection {
     private static VolleyConnection mVolleyConnection;
