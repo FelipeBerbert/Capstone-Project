@@ -8,8 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
+import br.com.berbert.capstone.BuildConfig;
 import br.com.berbert.capstone.R;
 import br.com.berbert.capstone.models.Place;
 
@@ -76,6 +79,9 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
             name.setText(place.getName());
             distance.setText(distance.getContext().getString(R.string.lb_meter, place.getDistance()));
             //picture.setImageDrawable(picture.getContext().getResources().getDrawable(place.getPicture()));
+            if(place.getPhotos().size()>0){
+                place.fetchPhoto(picture);
+            }
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

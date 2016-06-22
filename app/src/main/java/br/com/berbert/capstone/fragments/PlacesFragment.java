@@ -125,7 +125,7 @@ public class PlacesFragment extends Fragment {
 
     }
 
-    private void createMocks(){
+    /*private void createMocks(){
         Place elevadorLacerda = new Place();
         elevadorLacerda.setName("Elevador lacerda");
         elevadorLacerda.setPicture(R.drawable.elevador_lacerda1);
@@ -161,7 +161,7 @@ public class PlacesFragment extends Fragment {
                 ((Callback)getActivity()).onItemSelected(item, viewHolder);
             }
         });
-    }
+    }*/
 
     public interface Callback {
         void onItemSelected(Place item, PlacesAdapter.PlacesViewHolder vh);

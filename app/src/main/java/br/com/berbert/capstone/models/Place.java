@@ -1,13 +1,19 @@
 package br.com.berbert.capstone.models;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.request.target.Target;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import br.com.berbert.capstone.BuildConfig;
 
 /**
  * Created by Felipe Berbert on 09/06/2016.
@@ -16,7 +22,7 @@ public class Place implements Parcelable {
 
 //    private static final long serialVersionUID = -5573854869178754964L;
 
-    private int picture; //TODO change to url
+//    private int picture; //TODO change to url
     private List<Photo> photos;
 
     private String name;
@@ -27,6 +33,9 @@ public class Place implements Parcelable {
     private float rating;
 
     private String vicinity;
+
+    @SerializedName("international_phone_number")
+    private String phoneNumber;
 
     private long distance;
 
@@ -40,21 +49,32 @@ public class Place implements Parcelable {
     }
 
     public Place(Parcel parcel){
-        String[] params = new String[5];
+        String[] params = new String[4];
         parcel.readStringArray(params);
-        this.picture = Integer.valueOf(params[0]);
-        this.name = params[1];
-        this.distance = Long.valueOf(params[2]);
-        this.placeId = params[3];
-        this.vicinity = params[4];
+        this.name = params[0];
+        this.distance = Long.valueOf(params[1]);
+        this.placeId = params[2];
+        this.vicinity = params[3];
     }
 
-    public int getPicture() {
-        return picture;
+    public void fetchPhoto(ImageView view){
+        if (getPhotos().size() > 0)
+            Glide.with(view.getContext()).load(buildRequest(getPhotos().get(0).getPhoto_reference())).into(view);
+    }
+    public void fetchPhoto(Context context, Target target){
+        if (getPhotos().size() > 0)
+            Glide.with(context).load(buildRequest(getPhotos().get(0).getPhoto_reference())).asBitmap().into(target);
+    }
+    public void fetchPhoto(ImageView view, String reference){
+        Glide.with(view.getContext()).load(buildRequest(reference)).into(view);
     }
 
-    public void setPicture(int picture) {
-        this.picture = picture;
+    private String buildRequest(String reference){
+        StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/photo?");
+        sb.append("key=" + BuildConfig.PLACES_API_KEY);
+        sb.append("&maxwidth=" + "400");
+        sb.append("&photoreference=" + reference);
+        return sb.toString();
     }
 
     public String getName() {
@@ -79,6 +99,14 @@ public class Place implements Parcelable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public List<Photo> getPhotos() {
@@ -136,7 +164,7 @@ public class Place implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[]{String.valueOf(this.picture),this.name,Long.toString(this.distance),this.placeId,this.vicinity});
+        dest.writeStringArray(new String[]{this.name,Long.toString(this.distance),this.placeId,this.vicinity});
     }
     public static final Parcelable.Creator<Place> CREATOR = new Parcelable.Creator<Place>(){
         @Override

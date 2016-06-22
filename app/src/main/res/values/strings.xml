@@ -10,6 +10,8 @@
     <string name="lb_phone">Phone Number:</string>
     <string name="lb_photos">Photos:</string>
 
+    <string name="url_photos" translatable="false">https://maps.googleapis.com/maps/api/place/photo?</string>
+
 
         <string name="huge_lorem_ipsum">
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur et vestibulum elit. Suspendisse pretium rhoncus justo in consequat. Integer bibendum mauris vitae ligula pellentesque, non elementum tortor maximus. Morbi aliquet enim eros, in porta urna ornare eget. Vivamus molestie augue ex, vitae elementum augue blandit at. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sed fringilla nisl, sed condimentum tortor. Fusce in cursus justo. Proin tincidunt justo et scelerisque dictum. Integer at tortor id leo bibendum vestibulum sit amet eu tellus. Praesent maximus sed enim sit amet efficitur. Ut eleifend vestibulum quam, ac molestie metus dictum eget. Nunc congue ut diam a gravida. Vestibulum nec lorem justo.

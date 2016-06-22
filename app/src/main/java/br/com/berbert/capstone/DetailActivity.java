@@ -7,41 +7,52 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
+
 import br.com.berbert.capstone.fragments.DetailFragment;
 import br.com.berbert.capstone.models.Place;
+import br.com.berbert.capstone.models.PlaceDetailsResponse;
 
 
 /**
  * Created by Felipe Berbert for the Udacity Android Nanodegree capstone project on 12/06/2016.
  */
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements DetailFragment.Callback {
 
     public static final String PARAM_PLACE = "place";
 
     Toolbar mToolbar;
+    CollapsingToolbarLayout mCollapsingToolbarLayout;
+    ImageView mHeaderPicture;
+    View mTitleBackground;
+    SimpleTarget mTarget;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        CollapsingToolbarLayout ctl = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
-        ImageView headerPicture = (ImageView) findViewById(R.id.iv_header_picture);
-        View titleBackground = findViewById(R.id.title_background);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
+        mHeaderPicture = (ImageView) findViewById(R.id.iv_header_picture);
+        mTitleBackground = findViewById(R.id.title_background);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setupActionBar();
 
-        Place place = getIntent().getParcelableExtra(PARAM_PLACE);
-        setTitle(place.getName());
+        String placeId = getIntent().getStringExtra(PARAM_PLACE);
 
         if (savedInstanceState == null) {
 
             Bundle args = new Bundle();
-            args.putParcelable(DetailFragment.ARG_PLACE, place);
+            args.putString(DetailFragment.ARG_PLACE, placeId);
 
             DetailFragment fragment = new DetailFragment();
             fragment.setArguments(args);
@@ -52,21 +63,29 @@ public class DetailActivity extends AppCompatActivity {
 
 //            supportPostponeEnterTransition();
         }
-        //DetailFragment detailFragment = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.frag_detail);
-        Bitmap headerBitmap = BitmapFactory.decodeResource(getResources(), place.getPicture());
-        Palette.Swatch scrimColor = Utilities.getColor(headerBitmap);
 
-        if (scrimColor != null) {
-            ctl.setContentScrimColor(scrimColor.getRgb());
-            ctl.setStatusBarScrim(null);
-            titleBackground.setBackgroundColor(scrimColor.getRgb());
-            ctl.setExpandedTitleColor(scrimColor.getTitleTextColor());
-            ctl.setCollapsedTitleTextColor(scrimColor.getBodyTextColor());
-            //todo Find a way to also change the back arrow color
-        }
+    }
 
-        headerPicture.setImageDrawable(getResources().getDrawable(place.getPicture()));
-        //detailFragment.setDescription(place.getDescription());
+    private void bindViews(Place place){
+        mTarget = new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                Palette.Swatch scrimColor = Utilities.getColor(resource);
+
+                if (scrimColor != null) {
+                    mCollapsingToolbarLayout.setContentScrimColor(scrimColor.getRgb());
+                    mCollapsingToolbarLayout.setStatusBarScrim(null);
+                    mTitleBackground.setBackgroundColor(scrimColor.getRgb());
+                    mCollapsingToolbarLayout.setExpandedTitleColor(scrimColor.getTitleTextColor());
+                    mCollapsingToolbarLayout.setCollapsedTitleTextColor(scrimColor.getBodyTextColor());
+                    //todo Find a way to also change the back arrow color
+                }
+                mHeaderPicture.setImageBitmap(resource);
+            }
+        };
+        setTitle(place.getName());
+        place.fetchPhoto(this, mTarget);
+
     }
 
     private void setupActionBar() {
@@ -78,4 +97,8 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onResponse(Place place) {
+        bindViews(place);
+    }
 }

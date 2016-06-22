@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements PlacesFragment.Ca
                 }*/
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.detail_fragment_container, fragment, DETAIL_FRAGMENT_TAG).commit();
-                placesFragment.selectFirstPosition();
+//                placesFragment.selectFirstPosition();
             }
         }
     }
@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity implements PlacesFragment.Ca
     public void onItemSelected(Place item, PlacesAdapter.PlacesViewHolder vh) {
         if (mIsTabletLayout){
             Bundle args = new Bundle();
-            args.putParcelable(DetailFragment.ARG_PLACE, item);
-
+//            args.putParcelable(DetailFragment.ARG_PLACE, item);
+            args.putString(DetailFragment.ARG_PLACE, item.getPlaceId());
             DetailFragment fragment = new DetailFragment();
             fragment.setArguments(args);
 
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements PlacesFragment.Ca
 
         } else {
             Intent intent = new Intent(this, DetailActivity.class);
-            intent.putExtra(DetailActivity.PARAM_PLACE, item);  //TODO after real data is getting fetched, I can send only the reference for the place
+            intent.putExtra(DetailActivity.PARAM_PLACE, item.getPlaceId());  //TODO after real data is getting fetched, I can send only the reference for the place
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                 String transitionName = getString(R.string.transition_detail);
                 View sharedView = vh.picture;
