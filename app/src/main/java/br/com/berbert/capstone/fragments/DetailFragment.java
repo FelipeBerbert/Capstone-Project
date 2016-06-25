@@ -72,6 +72,7 @@ public class DetailFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("CAPSTONE PROJECT", "Response: " + error.getMessage());
+                ((Callback) getActivity()).onResponse(null);
             }
         });
     }
@@ -92,7 +93,7 @@ public class DetailFragment extends Fragment {
         mDescription.setText(mPlace.getDescription());
         mAddress.setText(mPlace.getVicinity());
         mPhone.setText(mPlace.getPhoneNumber());
-        if (mIsTabletLayout) {
+        if (mIsTabletLayout) {  // If it is a tablet, all views are in the fragment
             mName.setText(mPlace.getName());
             target = new SimpleTarget<Bitmap>() {
                 @Override
@@ -107,7 +108,7 @@ public class DetailFragment extends Fragment {
             };
             mPlace.fetchPhoto(getContext(), target);
             //BitmapFactory.decodeResource(getResources(), mPlace.getPicture());
-        } else {
+        } else { // If it is a smartphone, there are some views on the activity to be handled
             ((Callback) getActivity()).onResponse(mPlace);
         }
     }

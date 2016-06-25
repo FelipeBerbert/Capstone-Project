@@ -2,6 +2,8 @@ package br.com.berbert.capstone;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +30,7 @@ import br.com.berbert.capstone.models.PlaceDetailsResponse;
 public class DetailActivity extends AppCompatActivity implements DetailFragment.Callback {
 
     public static final String PARAM_PLACE = "place";
+    public static final String PARAM_PLACE_NAME = "place_name";
 
     Toolbar mToolbar;
     CollapsingToolbarLayout mCollapsingToolbarLayout;
@@ -46,8 +49,11 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setupActionBar();
+        if(Utilities.checkNetworkStatus(this) == ConnectivityManager.TYPE_WIFI)
+            supportPostponeEnterTransition(); // This will make animations smoother on fast connections, but really slow on bad connections
 
         String placeId = getIntent().getStringExtra(PARAM_PLACE);
+        setTitle(getIntent().getStringExtra(PARAM_PLACE_NAME)); // For some reason, setting the title after the server response is not working
 
         if (savedInstanceState == null) {
 
@@ -61,31 +67,41 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
                     .add(R.id.frag_detail, fragment)
                     .commit();
 
-//            supportPostponeEnterTransition();
         }
 
     }
 
     private void bindViews(Place place){
-        mTarget = new SimpleTarget<Bitmap>() {
-            @Override
-            public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
-                Palette.Swatch scrimColor = Utilities.getColor(resource);
+        if (place != null) {
+            setTitle(place.getName());
+            mTarget = new SimpleTarget<Bitmap>() {
+                @Override
+                public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                    Palette.Swatch scrimColor = Utilities.getColor(resource);
 
-                if (scrimColor != null) {
-                    mCollapsingToolbarLayout.setContentScrimColor(scrimColor.getRgb());
-                    mCollapsingToolbarLayout.setStatusBarScrim(null);
-                    mTitleBackground.setBackgroundColor(scrimColor.getRgb());
-                    mCollapsingToolbarLayout.setExpandedTitleColor(scrimColor.getTitleTextColor());
-                    mCollapsingToolbarLayout.setCollapsedTitleTextColor(scrimColor.getBodyTextColor());
-                    //todo Find a way to also change the back arrow color
+                    if (scrimColor != null) {
+                        mCollapsingToolbarLayout.setContentScrimColor(scrimColor.getRgb());
+                        mCollapsingToolbarLayout.setStatusBarScrim(null);
+                        mTitleBackground.setBackgroundColor(scrimColor.getRgb());
+                        mCollapsingToolbarLayout.setExpandedTitleColor(scrimColor.getTitleTextColor());
+                        mCollapsingToolbarLayout.setCollapsedTitleTextColor(scrimColor.getBodyTextColor());
+                        //todo Find a way to also change the back arrow color
+                    }
+                    mHeaderPicture.setImageBitmap(resource);
+                    supportStartPostponedEnterTransition();
                 }
-                mHeaderPicture.setImageBitmap(resource);
-            }
-        };
-        setTitle(place.getName());
-        place.fetchPhoto(this, mTarget);
 
+                @Override
+                public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                    super.onLoadFailed(e, errorDrawable);
+                    supportStartPostponedEnterTransition();
+                }
+            };
+            if (place.getPhotos().size()>0)
+                place.fetchPhoto(this, mTarget);
+            else
+                supportStartPostponedEnterTransition();
+        }
     }
 
     private void setupActionBar() {

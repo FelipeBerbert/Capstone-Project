@@ -57,14 +57,13 @@ public class PlacesFragment extends Fragment {
         requestPlaces();
 
 
-
         return rootView;
     }
 
-    private void requestPlaces(){
+    private void requestPlaces() {
 
         StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-        sb.append("location=" + -13.008348 + "," +  -38.492842);
+        sb.append("location=" + -13.008348 + "," + -38.492842);
         sb.append("&radius=3000");
         sb.append("&types=" + "amusement_park|aquarium|art_gallery|campground|museum|park|zoo");
         sb.append("&key=" + BuildConfig.PLACES_API_KEY);
@@ -75,7 +74,13 @@ public class PlacesFragment extends Fragment {
 
             @Override
             public void onResponse(NearbySearchResponse response) {
-                Log.d("CAPSTONE PROJECT","Response: " + response.getResults().get(0).getName());
+                if (BuildConfig.DEBUG)
+                    for (Place place : response.getResults()) {
+                        Log.d("CAPSTONE PROJECT", "Response: " + place.getName());
+                        for (String type : place.getTypes())
+                            Log.d("CAPSTONE PROJECT", "Type: " + type);  // TODO ONLY FOR DEBUG, DELETE THIS
+                    }
+
                 mPlacesAdapter = new PlacesAdapter(getContext(), new ArrayList<>(response.getResults()), new PlacesAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(Place item, PlacesAdapter.PlacesViewHolder viewHolder) {
@@ -88,80 +93,26 @@ public class PlacesFragment extends Fragment {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("CAPSTONE PROJECT","Response: " + error.getMessage());
+                Log.d("CAPSTONE PROJECT", "Response: " + error.getMessage());
             }
         });
 
 
-        /*JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d("CAPSTONE PROJECT","Response: " + response.toString());
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO Auto-generated method stub
-                        Log.d("CAPSTONE PROJECT","Response: " + error.getMessage());
-                    }
-                });*/
-
         VolleyConnection.getInstance(getContext()).addToRequestQueue(request);
     }
 
-    public void selectFirstPosition(){
+    public void selectFirstPosition() {
         ViewTreeObserver vto = mRvPlacesList.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                if(mPlacesAdapter.getItemCount() > 0)
+                if (mPlacesAdapter.getItemCount() > 0)
                     mRvPlacesList.findViewHolderForAdapterPosition(0).itemView.performClick();
                 mRvPlacesList.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
 
     }
-
-    /*private void createMocks(){
-        Place elevadorLacerda = new Place();
-        elevadorLacerda.setName("Elevador lacerda");
-        elevadorLacerda.setPicture(R.drawable.elevador_lacerda1);
-        elevadorLacerda.setDistance(300);
-        elevadorLacerda.setDescription(getString(R.string.huge_lorem_ipsum));
-
-        Place pelourinho = new Place();
-        pelourinho.setName("Pelourinho");
-        pelourinho.setPicture(R.drawable.pelourinho);
-        pelourinho.setDistance(900);
-        pelourinho.setDescription(getString(R.string.huge_lorem_ipsum));
-
-        Place mercado = new Place();
-        mercado.setName("Mercado Modelo");
-        mercado.setPicture(R.drawable.mercado_modelo);
-        mercado.setDistance(700);
-        mercado.setDescription(getString(R.string.huge_lorem_ipsum));
-
-        Place senhorBonfim = new Place();
-        senhorBonfim.setName("Senhor do bonfim");
-        senhorBonfim.setPicture(R.drawable.igreja_bonfim);
-        senhorBonfim.setDistance(1200);
-        senhorBonfim.setDescription(getString(R.string.huge_lorem_ipsum));
-
-        ArrayList<Place> placesList = new ArrayList<>();
-        placesList.add(elevadorLacerda);
-        placesList.add(pelourinho);
-        placesList.add(mercado);
-        placesList.add(senhorBonfim);
-        mPlacesAdapter = new PlacesAdapter(getContext(), placesList, new PlacesAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Place item, PlacesAdapter.PlacesViewHolder viewHolder) {
-                ((Callback)getActivity()).onItemSelected(item, viewHolder);
-            }
-        });
-    }*/
 
     public interface Callback {
         void onItemSelected(Place item, PlacesAdapter.PlacesViewHolder vh);

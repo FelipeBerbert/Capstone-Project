@@ -67,7 +67,8 @@ public class MainActivity extends AppCompatActivity implements PlacesFragment.Ca
 
         } else {
             Intent intent = new Intent(this, DetailActivity.class);
-            intent.putExtra(DetailActivity.PARAM_PLACE, item.getPlaceId());  //TODO after real data is getting fetched, I can send only the reference for the place
+            intent.putExtra(DetailActivity.PARAM_PLACE, item.getPlaceId());
+            intent.putExtra(DetailActivity.PARAM_PLACE_NAME, item.getName());
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                 String transitionName = getString(R.string.transition_detail);
                 View sharedView = vh.picture;

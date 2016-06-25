@@ -2,6 +2,7 @@ package br.com.berbert.capstone;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
 import android.support.v7.graphics.Palette;
 import android.util.Log;
 
@@ -44,5 +45,13 @@ public class Utilities {
 
             GsonRequest<PlaceDetailsResponse> request = new GsonRequest<>(url, PlaceDetailsResponse.class, null, resultListener, errorListener);
             VolleyConnection.getInstance(context).addToRequestQueue(request);
+    }
+
+    public static int checkNetworkStatus(Context context){
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connectivityManager.getActiveNetworkInfo() == null)
+                return -1;
+            Log.d("Connection type", ""+connectivityManager.getActiveNetworkInfo().getType());
+            return connectivityManager.getActiveNetworkInfo().getType();
     }
 }

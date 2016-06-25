@@ -42,10 +42,13 @@ public class Place implements Parcelable {
     private double lat;
     private double lng;
 
+    private List<String> types;
+
     private String description;
 
     public Place(){
         photos = new ArrayList<>();
+        types = new ArrayList<>();
     }
 
     public Place(Parcel parcel){
@@ -155,6 +158,14 @@ public class Place implements Parcelable {
 
     public void setLng(double lng) {
         this.lng = lng;
+    }
+
+    public List<String> getTypes() {
+        return types;
+    }
+
+    public void setTypes(List<String> types) {
+        this.types = types;
     }
 
     @Override
