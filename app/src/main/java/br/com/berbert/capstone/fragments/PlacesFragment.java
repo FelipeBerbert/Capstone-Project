@@ -1,6 +1,8 @@
 package br.com.berbert.capstone.fragments;
 
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,6 +15,9 @@ import android.view.ViewTreeObserver;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +32,13 @@ import br.com.berbert.capstone.models.Place;
 
 /**
  * Created by Felipe Berbert on 09/06/2016.
- *
  */
-public class PlacesFragment extends Fragment {
+public class PlacesFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     RecyclerView mRvPlacesList;
     PlacesAdapter mPlacesAdapter;
+    GoogleApiClient mGoogleApiClient;
+
 
     @Nullable
     @Override
@@ -52,20 +58,23 @@ public class PlacesFragment extends Fragment {
         });
         mRvPlacesList.setLayoutManager(layoutManager);
 
-//        if (BuildConfig.DEBUG)
-//            createMocks();
 
-
-        requestPlaces();
-
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
 
         return rootView;
     }
 
-    private void requestPlaces() {
+    private void requestPlaces(Location location) {
 
         StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-        sb.append("location=" + -13.008348 + "," + -38.492842);
+        //sb.append("location=" + -13.008348 + "," + -38.492842);
+        sb.append("location=" + location.getLatitude() + "," + location.getLongitude());
         sb.append("&radius=3000");
         sb.append("&types=" + "amusement_park|aquarium|art_gallery|campground|museum|park|zoo");
         sb.append("&key=" + BuildConfig.PLACES_API_KEY);
@@ -123,6 +132,38 @@ public class PlacesFragment extends Fragment {
                 mRvPlacesList.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
+
+    }
+
+
+    @Override
+    public void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (location != null) {
+            requestPlaces(location);
+        }
+    }
+
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
 
