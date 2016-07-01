@@ -9,8 +9,11 @@
     <string name="lb_address">Address:</string>
     <string name="lb_phone">Phone Number:</string>
     <string name="lb_photos">Photos:</string>
+    <string name="lb_retry">Retry</string>
 
     <string name="url_photos" translatable="false">https://maps.googleapis.com/maps/api/place/photo?</string>
+
+    <string name="msg_permission_denied">This app requires the location permission to function :(</string>
 
 
         <string name="huge_lorem_ipsum">

@@ -1,10 +1,14 @@
 package br.com.berbert.capstone.fragments;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -36,6 +42,8 @@ import br.com.berbert.capstone.models.Place;
 public class PlacesFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     RecyclerView mRvPlacesList;
+    LinearLayout mLlPermissionDenied;
+    Button mBtRetry;
     PlacesAdapter mPlacesAdapter;
     GoogleApiClient mGoogleApiClient;
 
@@ -47,6 +55,14 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
         View rootView = inflater.inflate(R.layout.fragment_places, container, false);
 
         mRvPlacesList = (RecyclerView) rootView.findViewById(R.id.rv_places_list);
+        mLlPermissionDenied = (LinearLayout) rootView.findViewById(R.id.ll_permission_denied);
+        mBtRetry = (Button) rootView.findViewById(R.id.bt_retry);
+        mBtRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestLocation();
+            }
+        });
 
         mRvPlacesList.setHasFixedSize(true);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
@@ -150,12 +166,28 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
 
     @Override
     public void onConnected(Bundle connectionHint) {
-        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (location != null) {
-            requestPlaces(location);
+        requestLocation();
+    }
+
+    private void requestLocation() {
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (location != null) {
+                requestPlaces(location);
+            }
+        } else {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
         }
     }
 
+    public void permissionGranted(){
+        mLlPermissionDenied.setVisibility(View.GONE);
+        requestLocation();
+    }
+    public void permissionDenied(){
+        mLlPermissionDenied.setVisibility(View.VISIBLE);
+    }
 
     @Override
     public void onConnectionSuspended(int i) {

@@ -2,6 +2,7 @@ package br.com.berbert.capstone;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,16 +29,17 @@ public class MainActivity extends AppCompatActivity implements PlacesFragment.Ca
 
     boolean mIsTabletLayout;
     CardView mDetailContainer;
+    PlacesFragment mPlacesFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        PlacesFragment placesFragment = (PlacesFragment) getSupportFragmentManager().findFragmentById(R.id.frag_places_list);
+        mPlacesFragment = (PlacesFragment) getSupportFragmentManager().findFragmentById(R.id.frag_places_list);
 
         mDetailContainer = (CardView) findViewById(R.id.detail_fragment_container);
-        if (mDetailContainer != null){
+        if (mDetailContainer != null) {
             mIsTabletLayout = true;
             if (savedInstanceState == null)
                 mDetailContainer.setVisibility(View.GONE);
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements PlacesFragment.Ca
 
     @Override
     public void onItemSelected(Place item, PlacesAdapter.PlacesViewHolder vh) {
-        if (mIsTabletLayout){
+        if (mIsTabletLayout) {
             Bundle args = new Bundle();
 //            args.putParcelable(DetailFragment.ARG_PLACE, item);
             args.putString(DetailFragment.ARG_PLACE, item.getPlaceId());
@@ -82,6 +84,15 @@ public class MainActivity extends AppCompatActivity implements PlacesFragment.Ca
                 startActivity(intent, transitionActivityOptions.toBundle());
             } else
                 startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            mPlacesFragment.permissionGranted();
+        } else {
+            mPlacesFragment.permissionDenied();
         }
     }
 
