@@ -15,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.berbert.capstone.BuildConfig;
 import br.com.berbert.capstone.R;
@@ -26,6 +27,7 @@ import br.com.berbert.capstone.models.Place;
 
 /**
  * Created by Felipe Berbert on 09/06/2016.
+ *
  */
 public class PlacesFragment extends Fragment {
 
@@ -81,7 +83,7 @@ public class PlacesFragment extends Fragment {
                             Log.d("CAPSTONE PROJECT", "Type: " + type);  // TODO ONLY FOR DEBUG, DELETE THIS
                     }
 
-                mPlacesAdapter = new PlacesAdapter(getContext(), new ArrayList<>(response.getResults()), new PlacesAdapter.OnItemClickListener() {
+                mPlacesAdapter = new PlacesAdapter(getContext(), new ArrayList<>(filterResults(response.getResults())), new PlacesAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(Place item, PlacesAdapter.PlacesViewHolder viewHolder) {
                         ((Callback) getActivity()).onItemSelected(item, viewHolder);
@@ -99,6 +101,16 @@ public class PlacesFragment extends Fragment {
 
 
         VolleyConnection.getInstance(getContext()).addToRequestQueue(request);
+    }
+
+    private List<Place> filterResults(List<Place> places) {
+        List<Place> filteredPlaces = new ArrayList<>();
+        for (Place place : places) {
+            if (place.getPhotos().size() == 0)  //For now, I dont see much sense in having places without pictures in the app
+                filteredPlaces.add(place);
+        }
+        places.removeAll(filteredPlaces);
+        return places;
     }
 
     public void selectFirstPosition() {
