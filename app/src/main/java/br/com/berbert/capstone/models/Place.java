@@ -1,6 +1,8 @@
 package br.com.berbert.capstone.models;
 
 import android.content.Context;
+import android.location.*;
+import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.widget.ImageView;
@@ -37,8 +39,9 @@ public class Place implements Parcelable {
     @SerializedName("international_phone_number")
     private String phoneNumber;
 
-    private long distance;
+    private float distance;
 
+    private Geometry geometry;
     private double lat;
     private double lng;
 
@@ -55,7 +58,7 @@ public class Place implements Parcelable {
         String[] params = new String[4];
         parcel.readStringArray(params);
         this.name = params[0];
-        this.distance = Long.valueOf(params[1]);
+        this.distance = Float.valueOf(params[1]);
         this.placeId = params[2];
         this.vicinity = params[3];
     }
@@ -88,11 +91,15 @@ public class Place implements Parcelable {
         this.name = name;
     }
 
-    public long getDistance() {
-        return distance;
+    public float getDistance(android.location.Location userLocation) {
+        Location placeLocation = new Location(name);
+        placeLocation.setLatitude(geometry.getLocation().getLat());
+        placeLocation.setLongitude(geometry.getLocation().getLng());
+
+        return userLocation.distanceTo(placeLocation);
     }
 
-    public void setDistance(long distance) {
+    public void setDistance(float distance) {
         this.distance = distance;
     }
 
@@ -168,6 +175,14 @@ public class Place implements Parcelable {
         this.types = types;
     }
 
+    public Geometry getGeometry() {
+        return geometry;
+    }
+
+    public void setGeometry(Geometry geometry) {
+        this.geometry = geometry;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -175,7 +190,7 @@ public class Place implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[]{this.name,Long.toString(this.distance),this.placeId,this.vicinity});
+        dest.writeStringArray(new String[]{this.name,Float.toString(this.distance),this.placeId,this.vicinity});
     }
     public static final Parcelable.Creator<Place> CREATOR = new Parcelable.Creator<Place>(){
         @Override

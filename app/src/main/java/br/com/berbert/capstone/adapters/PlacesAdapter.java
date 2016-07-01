@@ -1,6 +1,7 @@
 package br.com.berbert.capstone.adapters;
 
 import android.content.Context;
+import android.location.Location;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,12 +29,14 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
 
     Context mContext;
     ArrayList<Place> mPlacesList;
+    Location mUserLocation;
     private final OnItemClickListener mListener;
 
-    public PlacesAdapter(Context context, ArrayList<Place> placesList, OnItemClickListener listener) {
-        this.mPlacesList = placesList;
-        this.mContext = context;
-        this.mListener = listener;
+    public PlacesAdapter(Context context, ArrayList<Place> placesList, Location userLocation, OnItemClickListener listener) {
+        mPlacesList = placesList;
+        mContext = context;
+        mListener = listener;
+        mUserLocation = userLocation;
     }
 
     @Override
@@ -53,7 +56,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
 
     @Override
     public void onBindViewHolder(PlacesViewHolder holder, int position) {
-        holder.bind(mPlacesList.get(position), mListener);
+        holder.bind(mPlacesList.get(position), mUserLocation, mListener);
     }
 
     @Override
@@ -75,9 +78,9 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
             picture = (ImageView) itemView.findViewById(R.id.iv_place_picture);
         }
 
-        public void bind(final Place place, final OnItemClickListener listener) {
+        public void bind(final Place place, final Location userLocation, final OnItemClickListener listener) {
             name.setText(place.getName());
-            distance.setText(distance.getContext().getString(R.string.lb_meter, place.getDistance()));
+            distance.setText(distance.getContext().getString(R.string.lb_meter, (long) place.getDistance(userLocation)));
             //picture.setImageDrawable(picture.getContext().getResources().getDrawable(place.getPicture()));
             if(place.getPhotos().size()>0){
                 place.fetchPhoto(picture);

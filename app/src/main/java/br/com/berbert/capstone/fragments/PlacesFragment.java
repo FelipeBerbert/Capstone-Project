@@ -46,7 +46,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
     Button mBtRetry;
     PlacesAdapter mPlacesAdapter;
     GoogleApiClient mGoogleApiClient;
-
+    Location mUserLocation;
 
     @Nullable
     @Override
@@ -108,7 +108,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
                             Log.d("CAPSTONE PROJECT", "Type: " + type);  // TODO ONLY FOR DEBUG, DELETE THIS
                     }
 
-                mPlacesAdapter = new PlacesAdapter(getContext(), new ArrayList<>(filterResults(response.getResults())), new PlacesAdapter.OnItemClickListener() {
+                mPlacesAdapter = new PlacesAdapter(getContext(), new ArrayList<>(filterResults(response.getResults())), mUserLocation, new PlacesAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(Place item, PlacesAdapter.PlacesViewHolder viewHolder) {
                         ((Callback) getActivity()).onItemSelected(item, viewHolder);
@@ -172,9 +172,9 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
     private void requestLocation() {
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            if (location != null) {
-                requestPlaces(location);
+            mUserLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (mUserLocation != null) {
+                requestPlaces(mUserLocation);
             }
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
