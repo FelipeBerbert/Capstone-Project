@@ -49,8 +49,6 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setupActionBar();
-        if(Utilities.checkNetworkStatus(this) == ConnectivityManager.TYPE_WIFI)
-            supportPostponeEnterTransition(); // This will make animations smoother on fast connections, but really slow on bad connections
 
         String placeId = getIntent().getStringExtra(PARAM_PLACE);
         setTitle(getIntent().getStringExtra(PARAM_PLACE_NAME)); // For some reason, setting the title after the server response is not working
@@ -88,19 +86,12 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
                         //todo Find a way to also change the back arrow color
                     }
                     mHeaderPicture.setImageBitmap(resource);
-                    supportStartPostponedEnterTransition();
                 }
 
-                @Override
-                public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                    super.onLoadFailed(e, errorDrawable);
-                    supportStartPostponedEnterTransition();
-                }
             };
-            if (place.getPhotos().size()>0)
+            if (place.getPhotos().size()>0) {
                 place.fetchPhoto(this, mTarget);
-            else
-                supportStartPostponedEnterTransition();
+            }
         }
     }
 
