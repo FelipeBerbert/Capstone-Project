@@ -46,7 +46,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
     Button mBtRetry;
     PlacesAdapter mPlacesAdapter;
     GoogleApiClient mGoogleApiClient;
-    Location mUserLocation;
+    public Location mUserLocation;
 
     @Nullable
     @Override

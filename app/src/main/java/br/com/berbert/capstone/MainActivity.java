@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements PlacesFragment.Ca
             Intent intent = new Intent(this, DetailActivity.class);
             intent.putExtra(DetailActivity.PARAM_PLACE, item.getPlaceId());
             intent.putExtra(DetailActivity.PARAM_PLACE_NAME, item.getName());
+            intent.putExtra(DetailActivity.PARAM_USER_LOCATION, mPlacesFragment.mUserLocation);
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                 String transitionName = getString(R.string.transition_detail);
                 View sharedView = vh.picture;

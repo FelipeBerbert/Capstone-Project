@@ -1,10 +1,13 @@
 package br.com.berbert.capstone.fragments;
 
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +23,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 
 import br.com.berbert.capstone.R;
 import br.com.berbert.capstone.Utilities;
+import br.com.berbert.capstone.adapters.PhotosAdapter;
 import br.com.berbert.capstone.models.Place;
 import br.com.berbert.capstone.models.PlaceDetailsResponse;
 
@@ -29,14 +33,19 @@ import br.com.berbert.capstone.models.PlaceDetailsResponse;
 public class DetailFragment extends Fragment {
 
     public static final String ARG_PLACE = "PLACE";
+    public static final String ARG_USER_LOCATION = "USER_LOCATION";
 
     FrameLayout mTitleBackground;
+    RecyclerView mRvPhotoList;
+    PhotosAdapter mPhotosAdapter;
     TextView mDescription;
     TextView mName;
     TextView mAddress;
     TextView mPhone;
+    TextView mDistance;
     ImageView mPicture;
     String mPlaceId;
+    Location mUserLocation;
     Place mPlace;
     boolean mIsTabletLayout;
     SimpleTarget target;
@@ -47,10 +56,14 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         initiateViews(rootView);
-
+        mRvPhotoList = (RecyclerView) rootView.findViewById(R.id.rv_photo_list);
+        mRvPhotoList.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        mRvPhotoList.setLayoutManager(llm);
         Bundle args = getArguments();
         if (args != null) {
             mPlaceId = args.getString(ARG_PLACE);
+            mUserLocation = args.getParcelable(ARG_USER_LOCATION);
             requestDetails();
         }
 
@@ -87,26 +100,34 @@ public class DetailFragment extends Fragment {
         mDescription = (TextView) rootView.findViewById(R.id.tv_description);
         mAddress = (TextView) rootView.findViewById(R.id.tv_address);
         mPhone = (TextView) rootView.findViewById(R.id.tv_phone);
+        mDistance = (TextView) rootView.findViewById(R.id.tv_distance);
     }
 
     private void bindViews() {
         mDescription.setText(mPlace.getDescription());
         mAddress.setText(mPlace.getVicinity());
         mPhone.setText(mPlace.getPhoneNumber());
+        mDistance.setText(getContext().getString(R.string.lb_meter, (long) mPlace.getDistance(mUserLocation)));
+        mPhotosAdapter = new PhotosAdapter(mPlace.getPhotos());
+        mPhotosAdapter.notifyDataSetChanged();
+        mRvPhotoList.setAdapter(mPhotosAdapter);
         if (mIsTabletLayout) {  // If it is a tablet, all views are in the fragment
             mName.setText(mPlace.getName());
-            target = new SimpleTarget<Bitmap>() {
-                @Override
-                public void onResourceReady(Bitmap bitmap, GlideAnimation glideAnimation) {
-                    Palette.Swatch scrimColor = Utilities.getColor(bitmap);
-                    if (scrimColor != null) {
-                        mTitleBackground.setBackgroundColor(scrimColor.getRgb());
-                        mName.setTextColor(scrimColor.getTitleTextColor());
+            if(mPlace.getPhotos().size() > 0) {
+                target = new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap bitmap, GlideAnimation glideAnimation) {
+                        Palette.Swatch scrimColor = Utilities.getColor(bitmap);
+                        if (scrimColor != null) {
+                            mTitleBackground.setBackgroundColor(scrimColor.getRgb());
+                            mName.setTextColor(scrimColor.getTitleTextColor());
+                        }
+                        mPicture.setImageBitmap(bitmap);
                     }
-                    mPicture.setImageBitmap(bitmap);
-                }
-            };
-            mPlace.fetchPhoto(getContext(), target);
+                };
+
+                mPlace.getPhotos().get(0).fetchPhoto(getContext(), target);
+            }
             //BitmapFactory.decodeResource(getResources(), mPlace.getPicture());
         } else { // If it is a smartphone, there are some views on the activity to be handled
             ((Callback) getActivity()).onResponse(mPlace);

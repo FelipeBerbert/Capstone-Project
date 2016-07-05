@@ -3,6 +3,7 @@ package br.com.berbert.capstone;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -31,6 +32,7 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
 
     public static final String PARAM_PLACE = "place";
     public static final String PARAM_PLACE_NAME = "place_name";
+    public static final String PARAM_USER_LOCATION = "user_location";
 
     Toolbar mToolbar;
     CollapsingToolbarLayout mCollapsingToolbarLayout;
@@ -51,12 +53,14 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
         setupActionBar();
 
         String placeId = getIntent().getStringExtra(PARAM_PLACE);
+        Location userLocation = getIntent().getParcelableExtra(PARAM_USER_LOCATION);
         setTitle(getIntent().getStringExtra(PARAM_PLACE_NAME)); // For some reason, setting the title after the server response is not working
 
         if (savedInstanceState == null) {
 
             Bundle args = new Bundle();
             args.putString(DetailFragment.ARG_PLACE, placeId);
+            args.putParcelable(DetailFragment.ARG_USER_LOCATION, userLocation);
 
             DetailFragment fragment = new DetailFragment();
             fragment.setArguments(args);
@@ -90,7 +94,7 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
 
             };
             if (place.getPhotos().size()>0) {
-                place.fetchPhoto(this, mTarget);
+                place.getPhotos().get(0).fetchPhoto(this, mTarget);
             }
         }
     }

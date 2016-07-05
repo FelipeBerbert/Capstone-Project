@@ -63,26 +63,6 @@ public class Place implements Parcelable {
         this.vicinity = params[3];
     }
 
-    public void fetchPhoto(ImageView view){
-        if (getPhotos().size() > 0)
-            Glide.with(view.getContext()).load(buildRequest(getPhotos().get(0).getPhoto_reference())).into(view);
-    }
-    public void fetchPhoto(Context context, Target target){
-        if (getPhotos().size() > 0)
-            Glide.with(context).load(buildRequest(getPhotos().get(0).getPhoto_reference())).asBitmap().into(target);
-    }
-    public void fetchPhoto(ImageView view, String reference){
-        Glide.with(view.getContext()).load(buildRequest(reference)).into(view);
-    }
-
-    private String buildRequest(String reference){
-        StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/photo?");
-        sb.append("key=" + BuildConfig.PLACES_API_KEY);
-        sb.append("&maxwidth=" + "400");
-        sb.append("&photoreference=" + reference);
-        return sb.toString();
-    }
-
     public String getName() {
         return name;
     }

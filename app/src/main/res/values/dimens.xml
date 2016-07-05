@@ -7,4 +7,6 @@
     <dimen name="first_card_height">180dp</dimen>
 
     <dimen name="actionbar_with_fab">92dp</dimen> <!-- 64 + 28 -->
+
+    <dimen name="photo_img_size">75dp</dimen>
 </resources>
