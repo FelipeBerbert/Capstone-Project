@@ -1,9 +1,12 @@
 package br.com.berbert.capstone.fragments;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,6 +49,7 @@ public class DetailFragment extends Fragment {
     TextView mAddress;
     TextView mPhone;
     TextView mDistance;
+    FloatingActionButton mFab;
     ImageView mPicture;
     String mPlaceId;
     Location mUserLocation;
@@ -99,11 +103,18 @@ public class DetailFragment extends Fragment {
     }
 
     private void initiateViews(View rootView) {
-        if (rootView.findViewById(R.id.tv_place_name) != null) {
+        if (rootView.findViewById(R.id.tv_place_name) != null) { // If true, this is tablet layout
             mIsTabletLayout = true;
             mName = (TextView) rootView.findViewById(R.id.tv_place_name);
             mPicture = (ImageView) rootView.findViewById(R.id.iv_header_picture);
             mTitleBackground = (FrameLayout) rootView.findViewById(R.id.title_background);
+            mFab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+            mFab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    navigateToPlace();
+                }
+            });
         }
         //mDescription = (TextView) rootView.findViewById(R.id.tv_description);
         mAddress = (TextView) rootView.findViewById(R.id.tv_address);
@@ -147,6 +158,16 @@ public class DetailFragment extends Fragment {
         if (mDescription != null)
             mDescription.setText(text);
     }*/
+
+    public void navigateToPlace(){
+        if (mPlace != null){
+            Intent intent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://maps.google.com/maps?&daddr="+
+                            mPlace.getGeometry().getLocation().getLat()+","+
+                            mPlace.getGeometry().getLocation().getLng()));
+            startActivity(intent);
+        }
+    }
 
     public interface Callback {
         void onResponse(Place place);

@@ -7,6 +7,7 @@ import android.location.Location;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
@@ -39,6 +40,7 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
     ImageView mHeaderPicture;
     View mTitleBackground;
     SimpleTarget mTarget;
+    FloatingActionButton mFab;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
         mHeaderPicture = (ImageView) findViewById(R.id.iv_header_picture);
         mTitleBackground = findViewById(R.id.title_background);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
 
         setupActionBar();
 
@@ -62,13 +65,19 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
             args.putString(DetailFragment.ARG_PLACE, placeId);
             args.putParcelable(DetailFragment.ARG_USER_LOCATION, userLocation);
 
-            DetailFragment fragment = new DetailFragment();
+            final DetailFragment fragment = new DetailFragment();
             fragment.setArguments(args);
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.frag_detail, fragment)
                     .commit();
 
+            mFab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    fragment.navigateToPlace();
+                }
+            });
         }
 
     }

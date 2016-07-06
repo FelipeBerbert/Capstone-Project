@@ -42,8 +42,6 @@ public class Place implements Parcelable {
     private float distance;
 
     private Geometry geometry;
-    private double lat;
-    private double lng;
 
     private List<String> types;
 
@@ -131,22 +129,6 @@ public class Place implements Parcelable {
 
     public void setVicinity(String vicinity) {
         this.vicinity = vicinity;
-    }
-
-    public double getLat() {
-        return lat;
-    }
-
-    public void setLat(double lat) {
-        this.lat = lat;
-    }
-
-    public double getLng() {
-        return lng;
-    }
-
-    public void setLng(double lng) {
-        this.lng = lng;
     }
 
     public List<String> getTypes() {
