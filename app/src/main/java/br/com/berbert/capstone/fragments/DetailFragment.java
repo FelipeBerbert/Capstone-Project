@@ -24,6 +24,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import br.com.berbert.capstone.R;
 import br.com.berbert.capstone.Utilities;
 import br.com.berbert.capstone.adapters.PhotosAdapter;
+import br.com.berbert.capstone.adapters.ReviewsAdapter;
 import br.com.berbert.capstone.models.Place;
 import br.com.berbert.capstone.models.PlaceDetailsResponse;
 
@@ -37,8 +38,10 @@ public class DetailFragment extends Fragment {
 
     FrameLayout mTitleBackground;
     RecyclerView mRvPhotoList;
+    RecyclerView mRvReviewList;
     PhotosAdapter mPhotosAdapter;
-    TextView mDescription;
+    ReviewsAdapter mReviewsAdapter;
+    //TextView mDescription;
     TextView mName;
     TextView mAddress;
     TextView mPhone;
@@ -60,6 +63,11 @@ public class DetailFragment extends Fragment {
         mRvPhotoList.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         mRvPhotoList.setLayoutManager(llm);
+        mRvReviewList = (RecyclerView) rootView.findViewById(R.id.rv_reviews);
+        mRvReviewList.setHasFixedSize(true);
+        llm = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        mRvReviewList.setLayoutManager(llm);
+        mRvReviewList.setNestedScrollingEnabled(true);
         Bundle args = getArguments();
         if (args != null) {
             mPlaceId = args.getString(ARG_PLACE);
@@ -97,20 +105,21 @@ public class DetailFragment extends Fragment {
             mPicture = (ImageView) rootView.findViewById(R.id.iv_header_picture);
             mTitleBackground = (FrameLayout) rootView.findViewById(R.id.title_background);
         }
-        mDescription = (TextView) rootView.findViewById(R.id.tv_description);
+        //mDescription = (TextView) rootView.findViewById(R.id.tv_description);
         mAddress = (TextView) rootView.findViewById(R.id.tv_address);
         mPhone = (TextView) rootView.findViewById(R.id.tv_phone);
         mDistance = (TextView) rootView.findViewById(R.id.tv_distance);
     }
 
     private void bindViews() {
-        mDescription.setText(mPlace.getDescription());
+        //mDescription.setText(mPlace.getDescription());
         mAddress.setText(mPlace.getVicinity());
         mPhone.setText(mPlace.getPhoneNumber());
         mDistance.setText(getContext().getString(R.string.lb_meter, (long) mPlace.getDistance(mUserLocation)));
         mPhotosAdapter = new PhotosAdapter(mPlace.getPhotos());
-        mPhotosAdapter.notifyDataSetChanged();
+        mReviewsAdapter = new ReviewsAdapter(mPlace.getReviews());
         mRvPhotoList.setAdapter(mPhotosAdapter);
+        mRvReviewList.setAdapter(mReviewsAdapter);
         if (mIsTabletLayout) {  // If it is a tablet, all views are in the fragment
             mName.setText(mPlace.getName());
             if(mPlace.getPhotos().size() > 0) {
@@ -134,10 +143,10 @@ public class DetailFragment extends Fragment {
         }
     }
 
-    public void setDescription(String text) {
+    /*public void setDescription(String text) {
         if (mDescription != null)
             mDescription.setText(text);
-    }
+    }*/
 
     public interface Callback {
         void onResponse(Place place);

@@ -10,6 +10,9 @@
     <string name="lb_phone">Phone Number:</string>
     <string name="lb_photos">Photos:</string>
     <string name="lb_retry">Retry</string>
+    <string name="lb_reviews">Reviews:</string>
+    <string name="lb_review_by">"Review by: "</string>
+    <string name="lb_review_rating">%d/5</string>
 
     <string name="url_photos" translatable="false">https://maps.googleapis.com/maps/api/place/photo?</string>
 

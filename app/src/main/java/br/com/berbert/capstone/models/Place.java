@@ -47,6 +47,8 @@ public class Place implements Parcelable {
 
     private List<String> types;
 
+    private List<Review> reviews;
+
     private String description;
 
     public Place(){
@@ -153,6 +155,14 @@ public class Place implements Parcelable {
 
     public void setTypes(List<String> types) {
         this.types = types;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
     public Geometry getGeometry() {

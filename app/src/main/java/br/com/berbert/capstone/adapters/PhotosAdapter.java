@@ -13,6 +13,7 @@ import br.com.berbert.capstone.models.Photo;
 
 /**
  * Created by Felipe Berbert for the Udacity Android Nanodegree capstone project on 05/07/2016.
+ *
  */
 public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosViewHolder> {
 

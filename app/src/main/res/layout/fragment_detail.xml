@@ -18,6 +18,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:textAppearanceListItem"
             android:text="@string/lb_photos" />
 
         <android.support.v7.widget.RecyclerView
@@ -36,6 +37,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceListItem"
+
                 android:text="@string/lb_address" />
 
             <TextView
@@ -58,6 +61,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceListItem"
                     android:text="@string/lb_phone" />
 
                 <TextView
@@ -77,6 +81,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceListItem"
                     android:text="@string/lb_distance" />
 
                 <TextView
@@ -88,10 +93,27 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
+    <!--<TextView
         android:id="@+id/tv_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/activity_vertical_margin" />
+        android:paddingTop="@dimen/activity_vertical_margin" />-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:textAppearanceListItem"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:text="@string/lb_reviews" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_reviews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        />
 
 </LinearLayout>
