@@ -173,6 +173,10 @@ public class DetailFragment extends Fragment {
         }
     }
 
+    public void setUserLocation(Location userLocation){
+        mUserLocation = userLocation;
+    }
+
     public interface Callback {
         void onResponse(Place place);
     }

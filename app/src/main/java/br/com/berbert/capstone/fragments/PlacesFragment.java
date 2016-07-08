@@ -113,7 +113,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
                 mPlacesAdapter = new PlacesAdapter(getContext(), new ArrayList<>(filterResults(response.getResults())), mUserLocation, new PlacesAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(Place item, PlacesAdapter.PlacesViewHolder viewHolder) {
-                        ((Callback) getActivity()).onItemSelected(item, viewHolder);
+                        ((Callback) getActivity()).onItemSelected(item, viewHolder, mUserLocation);
                     }
                 });
                 mRvPlacesList.setAdapter(mPlacesAdapter);
@@ -211,6 +211,6 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
     }
 
     public interface Callback {
-        void onItemSelected(Place item, PlacesAdapter.PlacesViewHolder vh);
+        void onItemSelected(Place item, PlacesAdapter.PlacesViewHolder vh, Location userLocation);
     }
 }

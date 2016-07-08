@@ -3,6 +3,7 @@ package br.com.berbert.capstone;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -57,11 +58,12 @@ public class MainActivity extends AppCompatActivity implements PlacesFragment.Ca
     }
 
     @Override
-    public void onItemSelected(Place item, PlacesAdapter.PlacesViewHolder vh) {
+    public void onItemSelected(Place item, PlacesAdapter.PlacesViewHolder vh, Location userLocation) {
         if (mIsTabletLayout) {
             Bundle args = new Bundle();
 //            args.putParcelable(DetailFragment.ARG_PLACE, item);
             args.putString(DetailFragment.ARG_PLACE, item.getPlaceId());
+            args.putParcelable(DetailFragment.ARG_USER_LOCATION, userLocation);
             DetailFragment fragment = new DetailFragment();
             fragment.setArguments(args);
 
