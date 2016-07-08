@@ -71,12 +71,21 @@ public class Place implements Parcelable {
         this.name = name;
     }
 
+    /**
+     * Returns
+     * @param userLocation
+     * @return The distance between the given location and this place's location,
+     * or -1 if the user location is null
+     */
     public float getDistance(android.location.Location userLocation) {
         Location placeLocation = new Location(name);
         placeLocation.setLatitude(geometry.getLocation().getLat());
         placeLocation.setLongitude(geometry.getLocation().getLng());
 
-        return userLocation.distanceTo(placeLocation);
+        if (userLocation != null)
+            return userLocation.distanceTo(placeLocation);
+        else
+            return -1;
     }
 
     public void setDistance(float distance) {

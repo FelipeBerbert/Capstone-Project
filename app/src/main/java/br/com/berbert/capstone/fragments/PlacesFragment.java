@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -40,6 +41,7 @@ import br.com.berbert.capstone.models.Place;
  * Created by Felipe Berbert on 09/06/2016.
  */
 public class PlacesFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+    private final String TAG = "Capstone project";
 
     RecyclerView mRvPlacesList;
     LinearLayout mLlPermissionDenied;
@@ -103,9 +105,9 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
             public void onResponse(NearbySearchResponse response) {
                 if (BuildConfig.DEBUG)
                     for (Place place : response.getResults()) {
-                        Log.d("CAPSTONE PROJECT", "Response: " + place.getName());
+                        Log.d(TAG, "Response: " + place.getName());
                         for (String type : place.getTypes())
-                            Log.d("CAPSTONE PROJECT", "Type: " + type);  // TODO ONLY FOR DEBUG, DELETE THIS
+                            Log.d(TAG, "Type: " + type);  // TODO ONLY FOR DEBUG, DELETE THIS
                     }
 
                 mPlacesAdapter = new PlacesAdapter(getContext(), new ArrayList<>(filterResults(response.getResults())), mUserLocation, new PlacesAdapter.OnItemClickListener() {
@@ -166,6 +168,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
 
     @Override
     public void onConnected(Bundle connectionHint) {
+        Log.d(TAG,"Google API connected");
         requestLocation();
     }
 
@@ -174,6 +177,13 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
                 Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mUserLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mUserLocation != null) {
+                requestPlaces(mUserLocation);
+            } else {
+                Toast.makeText(getContext(), "Could not get location", Toast.LENGTH_SHORT).show();
+                //todo only for debugging on emulator
+                mUserLocation = new Location("mock");
+                mUserLocation.setLatitude(-23.54954954954955);
+                mUserLocation.setLongitude(-46.64128086138674);
                 requestPlaces(mUserLocation);
             }
         } else {
@@ -196,7 +206,8 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        Log.e("GoogleApi Error"," "+connectionResult.getErrorMessage());
+        //todo message
     }
 
     public interface Callback {

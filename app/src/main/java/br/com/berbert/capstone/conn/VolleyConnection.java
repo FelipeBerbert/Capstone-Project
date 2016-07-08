@@ -1,6 +1,7 @@
 package br.com.berbert.capstone.conn;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -38,6 +39,7 @@ public class VolleyConnection {
 
 
     public <T> void addToRequestQueue(Request<T> req) {
+        Log.d("Volley Connection","Sending request:" + req.getUrl());
         getRequestQueue().add(req);
     }
 

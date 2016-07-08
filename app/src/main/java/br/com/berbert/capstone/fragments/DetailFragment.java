@@ -126,7 +126,11 @@ public class DetailFragment extends Fragment {
         //mDescription.setText(mPlace.getDescription());
         mAddress.setText(mPlace.getVicinity());
         mPhone.setText(mPlace.getPhoneNumber());
-        mDistance.setText(getContext().getString(R.string.lb_meter, (long) mPlace.getDistance(mUserLocation)));
+        float distance = mPlace.getDistance(mUserLocation);
+        if (distance > 0)
+            mDistance.setText(getContext().getString(R.string.lb_meter, (long)distance));
+        else
+            mDistance.setText("-");
         mPhotosAdapter = new PhotosAdapter(mPlace.getPhotos());
         mReviewsAdapter = new ReviewsAdapter(mPlace.getReviews());
         mRvPhotoList.setAdapter(mPhotosAdapter);

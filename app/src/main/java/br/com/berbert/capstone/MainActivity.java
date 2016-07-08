@@ -41,10 +41,8 @@ public class MainActivity extends AppCompatActivity implements PlacesFragment.Ca
         mDetailContainer = (CardView) findViewById(R.id.detail_fragment_container);
         if (mDetailContainer != null) {
             mIsTabletLayout = true;
-            if (savedInstanceState == null)
-                mDetailContainer.setVisibility(View.GONE);
-
             if (savedInstanceState == null) {
+                mDetailContainer.setVisibility(View.GONE);
                 DetailFragment fragment = new DetailFragment();
                 /*if (contentUri != null) {
                     Bundle args = new Bundle();
