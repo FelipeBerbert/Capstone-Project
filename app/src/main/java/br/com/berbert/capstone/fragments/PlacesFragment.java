@@ -31,6 +31,7 @@ import java.util.List;
 
 import br.com.berbert.capstone.BuildConfig;
 import br.com.berbert.capstone.R;
+import br.com.berbert.capstone.Utilities;
 import br.com.berbert.capstone.adapters.PlacesAdapter;
 import br.com.berbert.capstone.conn.GsonRequest;
 import br.com.berbert.capstone.conn.VolleyConnection;
@@ -90,16 +91,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
 
     private void requestPlaces(Location location) {
 
-        StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-        //sb.append("location=" + -13.008348 + "," + -38.492842);
-        sb.append("location=" + location.getLatitude() + "," + location.getLongitude());
-        sb.append("&radius=3000");
-        sb.append("&types=" + "amusement_park|aquarium|art_gallery|campground|museum|park|zoo");
-        sb.append("&key=" + BuildConfig.PLACES_API_KEY);
-
-        String url = sb.toString();
-
-        GsonRequest<NearbySearchResponse> request = new GsonRequest<>(url, NearbySearchResponse.class, null, new Response.Listener<NearbySearchResponse>() {
+        Utilities.buildPlacesRequest(getContext(), location, new Response.Listener<NearbySearchResponse>() {
 
             @Override
             public void onResponse(NearbySearchResponse response) {
@@ -118,16 +110,13 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
                 });
                 mRvPlacesList.setAdapter(mPlacesAdapter);
             }
-        }, new Response.ErrorListener() {
+        },  new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("CAPSTONE PROJECT", "Response: " + error.getMessage());
             }
         });
-
-
-        VolleyConnection.getInstance(getContext()).addToRequestQueue(request);
     }
 
     private List<Place> filterResults(List<Place> places) {
