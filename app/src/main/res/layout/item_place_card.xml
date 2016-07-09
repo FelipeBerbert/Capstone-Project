@@ -22,7 +22,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerCrop"
-                android:transitionName="@string/transition_detail"
+                android:transitionName="@string/transition_image"
                 tools:src="@drawable/elevador_lacerda1" />
 
             <FrameLayout
@@ -36,7 +36,9 @@
                 <ImageView
                     android:layout_width="72dp"
                     android:layout_height="72dp"
-                    app:srcCompat="@drawable/ic_distance_background"
+                    android:id="@+id/iv_distance_background"
+                    android:transitionName="@string/transition_distance"
+                    app:srcCompat="@drawable/ic_circle"
                     />
 
                 <TextView

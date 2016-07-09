@@ -40,7 +40,7 @@
                     android:layout_height="250dp"
                     android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"
-                    android:transitionName="@string/transition_detail"
+                    android:transitionName="@string/transition_image"
                     app:layout_collapseMode="parallax"
                     tools:src="@drawable/elevador_lacerda1" />
 
@@ -89,9 +89,10 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_margin="16dp"
+        android:layout_gravity="bottom|end"
+        android:transitionName="@string/transition_distance"
         android:src="@drawable/ic_directions_black_24dp"
-        app:layout_anchor="@id/app_bar_layout"
-        app:layout_anchorGravity="bottom|right|end" />
+        />
+
 </android.support.design.widget.CoordinatorLayout>

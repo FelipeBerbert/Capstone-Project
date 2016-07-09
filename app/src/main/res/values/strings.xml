@@ -3,7 +3,8 @@
 
     <string name="lb_meter">%d m</string>
 
-    <string name="transition_detail">detail</string>
+    <string name="transition_image">image</string>
+    <string name="transition_distance">distance</string>
 
     <string name="lb_distance">Distance:</string>
     <string name="lb_address">Address:</string>

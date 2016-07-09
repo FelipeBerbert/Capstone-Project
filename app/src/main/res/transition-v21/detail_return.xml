@@ -7,7 +7,6 @@
         android:duration="100">
         <targets>
             <target android:targetId="@id/app_bar_layout" />
-            <target android:excludeId="@id/fab" />
         </targets>
     </fade>
 
@@ -19,11 +18,5 @@
             <target android:excludeId="@id/app_bar_layout" />
         </targets>
     </slide>
-
-    <autoTransition>
-        <targets>
-            <target android:targetId="@id/fab" />
-        </targets>
-    </autoTransition>
 
 </transitionSet>

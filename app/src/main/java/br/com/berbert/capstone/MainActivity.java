@@ -4,20 +4,12 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.transition.Slide;
-import android.transition.TransitionManager;
-import android.view.Gravity;
+import android.util.Pair;
 import android.view.View;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 
 import br.com.berbert.capstone.adapters.PlacesAdapter;
 import br.com.berbert.capstone.fragments.DetailFragment;
@@ -79,9 +71,9 @@ public class MainActivity extends AppCompatActivity implements PlacesFragment.Ca
             intent.putExtra(DetailActivity.PARAM_PLACE_NAME, item.getName());
             intent.putExtra(DetailActivity.PARAM_USER_LOCATION, mPlacesFragment.mUserLocation);
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                String transitionName = getString(R.string.transition_detail);
-                View sharedView = vh.picture;
-                ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(this, sharedView, transitionName);
+                Pair<View, String> transitionImagePair = new Pair<>((View) vh.picture, getString(R.string.transition_image));
+                Pair<View, String> distanceTransitionPair = new Pair<>((View) vh.distanceBack, getString(R.string.transition_distance));
+                ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(this, transitionImagePair, distanceTransitionPair);//(this, imageSharedView, imageTransitionName);
                 startActivity(intent, transitionActivityOptions.toBundle());
             } else
                 startActivity(intent);

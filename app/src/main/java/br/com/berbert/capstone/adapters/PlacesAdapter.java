@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -67,18 +68,19 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
         public TextView name;
         public TextView distance;
         public ImageView picture;
+        public ImageView distanceBack;
 
         public PlacesViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.tv_place_name);
             distance = (TextView) itemView.findViewById(R.id.tv_place_distance);
             picture = (ImageView) itemView.findViewById(R.id.iv_place_picture);
+            distanceBack = (ImageView) itemView.findViewById(R.id.iv_distance_background);
         }
 
         public void bind(final Place place, final Location userLocation, final OnItemClickListener listener) {
             name.setText(place.getName());
             distance.setText(distance.getContext().getString(R.string.lb_meter, (long) place.getDistance(userLocation)));
-            //picture.setImageDrawable(picture.getContext().getResources().getDrawable(place.getPicture()));
             if(place.getPhotos().size()>0){
                 place.getPhotos().get(0).fetchPhoto(picture);
             }

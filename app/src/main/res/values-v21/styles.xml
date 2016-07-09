@@ -2,7 +2,7 @@
 <resources>
     <style name="AppTheme.Main" >
         <item name="android:windowContentTransitions">true</item>
-        <item name="android:windowExitTransition">@transition/main_exit</item>
+        <item name="android:windowExitTransition">@transition/explode</item>
 
     </style>
 
