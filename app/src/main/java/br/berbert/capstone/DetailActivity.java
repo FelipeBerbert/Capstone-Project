@@ -1,29 +1,21 @@
-package br.com.berbert.capstone;
+package br.berbert.capstone;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
 
-import br.com.berbert.capstone.fragments.DetailFragment;
-import br.com.berbert.capstone.models.Place;
-import br.com.berbert.capstone.models.PlaceDetailsResponse;
+import br.berbert.capstone.fragments.DetailFragment;
+import br.berbert.capstone.models.Place;
 
 
 /**

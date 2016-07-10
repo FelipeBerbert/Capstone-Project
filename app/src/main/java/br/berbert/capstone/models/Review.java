@@ -1,4 +1,4 @@
-package br.com.berbert.capstone.models;
+package br.berbert.capstone.models;
 
 /**
  * Created by Felipe Berbert for the Udacity Android Nanodegree capstone project on 06/07/2016.

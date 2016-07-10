@@ -1,4 +1,4 @@
-package br.com.berbert.capstone;
+package br.berbert.capstone;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -11,10 +11,10 @@ import android.support.v7.widget.CardView;
 import android.util.Pair;
 import android.view.View;
 
-import br.com.berbert.capstone.adapters.PlacesAdapter;
-import br.com.berbert.capstone.fragments.DetailFragment;
-import br.com.berbert.capstone.fragments.PlacesFragment;
-import br.com.berbert.capstone.models.Place;
+import br.berbert.capstone.adapters.PlacesAdapter;
+import br.berbert.capstone.fragments.DetailFragment;
+import br.berbert.capstone.fragments.PlacesFragment;
+import br.berbert.capstone.models.Place;
 
 public class MainActivity extends AppCompatActivity implements PlacesFragment.Callback {
 

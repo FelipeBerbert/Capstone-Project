@@ -1,4 +1,4 @@
-package br.com.berbert.capstone.models;
+package br.berbert.capstone.models;
 
 import android.content.Context;
 import android.location.*;
@@ -15,7 +15,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.berbert.capstone.BuildConfig;
+import br.berbert.capstone.BuildConfig;
 
 /**
  * Created by Felipe Berbert on 09/06/2016.

@@ -1,4 +1,4 @@
-package br.com.berbert.capstone;
+package br.berbert.capstone;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -10,10 +10,10 @@ import android.util.Log;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-import br.com.berbert.capstone.conn.GsonRequest;
-import br.com.berbert.capstone.conn.VolleyConnection;
-import br.com.berbert.capstone.models.NearbySearchResponse;
-import br.com.berbert.capstone.models.PlaceDetailsResponse;
+import br.berbert.capstone.conn.GsonRequest;
+import br.berbert.capstone.conn.VolleyConnection;
+import br.berbert.capstone.models.NearbySearchResponse;
+import br.berbert.capstone.models.PlaceDetailsResponse;
 
 /**
  * Created by Felipe Berbert for the Udacity Android Nanodegree capstone project on 16/06/2016.

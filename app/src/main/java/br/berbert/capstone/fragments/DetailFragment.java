@@ -1,4 +1,4 @@
-package br.com.berbert.capstone.fragments;
+package br.berbert.capstone.fragments;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,12 +24,12 @@ import com.android.volley.VolleyError;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
-import br.com.berbert.capstone.R;
-import br.com.berbert.capstone.Utilities;
-import br.com.berbert.capstone.adapters.PhotosAdapter;
-import br.com.berbert.capstone.adapters.ReviewsAdapter;
-import br.com.berbert.capstone.models.Place;
-import br.com.berbert.capstone.models.PlaceDetailsResponse;
+import br.berbert.capstone.R;
+import br.berbert.capstone.Utilities;
+import br.berbert.capstone.adapters.PhotosAdapter;
+import br.berbert.capstone.adapters.ReviewsAdapter;
+import br.berbert.capstone.models.Place;
+import br.berbert.capstone.models.PlaceDetailsResponse;
 
 /**
  * Created by Felipe Berbert for the Udacity Android Nanodegree capstone project on 12/06/2016.

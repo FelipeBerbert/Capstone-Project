@@ -1,4 +1,4 @@
-package br.com.berbert.capstone.conn;
+package br.berbert.capstone.conn;
 
 import android.content.Context;
 import android.util.Log;
@@ -8,7 +8,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 
-import br.com.berbert.capstone.models.NearbySearchResponse;
+import br.berbert.capstone.models.NearbySearchResponse;
 
 /**
  * Code Snippet from: https://developer.android.com/training/volley/requestqueue.html

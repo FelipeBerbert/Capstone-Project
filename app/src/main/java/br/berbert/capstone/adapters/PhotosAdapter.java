@@ -1,4 +1,4 @@
-package br.com.berbert.capstone.adapters;
+package br.berbert.capstone.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,8 +8,8 @@ import android.widget.ImageView;
 
 import java.util.List;
 
-import br.com.berbert.capstone.R;
-import br.com.berbert.capstone.models.Photo;
+import br.berbert.capstone.R;
+import br.berbert.capstone.models.Photo;
 
 /**
  * Created by Felipe Berbert for the Udacity Android Nanodegree capstone project on 05/07/2016.

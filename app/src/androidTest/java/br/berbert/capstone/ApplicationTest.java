@@ -1,4 +1,4 @@
-package br.com.berbert.capstone;
+package br.berbert.capstone;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

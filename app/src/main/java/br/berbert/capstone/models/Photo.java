@@ -1,4 +1,4 @@
-package br.com.berbert.capstone.models;
+package br.berbert.capstone.models;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import com.bumptech.glide.request.target.Target;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.berbert.capstone.BuildConfig;
+import br.berbert.capstone.BuildConfig;
 
 /**
  * Created by Felipe Berbert for the Udacity Android Nanodegree capstone project on 19/06/2016.

@@ -1,4 +1,4 @@
-package br.com.berbert.capstone.fragments;
+package br.berbert.capstone.fragments;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -29,14 +29,14 @@ import com.google.android.gms.location.LocationServices;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.berbert.capstone.BuildConfig;
-import br.com.berbert.capstone.R;
-import br.com.berbert.capstone.Utilities;
-import br.com.berbert.capstone.adapters.PlacesAdapter;
-import br.com.berbert.capstone.conn.GsonRequest;
-import br.com.berbert.capstone.conn.VolleyConnection;
-import br.com.berbert.capstone.models.NearbySearchResponse;
-import br.com.berbert.capstone.models.Place;
+import br.berbert.capstone.BuildConfig;
+import br.berbert.capstone.R;
+import br.berbert.capstone.Utilities;
+import br.berbert.capstone.adapters.PlacesAdapter;
+import br.berbert.capstone.conn.GsonRequest;
+import br.berbert.capstone.conn.VolleyConnection;
+import br.berbert.capstone.models.NearbySearchResponse;
+import br.berbert.capstone.models.Place;
 
 /**
  * Created by Felipe Berbert on 09/06/2016.

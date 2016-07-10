@@ -1,4 +1,4 @@
-package br.com.berbert.capstone.adapters;
+package br.berbert.capstone.adapters;
 
 import android.content.Context;
 import android.location.Location;
@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import br.com.berbert.capstone.R;
-import br.com.berbert.capstone.models.Place;
+import br.berbert.capstone.R;
+import br.berbert.capstone.models.Place;
 
 /**
  * Created by Felipe Berbert for the Udacity Android Nanodegree capstone project on 09/06/2016.

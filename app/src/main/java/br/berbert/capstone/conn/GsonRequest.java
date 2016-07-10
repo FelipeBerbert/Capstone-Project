@@ -1,4 +1,4 @@
-package br.com.berbert.capstone.conn;
+package br.berbert.capstone.conn;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;

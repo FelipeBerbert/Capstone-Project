@@ -1,4 +1,4 @@
-package br.com.berbert.capstone.models;
+package br.berbert.capstone.models;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
