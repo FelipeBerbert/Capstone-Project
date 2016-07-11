@@ -26,6 +26,11 @@
         <activity android:name=".DetailActivity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.Detail" />
+        
+        <provider
+            android:authorities="br.berbert.capstone.provider"
+            android:name=".provider.PlaceProvider"
+            android:exported="false" />
     </application>
 
 </manifest>
