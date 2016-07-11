@@ -98,8 +98,8 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
                 if (BuildConfig.DEBUG)
                     for (Place place : response.getResults()) {
                         Log.d(TAG, "Response: " + place.getName());
-                        for (String type : place.getTypes())
-                            Log.d(TAG, "Type: " + type);  // TODO ONLY FOR DEBUG, DELETE THIS
+                        //for (String type : place.getTypes())
+                          //  Log.d(TAG, "Type: " + type);  // TODO ONLY FOR DEBUG, DELETE THIS
                     }
 
                 mPlacesAdapter = new PlacesAdapter(getContext(), new ArrayList<>(filterResults(response.getResults())), mUserLocation, new PlacesAdapter.OnItemClickListener() {

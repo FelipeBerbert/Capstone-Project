@@ -22,11 +22,10 @@ public class Photo {
 
     private int width;
     private int height;
-    private List<String> html_attributions;
     private String photo_reference;
 
     public Photo() {
-        html_attributions = new ArrayList<>();
+
     }
 
     public int getWidth() {
@@ -45,13 +44,6 @@ public class Photo {
         this.height = height;
     }
 
-    public List<String> getHtml_attributions() {
-        return html_attributions;
-    }
-
-    public void setHtml_attributions(List<String> html_attributions) {
-        this.html_attributions = html_attributions;
-    }
 
     public String getPhoto_reference() {
         return photo_reference;

@@ -32,8 +32,6 @@ public class Place implements Parcelable {
     @SerializedName("place_id")
     private String placeId;
 
-    private float rating;
-
     private String vicinity;
 
     @SerializedName("international_phone_number")
@@ -46,8 +44,6 @@ public class Place implements Parcelable {
     private List<String> types;
 
     private List<Review> reviews;
-
-    private String description;
 
     public Place(){
         photos = new ArrayList<>();
@@ -92,14 +88,6 @@ public class Place implements Parcelable {
         this.distance = distance;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -122,14 +110,6 @@ public class Place implements Parcelable {
 
     public void setPlaceId(String place_id) {
         this.placeId = place_id;
-    }
-
-    public float getRating() {
-        return rating;
-    }
-
-    public void setRating(float rating) {
-        this.rating = rating;
     }
 
     public String getVicinity() {
