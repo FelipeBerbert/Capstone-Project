@@ -4,9 +4,7 @@
     android:transitionOrdering="sequential">
 
     <slide
-        android:duration="300"
-        android:slideEdge="bottom"
-        android:startDelay="100">
+        android:slideEdge="bottom">
         <targets>
             <target android:excludeId="@id/app_bar_layout" />
             <!--<target android:excludeId="@id/fab" />-->
