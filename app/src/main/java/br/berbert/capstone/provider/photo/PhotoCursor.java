@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import br.berbert.capstone.models.Photo;
 import br.berbert.capstone.provider.base.AbstractCursor;
 import br.berbert.capstone.provider.place.*;
 import br.berbert.capstone.provider.geometry.*;
@@ -20,6 +21,15 @@ import br.berbert.capstone.provider.location.*;
 public class PhotoCursor extends AbstractCursor implements PhotoModel {
     public PhotoCursor(Cursor cursor) {
         super(cursor);
+    }
+
+
+    public Photo getPhoto(){
+        Photo photo = new Photo();
+        photo.setPhoto_reference(getPhotoReference());
+        photo.setHeight(getHeight()!=null?getHeight():0);
+        photo.setWidth(getWidth()!=null?getWidth():0);
+        return photo;
     }
 
     /**

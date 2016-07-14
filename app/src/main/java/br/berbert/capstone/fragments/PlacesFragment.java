@@ -2,13 +2,17 @@ package br.berbert.capstone.fragments;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -37,11 +41,13 @@ import br.berbert.capstone.conn.GsonRequest;
 import br.berbert.capstone.conn.VolleyConnection;
 import br.berbert.capstone.models.NearbySearchResponse;
 import br.berbert.capstone.models.Place;
+import br.berbert.capstone.provider.place.PlaceColumns;
+import br.berbert.capstone.provider.place.PlaceCursor;
 
 /**
  * Created by Felipe Berbert on 09/06/2016.
  */
-public class PlacesFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class PlacesFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LoaderManager.LoaderCallbacks<Cursor> {
     private final String TAG = "Capstone project";
 
     RecyclerView mRvPlacesList;
@@ -102,7 +108,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
                           //  Log.d(TAG, "Type: " + type);  // TODO ONLY FOR DEBUG, DELETE THIS
                     }
 
-                mPlacesAdapter = new PlacesAdapter(getContext(), new ArrayList<>(filterResults(response.getResults())), mUserLocation, new PlacesAdapter.OnItemClickListener() {
+                mPlacesAdapter = new PlacesAdapter(getContext(), mUserLocation, new PlacesAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(Place item, PlacesAdapter.PlacesViewHolder viewHolder) {
                         ((Callback) getActivity()).onItemSelected(item, viewHolder, mUserLocation);
@@ -197,6 +203,27 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.e("GoogleApi Error"," "+connectionResult.getErrorMessage());
         //todo message
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(getActivity(),
+                PlaceColumns.CONTENT_URI,
+                PlaceColumns.ALL_COLUMNS,
+                null,
+                null,
+                null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mPlacesAdapter.swapCursor(new PlaceCursor(data));
+        //todo updateEmptyView();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mPlacesAdapter.swapCursor(null);
     }
 
     public interface Callback {

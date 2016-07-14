@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import br.berbert.capstone.models.Review;
 import br.berbert.capstone.provider.base.AbstractCursor;
 import br.berbert.capstone.provider.place.*;
 import br.berbert.capstone.provider.geometry.*;
@@ -20,6 +21,15 @@ import br.berbert.capstone.provider.location.*;
 public class ReviewCursor extends AbstractCursor implements ReviewModel {
     public ReviewCursor(Cursor cursor) {
         super(cursor);
+    }
+
+
+    public Review getReview(){
+        Review review = new Review();
+        review.setAuthor_name(getAuthorName());
+        review.setRating(getRating()!=null?getRating():0);
+        review.setText(getText());
+        return review;
     }
 
     /**
