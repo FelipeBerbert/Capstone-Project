@@ -1,5 +1,6 @@
 /**
-*Classes generated for the Capstone Project, Udacity Android Nanodegree using the "Android ContentProvider Generator" (https://github.com/BoD/android-contentprovider-generator)
+ * Classes generated for the Capstone Project, Udacity Android Nanodegree using the 
+ * "Android ContentProvider Generator" (https://github.com/BoD/android-contentprovider-generator)
 */
 package br.berbert.capstone.provider;
 
@@ -13,8 +14,6 @@ import android.os.Build;
 import android.util.Log;
 
 import br.berbert.capstone.BuildConfig;
-import br.berbert.capstone.provider.geometry.GeometryColumns;
-import br.berbert.capstone.provider.location.LocationColumns;
 import br.berbert.capstone.provider.photo.PhotoColumns;
 import br.berbert.capstone.provider.place.PlaceColumns;
 import br.berbert.capstone.provider.review.ReviewColumns;
@@ -29,20 +28,6 @@ public class PlaceSQLiteOpenHelper extends SQLiteOpenHelper {
     private final PlaceSQLiteOpenHelperCallbacks mOpenHelperCallbacks;
 
     // @formatter:off
-    public static final String SQL_CREATE_TABLE_GEOMETRY = "CREATE TABLE IF NOT EXISTS "
-            + GeometryColumns.TABLE_NAME + " ( "
-            + GeometryColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + GeometryColumns.LOCATION_ID + " INTEGER NOT NULL "
-            + ", CONSTRAINT fk_location_id FOREIGN KEY (" + GeometryColumns.LOCATION_ID + ") REFERENCES location (_id) ON DELETE NO ACTION"
-            + " );";
-
-    public static final String SQL_CREATE_TABLE_LOCATION = "CREATE TABLE IF NOT EXISTS "
-            + LocationColumns.TABLE_NAME + " ( "
-            + LocationColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + LocationColumns.LAT + " REAL, "
-            + LocationColumns.LNG + " REAL "
-            + " );";
-
     public static final String SQL_CREATE_TABLE_PHOTO = "CREATE TABLE IF NOT EXISTS "
             + PhotoColumns.TABLE_NAME + " ( "
             + PhotoColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -61,9 +46,9 @@ public class PlaceSQLiteOpenHelper extends SQLiteOpenHelper {
             + PlaceColumns.VICINITY + " TEXT, "
             + PlaceColumns.PHONE_NUMBER + " TEXT, "
             + PlaceColumns.DISTANCE + " REAL, "
-            + PlaceColumns.GEOMETRY_ID + " INTEGER NOT NULL "
-            + ", CONSTRAINT fk_geometry_id FOREIGN KEY (" + PlaceColumns.GEOMETRY_ID + ") REFERENCES geometry (_id) ON DELETE NO ACTION"
-            + ", CONSTRAINT unique_id UNIQUE (place_id) ON CONFLICT REPLACE"
+            + PlaceColumns.LAT + " REAL, "
+            + PlaceColumns.LNG + " REAL "
+            + ", CONSTRAINT unique_id UNIQUE (external_id) ON CONFLICT REPLACE"
             + " );";
 
     public static final String SQL_CREATE_TABLE_REVIEW = "CREATE TABLE IF NOT EXISTS "
@@ -130,8 +115,6 @@ public class PlaceSQLiteOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         if (BuildConfig.DEBUG) Log.d(TAG, "onCreate");
         mOpenHelperCallbacks.onPreCreate(mContext, db);
-        db.execSQL(SQL_CREATE_TABLE_GEOMETRY);
-        db.execSQL(SQL_CREATE_TABLE_LOCATION);
         db.execSQL(SQL_CREATE_TABLE_PHOTO);
         db.execSQL(SQL_CREATE_TABLE_PLACE);
         db.execSQL(SQL_CREATE_TABLE_REVIEW);

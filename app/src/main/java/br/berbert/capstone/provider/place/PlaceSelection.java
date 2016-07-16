@@ -1,5 +1,6 @@
 /**
-*Classes generated for the Capstone Project, Udacity Android Nanodegree using the "Android ContentProvider Generator" (https://github.com/BoD/android-contentprovider-generator)
+ * Classes generated for the Capstone Project, Udacity Android Nanodegree using the 
+ * "Android ContentProvider Generator" (https://github.com/BoD/android-contentprovider-generator)
 */
 package br.berbert.capstone.provider.place;
 
@@ -11,8 +12,6 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import br.berbert.capstone.provider.base.AbstractSelection;
-import br.berbert.capstone.provider.geometry.*;
-import br.berbert.capstone.provider.location.*;
 
 /**
  * Selection for the {@code place} table.
@@ -283,163 +282,83 @@ public class PlaceSelection extends AbstractSelection<PlaceSelection> {
         return this;
     }
 
-    public PlaceSelection geometryId(long... value) {
-        addEquals(PlaceColumns.GEOMETRY_ID, toObjectArray(value));
+    public PlaceSelection lat(Double... value) {
+        addEquals(PlaceColumns.LAT, value);
         return this;
     }
 
-    public PlaceSelection geometryIdNot(long... value) {
-        addNotEquals(PlaceColumns.GEOMETRY_ID, toObjectArray(value));
+    public PlaceSelection latNot(Double... value) {
+        addNotEquals(PlaceColumns.LAT, value);
         return this;
     }
 
-    public PlaceSelection geometryIdGt(long value) {
-        addGreaterThan(PlaceColumns.GEOMETRY_ID, value);
+    public PlaceSelection latGt(double value) {
+        addGreaterThan(PlaceColumns.LAT, value);
         return this;
     }
 
-    public PlaceSelection geometryIdGtEq(long value) {
-        addGreaterThanOrEquals(PlaceColumns.GEOMETRY_ID, value);
+    public PlaceSelection latGtEq(double value) {
+        addGreaterThanOrEquals(PlaceColumns.LAT, value);
         return this;
     }
 
-    public PlaceSelection geometryIdLt(long value) {
-        addLessThan(PlaceColumns.GEOMETRY_ID, value);
+    public PlaceSelection latLt(double value) {
+        addLessThan(PlaceColumns.LAT, value);
         return this;
     }
 
-    public PlaceSelection geometryIdLtEq(long value) {
-        addLessThanOrEquals(PlaceColumns.GEOMETRY_ID, value);
+    public PlaceSelection latLtEq(double value) {
+        addLessThanOrEquals(PlaceColumns.LAT, value);
         return this;
     }
 
-    public PlaceSelection orderByGeometryId(boolean desc) {
-        orderBy(PlaceColumns.GEOMETRY_ID, desc);
+    public PlaceSelection orderByLat(boolean desc) {
+        orderBy(PlaceColumns.LAT, desc);
         return this;
     }
 
-    public PlaceSelection orderByGeometryId() {
-        orderBy(PlaceColumns.GEOMETRY_ID, false);
+    public PlaceSelection orderByLat() {
+        orderBy(PlaceColumns.LAT, false);
         return this;
     }
 
-    public PlaceSelection geometryLocationId(long... value) {
-        addEquals(GeometryColumns.LOCATION_ID, toObjectArray(value));
+    public PlaceSelection lng(Double... value) {
+        addEquals(PlaceColumns.LNG, value);
         return this;
     }
 
-    public PlaceSelection geometryLocationIdNot(long... value) {
-        addNotEquals(GeometryColumns.LOCATION_ID, toObjectArray(value));
+    public PlaceSelection lngNot(Double... value) {
+        addNotEquals(PlaceColumns.LNG, value);
         return this;
     }
 
-    public PlaceSelection geometryLocationIdGt(long value) {
-        addGreaterThan(GeometryColumns.LOCATION_ID, value);
+    public PlaceSelection lngGt(double value) {
+        addGreaterThan(PlaceColumns.LNG, value);
         return this;
     }
 
-    public PlaceSelection geometryLocationIdGtEq(long value) {
-        addGreaterThanOrEquals(GeometryColumns.LOCATION_ID, value);
+    public PlaceSelection lngGtEq(double value) {
+        addGreaterThanOrEquals(PlaceColumns.LNG, value);
         return this;
     }
 
-    public PlaceSelection geometryLocationIdLt(long value) {
-        addLessThan(GeometryColumns.LOCATION_ID, value);
+    public PlaceSelection lngLt(double value) {
+        addLessThan(PlaceColumns.LNG, value);
         return this;
     }
 
-    public PlaceSelection geometryLocationIdLtEq(long value) {
-        addLessThanOrEquals(GeometryColumns.LOCATION_ID, value);
+    public PlaceSelection lngLtEq(double value) {
+        addLessThanOrEquals(PlaceColumns.LNG, value);
         return this;
     }
 
-    public PlaceSelection orderByGeometryLocationId(boolean desc) {
-        orderBy(GeometryColumns.LOCATION_ID, desc);
+    public PlaceSelection orderByLng(boolean desc) {
+        orderBy(PlaceColumns.LNG, desc);
         return this;
     }
 
-    public PlaceSelection orderByGeometryLocationId() {
-        orderBy(GeometryColumns.LOCATION_ID, false);
-        return this;
-    }
-
-    public PlaceSelection geometryLocationLat(Double... value) {
-        addEquals(LocationColumns.LAT, value);
-        return this;
-    }
-
-    public PlaceSelection geometryLocationLatNot(Double... value) {
-        addNotEquals(LocationColumns.LAT, value);
-        return this;
-    }
-
-    public PlaceSelection geometryLocationLatGt(double value) {
-        addGreaterThan(LocationColumns.LAT, value);
-        return this;
-    }
-
-    public PlaceSelection geometryLocationLatGtEq(double value) {
-        addGreaterThanOrEquals(LocationColumns.LAT, value);
-        return this;
-    }
-
-    public PlaceSelection geometryLocationLatLt(double value) {
-        addLessThan(LocationColumns.LAT, value);
-        return this;
-    }
-
-    public PlaceSelection geometryLocationLatLtEq(double value) {
-        addLessThanOrEquals(LocationColumns.LAT, value);
-        return this;
-    }
-
-    public PlaceSelection orderByGeometryLocationLat(boolean desc) {
-        orderBy(LocationColumns.LAT, desc);
-        return this;
-    }
-
-    public PlaceSelection orderByGeometryLocationLat() {
-        orderBy(LocationColumns.LAT, false);
-        return this;
-    }
-
-    public PlaceSelection geometryLocationLng(Double... value) {
-        addEquals(LocationColumns.LNG, value);
-        return this;
-    }
-
-    public PlaceSelection geometryLocationLngNot(Double... value) {
-        addNotEquals(LocationColumns.LNG, value);
-        return this;
-    }
-
-    public PlaceSelection geometryLocationLngGt(double value) {
-        addGreaterThan(LocationColumns.LNG, value);
-        return this;
-    }
-
-    public PlaceSelection geometryLocationLngGtEq(double value) {
-        addGreaterThanOrEquals(LocationColumns.LNG, value);
-        return this;
-    }
-
-    public PlaceSelection geometryLocationLngLt(double value) {
-        addLessThan(LocationColumns.LNG, value);
-        return this;
-    }
-
-    public PlaceSelection geometryLocationLngLtEq(double value) {
-        addLessThanOrEquals(LocationColumns.LNG, value);
-        return this;
-    }
-
-    public PlaceSelection orderByGeometryLocationLng(boolean desc) {
-        orderBy(LocationColumns.LNG, desc);
-        return this;
-    }
-
-    public PlaceSelection orderByGeometryLocationLng() {
-        orderBy(LocationColumns.LNG, false);
+    public PlaceSelection orderByLng() {
+        orderBy(PlaceColumns.LNG, false);
         return this;
     }
 }

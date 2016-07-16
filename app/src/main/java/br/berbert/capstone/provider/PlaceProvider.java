@@ -1,5 +1,6 @@
 /**
-*Classes generated for the Capstone Project, Udacity Android Nanodegree using the "Android ContentProvider Generator" (https://github.com/BoD/android-contentprovider-generator)
+ * Classes generated for the Capstone Project, Udacity Android Nanodegree using the 
+ * "Android ContentProvider Generator" (https://github.com/BoD/android-contentprovider-generator)
 */
 package br.berbert.capstone.provider;
 
@@ -15,8 +16,6 @@ import android.util.Log;
 
 import br.berbert.capstone.BuildConfig;
 import br.berbert.capstone.provider.base.BaseContentProvider;
-import br.berbert.capstone.provider.geometry.GeometryColumns;
-import br.berbert.capstone.provider.location.LocationColumns;
 import br.berbert.capstone.provider.photo.PhotoColumns;
 import br.berbert.capstone.provider.place.PlaceColumns;
 import br.berbert.capstone.provider.review.ReviewColumns;
@@ -32,30 +31,20 @@ public class PlaceProvider extends BaseContentProvider {
     public static final String AUTHORITY = "br.berbert.capstone.provider";
     public static final String CONTENT_URI_BASE = "content://" + AUTHORITY;
 
-    private static final int URI_TYPE_GEOMETRY = 0;
-    private static final int URI_TYPE_GEOMETRY_ID = 1;
+    private static final int URI_TYPE_PHOTO = 0;
+    private static final int URI_TYPE_PHOTO_ID = 1;
 
-    private static final int URI_TYPE_LOCATION = 2;
-    private static final int URI_TYPE_LOCATION_ID = 3;
+    private static final int URI_TYPE_PLACE = 2;
+    private static final int URI_TYPE_PLACE_ID = 3;
 
-    private static final int URI_TYPE_PHOTO = 4;
-    private static final int URI_TYPE_PHOTO_ID = 5;
-
-    private static final int URI_TYPE_PLACE = 6;
-    private static final int URI_TYPE_PLACE_ID = 7;
-
-    private static final int URI_TYPE_REVIEW = 8;
-    private static final int URI_TYPE_REVIEW_ID = 9;
+    private static final int URI_TYPE_REVIEW = 4;
+    private static final int URI_TYPE_REVIEW_ID = 5;
 
 
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
-        URI_MATCHER.addURI(AUTHORITY, GeometryColumns.TABLE_NAME, URI_TYPE_GEOMETRY);
-        URI_MATCHER.addURI(AUTHORITY, GeometryColumns.TABLE_NAME + "/#", URI_TYPE_GEOMETRY_ID);
-        URI_MATCHER.addURI(AUTHORITY, LocationColumns.TABLE_NAME, URI_TYPE_LOCATION);
-        URI_MATCHER.addURI(AUTHORITY, LocationColumns.TABLE_NAME + "/#", URI_TYPE_LOCATION_ID);
         URI_MATCHER.addURI(AUTHORITY, PhotoColumns.TABLE_NAME, URI_TYPE_PHOTO);
         URI_MATCHER.addURI(AUTHORITY, PhotoColumns.TABLE_NAME + "/#", URI_TYPE_PHOTO_ID);
         URI_MATCHER.addURI(AUTHORITY, PlaceColumns.TABLE_NAME, URI_TYPE_PLACE);
@@ -78,16 +67,6 @@ public class PlaceProvider extends BaseContentProvider {
     public String getType(Uri uri) {
         int match = URI_MATCHER.match(uri);
         switch (match) {
-            case URI_TYPE_GEOMETRY:
-                return TYPE_CURSOR_DIR + GeometryColumns.TABLE_NAME;
-            case URI_TYPE_GEOMETRY_ID:
-                return TYPE_CURSOR_ITEM + GeometryColumns.TABLE_NAME;
-
-            case URI_TYPE_LOCATION:
-                return TYPE_CURSOR_DIR + LocationColumns.TABLE_NAME;
-            case URI_TYPE_LOCATION_ID:
-                return TYPE_CURSOR_ITEM + LocationColumns.TABLE_NAME;
-
             case URI_TYPE_PHOTO:
                 return TYPE_CURSOR_DIR + PhotoColumns.TABLE_NAME;
             case URI_TYPE_PHOTO_ID:
@@ -145,38 +124,13 @@ public class PlaceProvider extends BaseContentProvider {
         String id = null;
         int matchedId = URI_MATCHER.match(uri);
         switch (matchedId) {
-            case URI_TYPE_GEOMETRY:
-            case URI_TYPE_GEOMETRY_ID:
-                res.table = GeometryColumns.TABLE_NAME;
-                res.idColumn = GeometryColumns._ID;
-                res.tablesWithJoins = GeometryColumns.TABLE_NAME;
-                if (LocationColumns.hasColumns(projection)) {
-                    res.tablesWithJoins += " LEFT OUTER JOIN " + LocationColumns.TABLE_NAME + " AS " + GeometryColumns.PREFIX_LOCATION + " ON " + GeometryColumns.TABLE_NAME + "." + GeometryColumns.LOCATION_ID + "=" + GeometryColumns.PREFIX_LOCATION + "." + LocationColumns._ID;
-                }
-                res.orderBy = GeometryColumns.DEFAULT_ORDER;
-                break;
-
-            case URI_TYPE_LOCATION:
-            case URI_TYPE_LOCATION_ID:
-                res.table = LocationColumns.TABLE_NAME;
-                res.idColumn = LocationColumns._ID;
-                res.tablesWithJoins = LocationColumns.TABLE_NAME;
-                res.orderBy = LocationColumns.DEFAULT_ORDER;
-                break;
-
             case URI_TYPE_PHOTO:
             case URI_TYPE_PHOTO_ID:
                 res.table = PhotoColumns.TABLE_NAME;
                 res.idColumn = PhotoColumns._ID;
                 res.tablesWithJoins = PhotoColumns.TABLE_NAME;
-                if (PlaceColumns.hasColumns(projection) || GeometryColumns.hasColumns(projection) || LocationColumns.hasColumns(projection)) {
+                if (PlaceColumns.hasColumns(projection)) {
                     res.tablesWithJoins += " LEFT OUTER JOIN " + PlaceColumns.TABLE_NAME + " AS " + PhotoColumns.PREFIX_PLACE + " ON " + PhotoColumns.TABLE_NAME + "." + PhotoColumns.PLACE_ID + "=" + PhotoColumns.PREFIX_PLACE + "." + PlaceColumns._ID;
-                }
-                if (GeometryColumns.hasColumns(projection) || LocationColumns.hasColumns(projection)) {
-                    res.tablesWithJoins += " LEFT OUTER JOIN " + GeometryColumns.TABLE_NAME + " AS " + PlaceColumns.PREFIX_GEOMETRY + " ON " + PhotoColumns.PREFIX_PLACE + "." + PlaceColumns.GEOMETRY_ID + "=" + PlaceColumns.PREFIX_GEOMETRY + "." + GeometryColumns._ID;
-                }
-                if (LocationColumns.hasColumns(projection)) {
-                    res.tablesWithJoins += " LEFT OUTER JOIN " + LocationColumns.TABLE_NAME + " AS " + GeometryColumns.PREFIX_LOCATION + " ON " + PlaceColumns.PREFIX_GEOMETRY + "." + GeometryColumns.LOCATION_ID + "=" + GeometryColumns.PREFIX_LOCATION + "." + LocationColumns._ID;
                 }
                 res.orderBy = PhotoColumns.DEFAULT_ORDER;
                 break;
@@ -186,12 +140,6 @@ public class PlaceProvider extends BaseContentProvider {
                 res.table = PlaceColumns.TABLE_NAME;
                 res.idColumn = PlaceColumns._ID;
                 res.tablesWithJoins = PlaceColumns.TABLE_NAME;
-                if (GeometryColumns.hasColumns(projection) || LocationColumns.hasColumns(projection)) {
-                    res.tablesWithJoins += " LEFT OUTER JOIN " + GeometryColumns.TABLE_NAME + " AS " + PlaceColumns.PREFIX_GEOMETRY + " ON " + PlaceColumns.TABLE_NAME + "." + PlaceColumns.GEOMETRY_ID + "=" + PlaceColumns.PREFIX_GEOMETRY + "." + GeometryColumns._ID;
-                }
-                if (LocationColumns.hasColumns(projection)) {
-                    res.tablesWithJoins += " LEFT OUTER JOIN " + LocationColumns.TABLE_NAME + " AS " + GeometryColumns.PREFIX_LOCATION + " ON " + PlaceColumns.PREFIX_GEOMETRY + "." + GeometryColumns.LOCATION_ID + "=" + GeometryColumns.PREFIX_LOCATION + "." + LocationColumns._ID;
-                }
                 res.orderBy = PlaceColumns.DEFAULT_ORDER;
                 break;
 
@@ -200,14 +148,8 @@ public class PlaceProvider extends BaseContentProvider {
                 res.table = ReviewColumns.TABLE_NAME;
                 res.idColumn = ReviewColumns._ID;
                 res.tablesWithJoins = ReviewColumns.TABLE_NAME;
-                if (PlaceColumns.hasColumns(projection) || GeometryColumns.hasColumns(projection) || LocationColumns.hasColumns(projection)) {
+                if (PlaceColumns.hasColumns(projection)) {
                     res.tablesWithJoins += " LEFT OUTER JOIN " + PlaceColumns.TABLE_NAME + " AS " + ReviewColumns.PREFIX_PLACE + " ON " + ReviewColumns.TABLE_NAME + "." + ReviewColumns.PLACE_ID + "=" + ReviewColumns.PREFIX_PLACE + "." + PlaceColumns._ID;
-                }
-                if (GeometryColumns.hasColumns(projection) || LocationColumns.hasColumns(projection)) {
-                    res.tablesWithJoins += " LEFT OUTER JOIN " + GeometryColumns.TABLE_NAME + " AS " + PlaceColumns.PREFIX_GEOMETRY + " ON " + ReviewColumns.PREFIX_PLACE + "." + PlaceColumns.GEOMETRY_ID + "=" + PlaceColumns.PREFIX_GEOMETRY + "." + GeometryColumns._ID;
-                }
-                if (LocationColumns.hasColumns(projection)) {
-                    res.tablesWithJoins += " LEFT OUTER JOIN " + LocationColumns.TABLE_NAME + " AS " + GeometryColumns.PREFIX_LOCATION + " ON " + PlaceColumns.PREFIX_GEOMETRY + "." + GeometryColumns.LOCATION_ID + "=" + GeometryColumns.PREFIX_LOCATION + "." + LocationColumns._ID;
                 }
                 res.orderBy = ReviewColumns.DEFAULT_ORDER;
                 break;
@@ -217,8 +159,6 @@ public class PlaceProvider extends BaseContentProvider {
         }
 
         switch (matchedId) {
-            case URI_TYPE_GEOMETRY_ID:
-            case URI_TYPE_LOCATION_ID:
             case URI_TYPE_PHOTO_ID:
             case URI_TYPE_PLACE_ID:
             case URI_TYPE_REVIEW_ID:

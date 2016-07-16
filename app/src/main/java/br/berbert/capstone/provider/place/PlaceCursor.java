@@ -1,15 +1,15 @@
 /**
- * Classes generated for the Capstone Project, Udacity Android Nanodegree using the "Android ContentProvider Generator" (https://github.com/BoD/android-contentprovider-generator)
- */
+ * Classes generated for the Capstone Project, Udacity Android Nanodegree using the 
+ * "Android ContentProvider Generator" (https://github.com/BoD/android-contentprovider-generator)
+*/
 package br.berbert.capstone.provider.place;
-
-import java.util.ArrayList;
-import java.util.Date;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import java.util.ArrayList;
 
 import br.berbert.capstone.models.Geometry;
 import br.berbert.capstone.models.Location;
@@ -17,12 +17,9 @@ import br.berbert.capstone.models.Photo;
 import br.berbert.capstone.models.Place;
 import br.berbert.capstone.models.Review;
 import br.berbert.capstone.provider.base.AbstractCursor;
-import br.berbert.capstone.provider.geometry.*;
-import br.berbert.capstone.provider.location.*;
 import br.berbert.capstone.provider.photo.PhotoColumns;
 import br.berbert.capstone.provider.photo.PhotoCursor;
 import br.berbert.capstone.provider.photo.PhotoSelection;
-import br.berbert.capstone.provider.review.ReviewColumns;
 import br.berbert.capstone.provider.review.ReviewCursor;
 import br.berbert.capstone.provider.review.ReviewSelection;
 
@@ -42,9 +39,16 @@ public class PlaceCursor extends AbstractCursor implements PlaceModel {
         place.setPhoneNumber(getPhoneNumber());
         place.setPlaceId(getExternalId());
         place.setVicinity(getVicinity());
+        Location location = new Location();
+        if(getLat() != null && getLng() != null) {
+            location.setLng(getLng());
+            location.setLat(getLat());
+            Geometry geometry = new Geometry();
+            geometry.setLocation(location);
+            place.setGeometry(geometry);
+        }
 
         if (shouldGetJoinTables) {
-            place.setGeometry(getGeometry());
             ReviewSelection rsWhere = new ReviewSelection();
             rsWhere.placeId(getId());
             ReviewCursor rCursor = rsWhere.query(context.getContentResolver());
@@ -70,15 +74,6 @@ public class PlaceCursor extends AbstractCursor implements PlaceModel {
         }
 
         return place;
-    }
-
-    public Geometry getGeometry() {
-        Geometry geometry = new Geometry();
-        Location location = new Location();
-        location.setLat(getGeometryLocationLat()!=null?getGeometryLocationLat():0);
-        location.setLng(getGeometryLocationLng()!=null?getGeometryLocationLng():0);
-        geometry.setLocation(location);
-        return geometry;
     }
 
     /**
@@ -144,42 +139,22 @@ public class PlaceCursor extends AbstractCursor implements PlaceModel {
     }
 
     /**
-     * Contains the geocoded latitude, longitude value for this place.
-     */
-    public long getGeometryId() {
-        Long res = getLongOrNull(PlaceColumns.GEOMETRY_ID);
-        if (res == null)
-            throw new NullPointerException("The value of 'geometry_id' in the database was null, which is not allowed according to the model definition");
-        return res;
-    }
-
-    /**
-     * Contains the geocoded latitude,longitude value for this place.
-     */
-    public long getGeometryLocationId() {
-        Long res = getLongOrNull(GeometryColumns.LOCATION_ID);
-        if (res == null)
-            throw new NullPointerException("The value of 'location_id' in the database was null, which is not allowed according to the model definition");
-        return res;
-    }
-
-    /**
-     * Latitude.
+     * Contains the geocoded latitude value for this place.
      * Can be {@code null}.
      */
     @Nullable
-    public Double getGeometryLocationLat() {
-        Double res = getDoubleOrNull(LocationColumns.LAT);
+    public Double getLat() {
+        Double res = getDoubleOrNull(PlaceColumns.LAT);
         return res;
     }
 
     /**
-     * Longitude.
+     * Contains the geocoded longitude value for this place.
      * Can be {@code null}.
      */
     @Nullable
-    public Double getGeometryLocationLng() {
-        Double res = getDoubleOrNull(LocationColumns.LNG);
+    public Double getLng() {
+        Double res = getDoubleOrNull(PlaceColumns.LNG);
         return res;
     }
 

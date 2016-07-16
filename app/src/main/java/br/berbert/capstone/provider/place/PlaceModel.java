@@ -1,5 +1,6 @@
 /**
-*Classes generated for the Capstone Project, Udacity Android Nanodegree using the "Android ContentProvider Generator" (https://github.com/BoD/android-contentprovider-generator)
+ * Classes generated for the Capstone Project, Udacity Android Nanodegree using the 
+ * "Android ContentProvider Generator" (https://github.com/BoD/android-contentprovider-generator)
 */
 package br.berbert.capstone.provider.place;
 
@@ -51,7 +52,16 @@ public interface PlaceModel extends BaseModel {
     Float getDistance();
 
     /**
-     * Contains the geocoded latitude, longitude value for this place.
+     * Contains the geocoded latitude value for this place.
+     * Can be {@code null}.
      */
-    long getGeometryId();
+    @Nullable
+    Double getLat();
+
+    /**
+     * Contains the geocoded longitude value for this place.
+     * Can be {@code null}.
+     */
+    @Nullable
+    Double getLng();
 }

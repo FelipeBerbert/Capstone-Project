@@ -1,5 +1,6 @@
 /**
-*Classes generated for the Capstone Project, Udacity Android Nanodegree using the "Android ContentProvider Generator" (https://github.com/BoD/android-contentprovider-generator)
+ * Classes generated for the Capstone Project, Udacity Android Nanodegree using the 
+ * "Android ContentProvider Generator" (https://github.com/BoD/android-contentprovider-generator)
 */
 package br.berbert.capstone.provider.place;
 
@@ -102,11 +103,28 @@ public class PlaceContentValues extends AbstractContentValues {
     }
 
     /**
-     * Contains the geocoded latitude, longitude value for this place.
+     * Contains the geocoded latitude value for this place.
      */
-    public PlaceContentValues putGeometryId(long value) {
-        mContentValues.put(PlaceColumns.GEOMETRY_ID, value);
+    public PlaceContentValues putLat(@Nullable Double value) {
+        mContentValues.put(PlaceColumns.LAT, value);
         return this;
     }
 
+    public PlaceContentValues putLatNull() {
+        mContentValues.putNull(PlaceColumns.LAT);
+        return this;
+    }
+
+    /**
+     * Contains the geocoded longitude value for this place.
+     */
+    public PlaceContentValues putLng(@Nullable Double value) {
+        mContentValues.put(PlaceColumns.LNG, value);
+        return this;
+    }
+
+    public PlaceContentValues putLngNull() {
+        mContentValues.putNull(PlaceColumns.LNG);
+        return this;
+    }
 }

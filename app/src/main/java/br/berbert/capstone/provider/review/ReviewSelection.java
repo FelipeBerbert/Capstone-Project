@@ -1,5 +1,6 @@
 /**
-*Classes generated for the Capstone Project, Udacity Android Nanodegree using the "Android ContentProvider Generator" (https://github.com/BoD/android-contentprovider-generator)
+ * Classes generated for the Capstone Project, Udacity Android Nanodegree using the 
+ * "Android ContentProvider Generator" (https://github.com/BoD/android-contentprovider-generator)
 */
 package br.berbert.capstone.provider.review;
 
@@ -12,8 +13,6 @@ import android.net.Uri;
 
 import br.berbert.capstone.provider.base.AbstractSelection;
 import br.berbert.capstone.provider.place.*;
-import br.berbert.capstone.provider.geometry.*;
-import br.berbert.capstone.provider.location.*;
 
 /**
  * Selection for the {@code review} table.
@@ -444,163 +443,83 @@ public class ReviewSelection extends AbstractSelection<ReviewSelection> {
         return this;
     }
 
-    public ReviewSelection placeGeometryId(long... value) {
-        addEquals(PlaceColumns.GEOMETRY_ID, toObjectArray(value));
+    public ReviewSelection placeLat(Double... value) {
+        addEquals(PlaceColumns.LAT, value);
         return this;
     }
 
-    public ReviewSelection placeGeometryIdNot(long... value) {
-        addNotEquals(PlaceColumns.GEOMETRY_ID, toObjectArray(value));
+    public ReviewSelection placeLatNot(Double... value) {
+        addNotEquals(PlaceColumns.LAT, value);
         return this;
     }
 
-    public ReviewSelection placeGeometryIdGt(long value) {
-        addGreaterThan(PlaceColumns.GEOMETRY_ID, value);
+    public ReviewSelection placeLatGt(double value) {
+        addGreaterThan(PlaceColumns.LAT, value);
         return this;
     }
 
-    public ReviewSelection placeGeometryIdGtEq(long value) {
-        addGreaterThanOrEquals(PlaceColumns.GEOMETRY_ID, value);
+    public ReviewSelection placeLatGtEq(double value) {
+        addGreaterThanOrEquals(PlaceColumns.LAT, value);
         return this;
     }
 
-    public ReviewSelection placeGeometryIdLt(long value) {
-        addLessThan(PlaceColumns.GEOMETRY_ID, value);
+    public ReviewSelection placeLatLt(double value) {
+        addLessThan(PlaceColumns.LAT, value);
         return this;
     }
 
-    public ReviewSelection placeGeometryIdLtEq(long value) {
-        addLessThanOrEquals(PlaceColumns.GEOMETRY_ID, value);
+    public ReviewSelection placeLatLtEq(double value) {
+        addLessThanOrEquals(PlaceColumns.LAT, value);
         return this;
     }
 
-    public ReviewSelection orderByPlaceGeometryId(boolean desc) {
-        orderBy(PlaceColumns.GEOMETRY_ID, desc);
+    public ReviewSelection orderByPlaceLat(boolean desc) {
+        orderBy(PlaceColumns.LAT, desc);
         return this;
     }
 
-    public ReviewSelection orderByPlaceGeometryId() {
-        orderBy(PlaceColumns.GEOMETRY_ID, false);
+    public ReviewSelection orderByPlaceLat() {
+        orderBy(PlaceColumns.LAT, false);
         return this;
     }
 
-    public ReviewSelection placeGeometryLocationId(long... value) {
-        addEquals(GeometryColumns.LOCATION_ID, toObjectArray(value));
+    public ReviewSelection placeLng(Double... value) {
+        addEquals(PlaceColumns.LNG, value);
         return this;
     }
 
-    public ReviewSelection placeGeometryLocationIdNot(long... value) {
-        addNotEquals(GeometryColumns.LOCATION_ID, toObjectArray(value));
+    public ReviewSelection placeLngNot(Double... value) {
+        addNotEquals(PlaceColumns.LNG, value);
         return this;
     }
 
-    public ReviewSelection placeGeometryLocationIdGt(long value) {
-        addGreaterThan(GeometryColumns.LOCATION_ID, value);
+    public ReviewSelection placeLngGt(double value) {
+        addGreaterThan(PlaceColumns.LNG, value);
         return this;
     }
 
-    public ReviewSelection placeGeometryLocationIdGtEq(long value) {
-        addGreaterThanOrEquals(GeometryColumns.LOCATION_ID, value);
+    public ReviewSelection placeLngGtEq(double value) {
+        addGreaterThanOrEquals(PlaceColumns.LNG, value);
         return this;
     }
 
-    public ReviewSelection placeGeometryLocationIdLt(long value) {
-        addLessThan(GeometryColumns.LOCATION_ID, value);
+    public ReviewSelection placeLngLt(double value) {
+        addLessThan(PlaceColumns.LNG, value);
         return this;
     }
 
-    public ReviewSelection placeGeometryLocationIdLtEq(long value) {
-        addLessThanOrEquals(GeometryColumns.LOCATION_ID, value);
+    public ReviewSelection placeLngLtEq(double value) {
+        addLessThanOrEquals(PlaceColumns.LNG, value);
         return this;
     }
 
-    public ReviewSelection orderByPlaceGeometryLocationId(boolean desc) {
-        orderBy(GeometryColumns.LOCATION_ID, desc);
+    public ReviewSelection orderByPlaceLng(boolean desc) {
+        orderBy(PlaceColumns.LNG, desc);
         return this;
     }
 
-    public ReviewSelection orderByPlaceGeometryLocationId() {
-        orderBy(GeometryColumns.LOCATION_ID, false);
-        return this;
-    }
-
-    public ReviewSelection placeGeometryLocationLat(Double... value) {
-        addEquals(LocationColumns.LAT, value);
-        return this;
-    }
-
-    public ReviewSelection placeGeometryLocationLatNot(Double... value) {
-        addNotEquals(LocationColumns.LAT, value);
-        return this;
-    }
-
-    public ReviewSelection placeGeometryLocationLatGt(double value) {
-        addGreaterThan(LocationColumns.LAT, value);
-        return this;
-    }
-
-    public ReviewSelection placeGeometryLocationLatGtEq(double value) {
-        addGreaterThanOrEquals(LocationColumns.LAT, value);
-        return this;
-    }
-
-    public ReviewSelection placeGeometryLocationLatLt(double value) {
-        addLessThan(LocationColumns.LAT, value);
-        return this;
-    }
-
-    public ReviewSelection placeGeometryLocationLatLtEq(double value) {
-        addLessThanOrEquals(LocationColumns.LAT, value);
-        return this;
-    }
-
-    public ReviewSelection orderByPlaceGeometryLocationLat(boolean desc) {
-        orderBy(LocationColumns.LAT, desc);
-        return this;
-    }
-
-    public ReviewSelection orderByPlaceGeometryLocationLat() {
-        orderBy(LocationColumns.LAT, false);
-        return this;
-    }
-
-    public ReviewSelection placeGeometryLocationLng(Double... value) {
-        addEquals(LocationColumns.LNG, value);
-        return this;
-    }
-
-    public ReviewSelection placeGeometryLocationLngNot(Double... value) {
-        addNotEquals(LocationColumns.LNG, value);
-        return this;
-    }
-
-    public ReviewSelection placeGeometryLocationLngGt(double value) {
-        addGreaterThan(LocationColumns.LNG, value);
-        return this;
-    }
-
-    public ReviewSelection placeGeometryLocationLngGtEq(double value) {
-        addGreaterThanOrEquals(LocationColumns.LNG, value);
-        return this;
-    }
-
-    public ReviewSelection placeGeometryLocationLngLt(double value) {
-        addLessThan(LocationColumns.LNG, value);
-        return this;
-    }
-
-    public ReviewSelection placeGeometryLocationLngLtEq(double value) {
-        addLessThanOrEquals(LocationColumns.LNG, value);
-        return this;
-    }
-
-    public ReviewSelection orderByPlaceGeometryLocationLng(boolean desc) {
-        orderBy(LocationColumns.LNG, desc);
-        return this;
-    }
-
-    public ReviewSelection orderByPlaceGeometryLocationLng() {
-        orderBy(LocationColumns.LNG, false);
+    public ReviewSelection orderByPlaceLng() {
+        orderBy(PlaceColumns.LNG, false);
         return this;
     }
 }

@@ -1,6 +1,7 @@
 package br.berbert.capstone.fragments;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Location;
@@ -32,6 +33,7 @@ import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import br.berbert.capstone.BuildConfig;
 import br.berbert.capstone.R;
@@ -107,14 +109,24 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
                         //for (String type : place.getTypes())
                           //  Log.d(TAG, "Type: " + type);  // TODO ONLY FOR DEBUG, DELETE THIS
                     }
+                Vector<ContentValues> cVVector = new Vector<ContentValues>(response.getResults().size());
+                for (Place place : response.getResults()) {
+                    ContentValues placeValues = new ContentValues();
+                    placeValues.put(PlaceColumns.EXTERNAL_ID, place.getPlaceId());
+                    placeValues.put(PlaceColumns.NAME, place.getName());
+                    placeValues.put(PlaceColumns.DISTANCE, place.getDistance(mUserLocation));
+                    placeValues.put(PlaceColumns.EXTERNAL_ID, place.getPlaceId());
+                    placeValues.put(PlaceColumns.EXTERNAL_ID, place.getPlaceId());
+                    placeValues.put(PlaceColumns.EXTERNAL_ID, place.getPlaceId());
+                } //todo continue here
 
-                mPlacesAdapter = new PlacesAdapter(getContext(), mUserLocation, new PlacesAdapter.OnItemClickListener() {
+                /*mPlacesAdapter = new PlacesAdapter(getContext(), mUserLocation, new PlacesAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(Place item, PlacesAdapter.PlacesViewHolder viewHolder) {
                         ((Callback) getActivity()).onItemSelected(item, viewHolder, mUserLocation);
                     }
                 });
-                mRvPlacesList.setAdapter(mPlacesAdapter);
+                mRvPlacesList.setAdapter(mPlacesAdapter);*/
             }
         },  new Response.ErrorListener() {
 

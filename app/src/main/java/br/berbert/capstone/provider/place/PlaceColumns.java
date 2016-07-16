@@ -1,5 +1,6 @@
 /**
-*Classes generated for the Capstone Project, Udacity Android Nanodegree using the "Android ContentProvider Generator" (https://github.com/BoD/android-contentprovider-generator)
+ * Classes generated for the Capstone Project, Udacity Android Nanodegree using the 
+ * "Android ContentProvider Generator" (https://github.com/BoD/android-contentprovider-generator)
 */
 package br.berbert.capstone.provider.place;
 
@@ -7,8 +8,6 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import br.berbert.capstone.provider.PlaceProvider;
-import br.berbert.capstone.provider.geometry.GeometryColumns;
-import br.berbert.capstone.provider.location.LocationColumns;
 import br.berbert.capstone.provider.photo.PhotoColumns;
 import br.berbert.capstone.provider.place.PlaceColumns;
 import br.berbert.capstone.provider.review.ReviewColumns;
@@ -48,9 +47,14 @@ public class PlaceColumns implements BaseColumns {
     public static final String DISTANCE = "distance";
 
     /**
-     * Contains the geocoded latitude, longitude value for this place.
+     * Contains the geocoded latitude value for this place.
      */
-    public static final String GEOMETRY_ID = "geometry_id";
+    public static final String LAT = "lat";
+
+    /**
+     * Contains the geocoded longitude value for this place.
+     */
+    public static final String LNG = "lng";
 
 
     public static final String DEFAULT_ORDER = TABLE_NAME + "." +_ID;
@@ -63,7 +67,8 @@ public class PlaceColumns implements BaseColumns {
             VICINITY,
             PHONE_NUMBER,
             DISTANCE,
-            GEOMETRY_ID
+            LAT,
+            LNG
     };
     // @formatter:on
 
@@ -75,10 +80,10 @@ public class PlaceColumns implements BaseColumns {
             if (c.equals(VICINITY) || c.contains("." + VICINITY)) return true;
             if (c.equals(PHONE_NUMBER) || c.contains("." + PHONE_NUMBER)) return true;
             if (c.equals(DISTANCE) || c.contains("." + DISTANCE)) return true;
-            if (c.equals(GEOMETRY_ID) || c.contains("." + GEOMETRY_ID)) return true;
+            if (c.equals(LAT) || c.contains("." + LAT)) return true;
+            if (c.equals(LNG) || c.contains("." + LNG)) return true;
         }
         return false;
     }
 
-    public static final String PREFIX_GEOMETRY = TABLE_NAME + "__" + GeometryColumns.TABLE_NAME;
 }

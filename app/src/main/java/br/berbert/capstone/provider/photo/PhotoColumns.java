@@ -1,5 +1,6 @@
 /**
-*Classes generated for the Capstone Project, Udacity Android Nanodegree using the "Android ContentProvider Generator" (https://github.com/BoD/android-contentprovider-generator)
+ * Classes generated for the Capstone Project, Udacity Android Nanodegree using the 
+ * "Android ContentProvider Generator" (https://github.com/BoD/android-contentprovider-generator)
 */
 package br.berbert.capstone.provider.photo;
 
@@ -7,8 +8,6 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import br.berbert.capstone.provider.PlaceProvider;
-import br.berbert.capstone.provider.geometry.GeometryColumns;
-import br.berbert.capstone.provider.location.LocationColumns;
 import br.berbert.capstone.provider.photo.PhotoColumns;
 import br.berbert.capstone.provider.place.PlaceColumns;
 import br.berbert.capstone.provider.review.ReviewColumns;
