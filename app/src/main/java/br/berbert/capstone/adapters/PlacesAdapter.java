@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import br.berbert.capstone.R;
+import br.berbert.capstone.Utilities;
 import br.berbert.capstone.models.Photo;
 import br.berbert.capstone.models.Place;
 import br.berbert.capstone.provider.photo.PhotoColumns;
@@ -37,11 +38,10 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
     Location mUserLocation;
     private final OnItemClickListener mListener;
 
-    public PlacesAdapter(Context context, Location userLocation, OnItemClickListener listener) {
+    public PlacesAdapter(Context context, OnItemClickListener listener) {
         //mPlacesList = placesList;
         mContext = context;
         mListener = listener;
-        mUserLocation = userLocation;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
     @Override
     public void onBindViewHolder(PlacesViewHolder holder, int position) {
         mCursor.moveToPosition(position);
-        holder.bind(position, mUserLocation, mListener);
+        holder.bind(position, mListener);
     }
 
     @Override
@@ -88,7 +88,8 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
             distanceBack = (ImageView) itemView.findViewById(R.id.iv_distance_background);
         }
 
-        public void bind(final int position, final Location userLocation, final OnItemClickListener listener) {
+        public void bind(final int position, final OnItemClickListener listener) {
+            Location userLocation = Utilities.loadUserLocation(mContext);
             mCursor.moveToPosition(position);
             final Place place = mCursor.getPlace(mContext, false);
             name.setText(place.getName());

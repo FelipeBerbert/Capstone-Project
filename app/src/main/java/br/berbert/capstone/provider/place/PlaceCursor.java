@@ -165,7 +165,7 @@ public class PlaceCursor extends AbstractCursor implements PlaceModel {
     @Nullable
     public String getMainPhotoReference(Context context) {
         PhotoSelection where = new PhotoSelection();
-        where.id(getId());
+        where.placeId(getId());
         String[] selection = {PhotoColumns.PHOTO_REFERENCE};
         Cursor c = context.getContentResolver().query(PhotoColumns.CONTENT_URI, selection,
                 where.sel(), where.args(), null);

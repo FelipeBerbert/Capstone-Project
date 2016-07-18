@@ -1,14 +1,15 @@
 package br.berbert.capstone;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.ConnectivityManager;
+import android.preference.PreferenceManager;
 import android.support.v7.graphics.Palette;
 import android.util.Log;
 
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 
 import br.berbert.capstone.conn.GsonRequest;
 import br.berbert.capstone.conn.VolleyConnection;
@@ -19,6 +20,9 @@ import br.berbert.capstone.models.PlaceDetailsResponse;
  * Created by Felipe Berbert for the Udacity Android Nanodegree capstone project on 16/06/2016.
  */
 public class Utilities {
+
+    public static final String PREF_LAT = "user.location.latitude";
+    public static final String PREF_LNG = "user.location.longitude";
 
     public static Palette.Swatch getColor(Bitmap bitmap){
         Palette palette = Palette.from(bitmap).generate();
@@ -68,5 +72,21 @@ public class Utilities {
                 return -1;
             Log.d("Connection type", ""+connectivityManager.getActiveNetworkInfo().getType());
             return connectivityManager.getActiveNetworkInfo().getType();
+    }
+
+
+    public static void saveUserLocation(Context context, Location location){
+        SharedPreferences.Editor spEditor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        spEditor.putLong(PREF_LAT,Double.doubleToRawLongBits(location.getLatitude()));
+        spEditor.putLong(PREF_LNG,Double.doubleToRawLongBits(location.getLongitude()));
+        spEditor.apply();
+    }
+
+    public static Location loadUserLocation(Context context){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        Location location = new Location("");
+        location.setLatitude(Double.longBitsToDouble(sp.getLong(PREF_LAT, 0)));
+        location.setLongitude(Double.longBitsToDouble(sp.getLong(PREF_LNG, 0)));
+        return location;
     }
 }
