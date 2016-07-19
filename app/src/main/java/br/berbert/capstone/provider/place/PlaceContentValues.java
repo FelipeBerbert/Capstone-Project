@@ -8,10 +8,12 @@ import java.util.Date;
 
 import android.content.Context;
 import android.content.ContentResolver;
+import android.location.Location;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import br.berbert.capstone.models.Place;
 import br.berbert.capstone.provider.base.AbstractContentValues;
 
 /**
@@ -125,6 +127,17 @@ public class PlaceContentValues extends AbstractContentValues {
 
     public PlaceContentValues putLngNull() {
         mContentValues.putNull(PlaceColumns.LNG);
+        return this;
+    }
+
+    public PlaceContentValues putPlaceValues(Place place, Location userLocation){
+        mContentValues.put(PlaceColumns.EXTERNAL_ID, place.getPlaceId());
+        mContentValues.put(PlaceColumns.NAME, place.getName());
+        mContentValues.put(PlaceColumns.DISTANCE, place.getDistance(userLocation));
+        mContentValues.put(PlaceColumns.LAT, place.getGeometry().getLocation().getLat());
+        mContentValues.put(PlaceColumns.LNG, place.getGeometry().getLocation().getLng());
+        mContentValues.put(PlaceColumns.VICINITY, place.getVicinity());
+        mContentValues.put(PlaceColumns.PHONE_NUMBER, place.getPhoneNumber());
         return this;
     }
 }

@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import br.berbert.capstone.models.Photo;
 import br.berbert.capstone.provider.base.AbstractContentValues;
 
 /**
@@ -87,6 +88,14 @@ public class PhotoContentValues extends AbstractContentValues {
      */
     public PhotoContentValues putPlaceId(long value) {
         mContentValues.put(PhotoColumns.PLACE_ID, value);
+        return this;
+    }
+
+    public PhotoContentValues putPhotoValues(Photo photo, long placeId){
+        mContentValues.put(PhotoColumns.PLACE_ID, placeId);
+        mContentValues.put(PhotoColumns.PHOTO_REFERENCE, photo.getPhoto_reference());
+        mContentValues.put(PhotoColumns.WIDTH, photo.getWidth());
+        mContentValues.put(PhotoColumns.HEIGHT, photo.getHeight());
         return this;
     }
 

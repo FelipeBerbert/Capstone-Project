@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -47,13 +48,15 @@ import br.berbert.capstone.models.NearbySearchResponse;
 import br.berbert.capstone.models.Photo;
 import br.berbert.capstone.models.Place;
 import br.berbert.capstone.provider.photo.PhotoColumns;
+import br.berbert.capstone.provider.photo.PhotoContentValues;
 import br.berbert.capstone.provider.place.PlaceColumns;
+import br.berbert.capstone.provider.place.PlaceContentValues;
 import br.berbert.capstone.provider.place.PlaceCursor;
 
 /**
  * Created by Felipe Berbert on 09/06/2016.
  */
-public class PlacesFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LoaderManager.LoaderCallbacks<Cursor>, SharedPreferences.OnSharedPreferenceChangeListener  {
+public class PlacesFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LoaderManager.LoaderCallbacks<Cursor>, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = "Capstone project";
     private static final int PLACES_LOADER = 0;
@@ -121,38 +124,25 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
                     for (Place place : response.getResults()) {
                         Log.d(TAG, "Response: " + place.getName());
                         //for (String type : place.getTypes())
-                          //  Log.d(TAG, "Type: " + type);  // TODO ONLY FOR DEBUG, DELETE THIS LATER
+                        //  Log.d(TAG, "Type: " + type);  // TODO ONLY FOR DEBUG, DELETE THIS LATER
                     }
                 try {
-                    Vector<ContentValues> cvVector = new Vector<>(response.getResults().size());
                     for (Place place : response.getResults()) {
-                        if (place.getPhotos().size() > 0) {
+                        PlaceContentValues placeValues = new PlaceContentValues();
+                        placeValues.putPlaceValues(place, mUserLocation);
+                        Uri newRow = getContext().getContentResolver().insert(PlaceColumns.CONTENT_URI, placeValues.values());
+                        if (newRow != null && place.getPhotos().size() > 0) {
+                            long newPlaceId = Long.valueOf(newRow.toString().substring(newRow.toString().lastIndexOf("/") + 1));
                             Photo mainPhoto = place.getPhotos().get(0);
-                            ContentValues photoValues = new ContentValues();
-                            photoValues.put(PhotoColumns.PLACE_ID, place.getPlaceId()); //TODO FIX
-                            photoValues.put(PhotoColumns.PHOTO_REFERENCE, mainPhoto.getPhoto_reference());
-                            photoValues.put(PhotoColumns.WIDTH, mainPhoto.getWidth());
-                            photoValues.put(PhotoColumns.HEIGHT, mainPhoto.getHeight());
-                            getContext().getContentResolver().insert(PhotoColumns.CONTENT_URI, photoValues);
+                            PhotoContentValues photoValues = new PhotoContentValues();
+                            photoValues.putPhotoValues(mainPhoto, newPlaceId);
+                            getContext().getContentResolver().insert(PhotoColumns.CONTENT_URI, photoValues.values());
                         }
-                        ContentValues placeValues = new ContentValues();
-                        placeValues.put(PlaceColumns.EXTERNAL_ID, place.getPlaceId());
-                        placeValues.put(PlaceColumns.NAME, place.getName());
-                        placeValues.put(PlaceColumns.DISTANCE, place.getDistance(mUserLocation));
-                        placeValues.put(PlaceColumns.LAT, place.getGeometry().getLocation().getLat());
-                        placeValues.put(PlaceColumns.LNG, place.getGeometry().getLocation().getLng());
-                        placeValues.put(PlaceColumns.VICINITY, place.getVicinity());
-                        placeValues.put(PlaceColumns.PHONE_NUMBER, place.getPhoneNumber());
-                        cvVector.add(placeValues);
                     }
 
-                    if (cvVector.size() > 0) {
-                        ContentValues[] cvArray = new ContentValues[cvVector.size()];
-                        cvVector.toArray(cvArray);
-                        getContext().getContentResolver().bulkInsert(PlaceColumns.CONTENT_URI, cvArray);
-                        //todo delete old data
-                    }
-                } catch (Exception e){
+                    //todo delete old data
+
+                } catch (Exception e) {
                     Log.e(TAG, e.getMessage(), e);
                     e.printStackTrace();
                 }
@@ -164,7 +154,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
                 });
                 mRvPlacesList.setAdapter(mPlacesAdapter);*/
             }
-        },  new Response.ErrorListener() {
+        }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -217,7 +207,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
 
     @Override
     public void onConnected(Bundle connectionHint) {
-        Log.d(TAG,"Google API connected");
+        Log.d(TAG, "Google API connected");
         requestLocation();
     }
 
@@ -241,11 +231,12 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
         }
     }
 
-    public void permissionGranted(){
+    public void permissionGranted() {
         mLlPermissionDenied.setVisibility(View.GONE);
         requestLocation();
     }
-    public void permissionDenied(){
+
+    public void permissionDenied() {
         mLlPermissionDenied.setVisibility(View.VISIBLE);
     }
 
@@ -255,7 +246,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.e("GoogleApi Error"," "+connectionResult.getErrorMessage());
+        Log.e("GoogleApi Error", " " + connectionResult.getErrorMessage());
         //todo message
     }
 
