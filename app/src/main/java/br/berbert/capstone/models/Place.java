@@ -1,21 +1,13 @@
 package br.berbert.capstone.models;
 
-import android.content.Context;
-import android.location.*;
 import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.request.target.Target;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import br.berbert.capstone.BuildConfig;
 
 /**
  * Created by Felipe Berbert on 09/06/2016.

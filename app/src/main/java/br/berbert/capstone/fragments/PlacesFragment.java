@@ -1,14 +1,12 @@
 package br.berbert.capstone.fragments;
 
 import android.Manifest;
-import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -26,6 +24,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -36,14 +35,11 @@ import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import br.berbert.capstone.BuildConfig;
 import br.berbert.capstone.R;
 import br.berbert.capstone.Utilities;
 import br.berbert.capstone.adapters.PlacesAdapter;
-import br.berbert.capstone.conn.GsonRequest;
-import br.berbert.capstone.conn.VolleyConnection;
 import br.berbert.capstone.models.NearbySearchResponse;
 import br.berbert.capstone.models.Photo;
 import br.berbert.capstone.models.Place;
@@ -61,6 +57,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
     private static final String TAG = "Capstone project";
     private static final int PLACES_LOADER = 0;
 
+    ProgressBar mPbLoading;
     RecyclerView mRvPlacesList;
     LinearLayout mLlPermissionDenied;
     Button mBtRetry;
@@ -83,6 +80,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
                 requestLocation();
             }
         });
+        mPbLoading = (ProgressBar) rootView.findViewById(R.id.pb_loading);
 
         mRvPlacesList.setHasFixedSize(true);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
@@ -263,6 +261,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mPlacesAdapter.swapCursor(new PlaceCursor(data));
+        mPbLoading.setVisibility(View.GONE);
         //todo updateEmptyView();
     }
 
