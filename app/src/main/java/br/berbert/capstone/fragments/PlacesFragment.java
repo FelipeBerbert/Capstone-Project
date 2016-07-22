@@ -25,6 +25,7 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -59,6 +60,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
 
     ProgressBar mPbLoading;
     RecyclerView mRvPlacesList;
+    TextView mTvNoData;
     LinearLayout mLlPermissionDenied;
     Button mBtRetry;
     PlacesAdapter mPlacesAdapter;
@@ -81,6 +83,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
             }
         });
         mPbLoading = (ProgressBar) rootView.findViewById(R.id.pb_loading);
+        mTvNoData = (TextView) rootView.findViewById(R.id.tv_no_data);
 
         mRvPlacesList.setHasFixedSize(true);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
@@ -262,7 +265,15 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mPlacesAdapter.swapCursor(new PlaceCursor(data));
         mPbLoading.setVisibility(View.GONE);
-        //todo updateEmptyView();
+        if (!data.moveToFirst())
+            updateEmptyView();
+    }
+
+    /**
+     * Warn the user that no data was found
+     */
+    private void updateEmptyView(){
+        mTvNoData.setVisibility(View.VISIBLE);
     }
 
     @Override
