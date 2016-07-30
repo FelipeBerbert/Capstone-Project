@@ -14,10 +14,8 @@
      See the License for the specific language governing permissions and
      limitations under the License.
  -->
-<sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
-    android:contentAuthority="@string/content_provider_authority"
+<account-authenticator xmlns:android="http://schemas.android.com/apk/res/android"
     android:accountType="@string/account_type"
-    android:userVisible="false"
-    android:supportsUploading="false"
-    android:allowParallelSyncs="false"
-    android:isAlwaysSyncable="true" />
+    android:icon="@mipmap/ic_launcher"
+    android:label="@string/app_name"
+    android:smallIcon="@mipmap/ic_launcher" />

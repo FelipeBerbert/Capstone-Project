@@ -41,6 +41,7 @@ import br.berbert.capstone.BuildConfig;
 import br.berbert.capstone.R;
 import br.berbert.capstone.Utilities;
 import br.berbert.capstone.adapters.PlacesAdapter;
+import br.berbert.capstone.conn.PlacesSyncAdapter;
 import br.berbert.capstone.models.NearbySearchResponse;
 import br.berbert.capstone.models.Photo;
 import br.berbert.capstone.models.Place;
@@ -115,7 +116,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
         return rootView;
     }
 
-    private void requestPlaces(Location location) {
+    /*private void requestPlaces(Location location) {
 
         Utilities.buildPlacesRequest(getContext(), location, new Response.Listener<NearbySearchResponse>() {
 
@@ -147,13 +148,13 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
                     Log.e(TAG, e.getMessage(), e);
                     e.printStackTrace();
                 }
-                /*mPlacesAdapter = new PlacesAdapter(getContext(), mUserLocation, new PlacesAdapter.OnItemClickListener() {
+                *//*mPlacesAdapter = new PlacesAdapter(getContext(), mUserLocation, new PlacesAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(Place item, PlacesAdapter.PlacesViewHolder viewHolder) {
                         ((Callback) getActivity()).onItemSelected(item, viewHolder, mUserLocation);
                     }
                 });
-                mRvPlacesList.setAdapter(mPlacesAdapter);*/
+                mRvPlacesList.setAdapter(mPlacesAdapter);*//*
             }
         }, new Response.ErrorListener() {
 
@@ -162,7 +163,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
                 Log.d("CAPSTONE PROJECT", "Response: " + error.getMessage());
             }
         });
-    }
+    }*/
 
     private List<Place> filterResults(List<Place> places) {
         List<Place> filteredPlaces = new ArrayList<>();
@@ -218,14 +219,15 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
             mUserLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mUserLocation != null) {
                 Utilities.saveUserLocation(getContext(), mUserLocation);
-                requestPlaces(mUserLocation);
+                //requestPlaces(mUserLocation);
+                //request sync
             } else {
                 Toast.makeText(getContext(), "Could not get location", Toast.LENGTH_SHORT).show();
                 //todo only for debugging on emulator
                 mUserLocation = new Location("mock");
                 mUserLocation.setLatitude(-23.54954954954955);
                 mUserLocation.setLongitude(-46.64128086138674);
-                requestPlaces(mUserLocation);
+                //requestPlaces(mUserLocation);
             }
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
@@ -234,6 +236,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
 
     public void permissionGranted() {
         mLlPermissionDenied.setVisibility(View.GONE);
+        PlacesSyncAdapter.syncNow(getContext());
         requestLocation();
     }
 
