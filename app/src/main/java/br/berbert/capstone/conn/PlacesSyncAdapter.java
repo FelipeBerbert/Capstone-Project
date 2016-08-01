@@ -7,12 +7,10 @@ import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -86,7 +84,16 @@ public class PlacesSyncAdapter extends AbstractThreadedSyncAdapter implements Go
                     @Override
                     public void onResponse(NearbySearchResponse response) {
                         try {
+
+                            //todo delete old data
+                            Log.d(TAG, "Deleted rows: " + getContext().getContentResolver().delete(PlaceColumns.CONTENT_URI, null, null));
+
+
                             for (Place place : response.getResults()) {
+                                //filters out unpopular or pictureless places
+                                if (place.getPhotos() == null || place.getPhotos().size() == 0) //|| place.getReviews() == null || place.getReviews().size() < 3)
+                                    continue;
+
                                 Log.d(TAG, "Response: " + place.getName());
                                 PlaceContentValues placeValues = new PlaceContentValues();
                                 placeValues.putPlaceValues(place, location);
@@ -99,8 +106,6 @@ public class PlacesSyncAdapter extends AbstractThreadedSyncAdapter implements Go
                                     getContext().getContentResolver().insert(PhotoColumns.CONTENT_URI, photoValues.values());
                                 }
                             }
-
-                            //todo delete old data
 
                         } catch (Exception e) {
                             Log.e(TAG, e.getMessage(), e);
