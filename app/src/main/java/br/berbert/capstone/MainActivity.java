@@ -1,6 +1,5 @@
 package br.berbert.capstone;
 
-import android.accounts.Account;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,7 +12,6 @@ import android.util.Pair;
 import android.view.View;
 
 import br.berbert.capstone.adapters.PlacesAdapter;
-import br.berbert.capstone.conn.PlacesSyncAdapter;
 import br.berbert.capstone.fragments.DetailFragment;
 import br.berbert.capstone.fragments.PlacesFragment;
 import br.berbert.capstone.models.Place;

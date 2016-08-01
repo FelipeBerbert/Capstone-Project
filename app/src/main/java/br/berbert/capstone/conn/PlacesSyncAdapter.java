@@ -90,7 +90,7 @@ public class PlacesSyncAdapter extends AbstractThreadedSyncAdapter implements Go
 
 
                             for (Place place : response.getResults()) {
-                                //filters out unpopular or pictureless places
+                                //filters out places that don't have any pictures
                                 if (place.getPhotos() == null || place.getPhotos().size() == 0) //|| place.getReviews() == null || place.getReviews().size() < 3)
                                     continue;
 

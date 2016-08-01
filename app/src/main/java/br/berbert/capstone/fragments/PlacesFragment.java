@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,8 +27,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -37,18 +34,12 @@ import com.google.android.gms.location.LocationServices;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.berbert.capstone.BuildConfig;
 import br.berbert.capstone.R;
 import br.berbert.capstone.Utilities;
 import br.berbert.capstone.adapters.PlacesAdapter;
 import br.berbert.capstone.conn.PlacesSyncAdapter;
-import br.berbert.capstone.models.NearbySearchResponse;
-import br.berbert.capstone.models.Photo;
 import br.berbert.capstone.models.Place;
-import br.berbert.capstone.provider.photo.PhotoColumns;
-import br.berbert.capstone.provider.photo.PhotoContentValues;
 import br.berbert.capstone.provider.place.PlaceColumns;
-import br.berbert.capstone.provider.place.PlaceContentValues;
 import br.berbert.capstone.provider.place.PlaceCursor;
 
 /**
@@ -214,13 +205,13 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
     }
 
     private void requestLocation() {
+        Log.d(TAG, "requestLocation");
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mUserLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mUserLocation != null) {
                 Utilities.saveUserLocation(getContext(), mUserLocation);
                 //requestPlaces(mUserLocation);
-                //request sync
             } else {
                 Toast.makeText(getContext(), "Could not get location", Toast.LENGTH_SHORT).show();
                 //todo only for debugging on emulator
@@ -229,6 +220,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
                 mUserLocation.setLongitude(-46.64128086138674);
                 //requestPlaces(mUserLocation);
             }
+            PlacesSyncAdapter.syncNow(getContext());
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
         }
@@ -236,7 +228,6 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
 
     public void permissionGranted() {
         mLlPermissionDenied.setVisibility(View.GONE);
-        PlacesSyncAdapter.syncNow(getContext());
         requestLocation();
     }
 
