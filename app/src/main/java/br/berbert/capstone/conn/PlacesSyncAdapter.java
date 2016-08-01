@@ -60,6 +60,7 @@ public class PlacesSyncAdapter extends AbstractThreadedSyncAdapter implements Go
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
                     .build();
+            mGoogleApiClient.connect();
         } else
             requestPlaces();
     }
@@ -113,7 +114,8 @@ public class PlacesSyncAdapter extends AbstractThreadedSyncAdapter implements Go
                         Log.d(TAG, "Response: " + error.getMessage());
                     }
                 });
-            }
+            } else
+                Log.d(TAG, "userLocation null");
 
         } else {
             // This will help me see if the user refused the location permission
@@ -172,7 +174,7 @@ public class PlacesSyncAdapter extends AbstractThreadedSyncAdapter implements Go
 
     private static void setSyncPeriod(Context context, Account account) {
         Log.d(TAG, "setSyncPeriod");
-        final long SYNC_INTERVAL = 60 * 60 * 6; //every 6 hours; todo set a preference, so this can be changed in a preferenceActivity
+        final long SYNC_INTERVAL = 60;// * 60 * 6; //every 6 hours; todo set a preference, so this can be changed in a preferenceActivity
         String authority = context.getString(R.string.content_provider_authority);
         ContentResolver.setSyncAutomatically(account, context.getString(R.string.content_provider_authority), true);
         ContentResolver.addPeriodicSync(account, authority, new Bundle(), SYNC_INTERVAL);
