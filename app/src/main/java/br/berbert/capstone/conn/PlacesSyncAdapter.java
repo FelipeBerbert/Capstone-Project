@@ -77,6 +77,9 @@ public class PlacesSyncAdapter extends AbstractThreadedSyncAdapter implements Go
             userLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
             if (userLocation != null) {
+                float distanceFromLastSync = userLocation.distanceTo(Utilities.loadUserLocation(getContext()));
+                if (distanceFromLastSync < 500) // do not sync if the user has not moved
+                    return;
                 Utilities.saveUserLocation(getContext(), userLocation);
                 final Location location = Utilities.loadUserLocation(getContext());
                 Utilities.buildPlacesRequest(getContext(), location, new Response.Listener<NearbySearchResponse>() {
