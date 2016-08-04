@@ -1,11 +1,14 @@
 package br.berbert.capstone;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.graphics.Palette;
 import android.util.Log;
 
@@ -88,5 +91,9 @@ public class Utilities {
         location.setLatitude(Double.longBitsToDouble(sp.getLong(PREF_LAT, 0)));
         location.setLongitude(Double.longBitsToDouble(sp.getLong(PREF_LNG, 0)));
         return location;
+    }
+
+    public static boolean checkPermission(Context context){
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 }

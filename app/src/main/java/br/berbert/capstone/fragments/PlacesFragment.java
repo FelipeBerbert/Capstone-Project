@@ -2,7 +2,6 @@ package br.berbert.capstone.fragments;
 
 import android.Manifest;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Location;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
@@ -206,8 +204,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
 
     private void requestLocation() {
         Log.d(TAG, "requestLocation");
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (Utilities.checkPermission(getContext())) {
             mUserLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mUserLocation != null) {
                 Utilities.saveUserLocation(getContext(), mUserLocation);
@@ -222,7 +219,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
             }
             PlacesSyncAdapter.syncNow(getContext());
         } else {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
         }
     }
 

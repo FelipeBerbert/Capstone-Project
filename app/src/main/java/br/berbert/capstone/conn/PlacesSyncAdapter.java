@@ -1,6 +1,5 @@
 package br.berbert.capstone.conn;
 
-import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
@@ -8,13 +7,11 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SyncResult;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.android.volley.Response;
@@ -71,15 +68,17 @@ public class PlacesSyncAdapter extends AbstractThreadedSyncAdapter implements Go
 
     private void requestPlaces() {
         Log.d(TAG, "requestPlaces");
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (Utilities.checkPermission(getContext())) {
             Log.d(TAG, "Permission granted");
             Location userLocation;
             userLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
             if (userLocation != null) {
                 float distanceFromLastSync = userLocation.distanceTo(Utilities.loadUserLocation(getContext()));
-                if (distanceFromLastSync < 500) // do not sync if the user has not moved
+                if (distanceFromLastSync < 500) { // Do not sync if the user has not moved since last sync.
+                    Log.i(TAG, "User has not moved, do not sync.");
                     return;
+                }
                 Utilities.saveUserLocation(getContext(), userLocation);
                 final Location location = Utilities.loadUserLocation(getContext());
                 Utilities.buildPlacesRequest(getContext(), location, new Response.Listener<NearbySearchResponse>() {
@@ -88,7 +87,7 @@ public class PlacesSyncAdapter extends AbstractThreadedSyncAdapter implements Go
                     public void onResponse(NearbySearchResponse response) {
                         try {
 
-                            //todo delete old data
+                            // delete old data
                             Log.d(TAG, "Deleted rows: " + getContext().getContentResolver().delete(PlaceColumns.CONTENT_URI, null, null));
 
 
