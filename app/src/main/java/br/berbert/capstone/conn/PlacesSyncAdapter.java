@@ -68,70 +68,73 @@ public class PlacesSyncAdapter extends AbstractThreadedSyncAdapter implements Go
 
     private void requestPlaces() {
         Log.d(TAG, "requestPlaces");
-        if (Utilities.checkPermission(getContext())) {
-            Log.d(TAG, "Permission granted");
-            Location userLocation;
-            userLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-            if (userLocation != null) {
-                float distanceFromLastSync = userLocation.distanceTo(Utilities.loadUserLocation(getContext()));
-                if (distanceFromLastSync < 500) { // Do not sync if the user has not moved since last sync.
-                    Log.i(TAG, "User has not moved, do not sync.");
-                    return;
-                }
-                Utilities.saveUserLocation(getContext(), userLocation);
-                final Location location = Utilities.loadUserLocation(getContext());
-                Utilities.buildPlacesRequest(getContext(), location, new Response.Listener<NearbySearchResponse>() {
-
-                    @Override
-                    public void onResponse(NearbySearchResponse response) {
-                        try {
-
-                            // delete old data
-                            Log.d(TAG, "Deleted rows: " + getContext().getContentResolver().delete(PlaceColumns.CONTENT_URI, null, null));
-
-
-                            for (Place place : response.getResults()) {
-                                //filters out places that don't have any pictures
-                                if (place.getPhotos() == null || place.getPhotos().size() == 0) //|| place.getReviews() == null || place.getReviews().size() < 3)
-                                    continue;
-
-                                Log.d(TAG, "Response: " + place.getName());
-                                PlaceContentValues placeValues = new PlaceContentValues();
-                                placeValues.putPlaceValues(place, location);
-                                Uri newRow = getContext().getContentResolver().insert(PlaceColumns.CONTENT_URI, placeValues.values());
-                                if (newRow != null && place.getPhotos().size() > 0) {
-                                    long newPlaceId = Long.valueOf(newRow.toString().substring(newRow.toString().lastIndexOf("/") + 1));
-                                    Photo mainPhoto = place.getPhotos().get(0);
-                                    PhotoContentValues photoValues = new PhotoContentValues();
-                                    photoValues.putPhotoValues(mainPhoto, newPlaceId);
-                                    getContext().getContentResolver().insert(PhotoColumns.CONTENT_URI, photoValues.values());
-                                }
-                            }
-
-                        } catch (Exception e) {
-                            Log.e(TAG, e.getMessage(), e);
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, "Response: " + error.getMessage());
-                    }
-                });
-            } else
-                Log.d(TAG, "userLocation null");
-
-        } else {
+        if (!Utilities.checkPermission(getContext())) {
             // This will help me see if the user refused the location permission
             Log.d(TAG, "Permission denied");
             Location emptyLocation = new Location("");
             emptyLocation.setLatitude(0);
             emptyLocation.setLatitude(0);
             Utilities.saveUserLocation(getContext(), new Location(""));
+            return;
         }
+        Log.d(TAG, "Permission granted");
+        if (!Utilities.checkLocationStatus(getContext())) {
+            Log.i(TAG, "Location services is off");
+            return;
+        }
+        final Location userLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);;
+
+        if (userLocation != null) {
+            Utilities.saveUserLocation(getContext(), userLocation);
+            float distanceFromLastSync = userLocation.distanceTo(Utilities.loadSyncLocation(getContext()));
+            /*
+             * Compare new location with last sync location.
+             * Do not sync if the user has not moved since last sync.
+             */
+            if (distanceFromLastSync < 500) {
+                Log.i(TAG, "User has not moved much, do not sync.");
+                return;
+            }
+            Utilities.buildPlacesRequest(getContext(), userLocation, new Response.Listener<NearbySearchResponse>() {
+
+                @Override
+                public void onResponse(NearbySearchResponse response) {
+                    try {
+                        // delete old data
+                        Log.d(TAG, "Deleted rows: " + getContext().getContentResolver().delete(PlaceColumns.CONTENT_URI, null, null));
+
+                        for (Place place : response.getResults()) {
+                            //filters out places that don't have any pictures
+                            if (place.getPhotos() == null || place.getPhotos().size() == 0) //|| place.getReviews() == null || place.getReviews().size() < 3)
+                                continue;
+
+                            Log.d(TAG, "Response: " + place.getName());
+                            PlaceContentValues placeValues = new PlaceContentValues();
+                            placeValues.putPlaceValues(place, userLocation);
+                            Uri newRow = getContext().getContentResolver().insert(PlaceColumns.CONTENT_URI, placeValues.values());
+                            if (newRow != null && place.getPhotos().size() > 0) {
+                                long newPlaceId = Long.valueOf(newRow.toString().substring(newRow.toString().lastIndexOf("/") + 1));
+                                Photo mainPhoto = place.getPhotos().get(0);
+                                PhotoContentValues photoValues = new PhotoContentValues();
+                                photoValues.putPhotoValues(mainPhoto, newPlaceId);
+                                getContext().getContentResolver().insert(PhotoColumns.CONTENT_URI, photoValues.values());
+                            }
+                        }
+                        Utilities.saveSyncLocation(getContext(), userLocation);
+                    } catch (Exception e) {
+                        Log.e(TAG, e.getMessage(), e);
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d(TAG, "Response: " + error.getMessage());
+                }
+            });
+        } else
+            Log.d(TAG, "userLocation null");
     }
 
     private void updateWidgets() {

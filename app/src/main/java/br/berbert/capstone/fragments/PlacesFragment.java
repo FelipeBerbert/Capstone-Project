@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -23,7 +24,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -43,18 +43,19 @@ import br.berbert.capstone.provider.place.PlaceCursor;
 /**
  * Created by Felipe Berbert on 09/06/2016.
  */
-public class PlacesFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LoaderManager.LoaderCallbacks<Cursor>, SharedPreferences.OnSharedPreferenceChangeListener {
+public class PlacesFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = "Capstone project";
     private static final int PLACES_LOADER = 0;
 
-    ProgressBar mPbLoading;
-    RecyclerView mRvPlacesList;
-    TextView mTvNoData;
-    LinearLayout mLlPermissionDenied;
-    Button mBtRetry;
-    PlacesAdapter mPlacesAdapter;
-    GoogleApiClient mGoogleApiClient;
+    private ProgressBar mPbLoading;
+    private RecyclerView mRvPlacesList;
+    private TextView mTvNoData;
+    private LinearLayout mLlPermissionDenied;
+    private Button mBtRetry;
+    private PlacesAdapter mPlacesAdapter;
+    private GoogleApiClient mGoogleApiClient;
+    private SharedPreferences.OnSharedPreferenceChangeListener listener;
     public Location mUserLocation;
 
     @Nullable
@@ -102,57 +103,18 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
                     .build();
         }
 
+        listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                if (key.equals(Utilities.PREF_USER_LAT) && mPlacesAdapter != null) {
+                    mPlacesAdapter.notifyDataSetChanged(); //If the user has a new location, the views should be updated
+                    Log.d(TAG, "onSharedPreferenceChanged");
+                }
+            }
+        };
+        PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(listener);
         return rootView;
     }
 
-    /*private void requestPlaces(Location location) {
-
-        Utilities.buildPlacesRequest(getContext(), location, new Response.Listener<NearbySearchResponse>() {
-
-            @Override
-            public void onResponse(NearbySearchResponse response) {
-                if (BuildConfig.DEBUG)
-                    for (Place place : response.getResults()) {
-                        Log.d(TAG, "Response: " + place.getName());
-                        //for (String type : place.getTypes())
-                        //  Log.d(TAG, "Type: " + type);  // TODO ONLY FOR DEBUG, DELETE THIS LATER
-                    }
-                try {
-                    for (Place place : response.getResults()) {
-                        PlaceContentValues placeValues = new PlaceContentValues();
-                        placeValues.putPlaceValues(place, mUserLocation);
-                        Uri newRow = getContext().getContentResolver().insert(PlaceColumns.CONTENT_URI, placeValues.values());
-                        if (newRow != null && place.getPhotos().size() > 0) {
-                            long newPlaceId = Long.valueOf(newRow.toString().substring(newRow.toString().lastIndexOf("/") + 1));
-                            Photo mainPhoto = place.getPhotos().get(0);
-                            PhotoContentValues photoValues = new PhotoContentValues();
-                            photoValues.putPhotoValues(mainPhoto, newPlaceId);
-                            getContext().getContentResolver().insert(PhotoColumns.CONTENT_URI, photoValues.values());
-                        }
-                    }
-
-                    //todo delete old data
-
-                } catch (Exception e) {
-                    Log.e(TAG, e.getMessage(), e);
-                    e.printStackTrace();
-                }
-                *//*mPlacesAdapter = new PlacesAdapter(getContext(), mUserLocation, new PlacesAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(Place item, PlacesAdapter.PlacesViewHolder viewHolder) {
-                        ((Callback) getActivity()).onItemSelected(item, viewHolder, mUserLocation);
-                    }
-                });
-                mRvPlacesList.setAdapter(mPlacesAdapter);*//*
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("CAPSTONE PROJECT", "Response: " + error.getMessage());
-            }
-        });
-    }*/
 
     private List<Place> filterResults(List<Place> places) {
         List<Place> filteredPlaces = new ArrayList<>();
@@ -197,6 +159,12 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(getContext()).unregisterOnSharedPreferenceChangeListener(listener);
+    }
+
+    @Override
     public void onConnected(Bundle connectionHint) {
         Log.d(TAG, "Google API connected");
         requestLocation();
@@ -205,18 +173,6 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
     private void requestLocation() {
         Log.d(TAG, "requestLocation");
         if (Utilities.checkPermission(getContext())) {
-            mUserLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            if (mUserLocation != null) {
-                Utilities.saveUserLocation(getContext(), mUserLocation);
-                //requestPlaces(mUserLocation);
-            } else {
-                Toast.makeText(getContext(), "Could not get location", Toast.LENGTH_SHORT).show();
-                //todo only for debugging on emulator
-                mUserLocation = new Location("mock");
-                mUserLocation.setLatitude(-23.54954954954955);
-                mUserLocation.setLongitude(-46.64128086138674);
-                //requestPlaces(mUserLocation);
-            }
             PlacesSyncAdapter.syncNow(getContext());
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
@@ -270,12 +226,6 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mPlacesAdapter.swapCursor(null);
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(Utilities.PREF_LAT) && mPlacesAdapter != null)
-            mPlacesAdapter.notifyDataSetChanged(); //If the user has a new location, the views should be updated
     }
 
     public interface Callback {

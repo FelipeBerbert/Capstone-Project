@@ -6,8 +6,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.graphics.Palette;
 import android.util.Log;
@@ -21,13 +24,16 @@ import br.berbert.capstone.models.PlaceDetailsResponse;
 
 /**
  * Created by Felipe Berbert for the Udacity Android Nanodegree capstone project on 16/06/2016.
+ * General utility class.
  */
 public class Utilities {
+    private static final String TAG = "Capstone project utils";
+    public static final String PREF_USER_LAT = "location.user_latitude";
+    public static final String PREF_USER_LNG = "location.user_longitude";
+    public static final String PREF_SYNC_LAT = "location.sync_latitude";
+    public static final String PREF_SYNC_LNG = "location.sync_longitude";
 
-    public static final String PREF_LAT = "user.location.latitude";
-    public static final String PREF_LNG = "user.location.longitude";
-
-    public static Palette.Swatch getColor(Bitmap bitmap){
+    public static Palette.Swatch getColor(Bitmap bitmap) {
         Palette palette = Palette.from(bitmap).generate();
         Palette.Swatch color = null;
         if (palette.getDarkVibrantSwatch() != null)
@@ -45,7 +51,7 @@ public class Utilities {
         return color;
     }
 
-    public static void buildPlacesRequest(Context context, Location location, Response.Listener<NearbySearchResponse> resultListener, Response.ErrorListener errorListener){
+    public static void buildPlacesRequest(Context context, Location location, Response.Listener<NearbySearchResponse> resultListener, Response.ErrorListener errorListener) {
         StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         //sb.append("location=" + -13.008348 + "," + -38.492842);
         sb.append("location=").append(location.getLatitude()).append(",").append(location.getLongitude());
@@ -58,42 +64,82 @@ public class Utilities {
         VolleyConnection.getInstance(context).addToRequestQueue(request);
     }
 
-    public static void buildPlaceDetailRequest(Context context, String placeId, Response.Listener<PlaceDetailsResponse> resultListener, Response.ErrorListener errorListener){
-            StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/details/json?");
-            sb.append("key=" + BuildConfig.PLACES_API_KEY);
-            sb.append("&placeid=" + placeId);
-            //TODO add language parameter
-            String url = sb.toString();
+    public static void buildPlaceDetailRequest(Context context, String placeId, Response.Listener<PlaceDetailsResponse> resultListener, Response.ErrorListener errorListener) {
+        StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/details/json?");
+        sb.append("key=" + BuildConfig.PLACES_API_KEY);
+        sb.append("&placeid=" + placeId);
+        //TODO add language parameter
+        String url = sb.toString();
 
-            GsonRequest<PlaceDetailsResponse> request = new GsonRequest<>(url, PlaceDetailsResponse.class, null, resultListener, errorListener);
-            VolleyConnection.getInstance(context).addToRequestQueue(request);
+        GsonRequest<PlaceDetailsResponse> request = new GsonRequest<>(url, PlaceDetailsResponse.class, null, resultListener, errorListener);
+        VolleyConnection.getInstance(context).addToRequestQueue(request);
     }
 
-    public static int checkNetworkStatus(Context context){
-            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            if (connectivityManager.getActiveNetworkInfo() == null)
-                return -1;
-            Log.d("Connection type", ""+connectivityManager.getActiveNetworkInfo().getType());
-            return connectivityManager.getActiveNetworkInfo().getType();
+    public static int checkNetworkStatus(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager.getActiveNetworkInfo() == null)
+            return -1;
+        Log.d("Connection type", "" + connectivityManager.getActiveNetworkInfo().getType());
+        return connectivityManager.getActiveNetworkInfo().getType();
+    }
+
+    public static boolean checkLocationStatus(Context context) {
+//        LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+        int mode;
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            try {
+                mode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+                mode = 0;
+            }
+        } else {
+            Log.d("LOCATION PROVIDERS", Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED));
+            // todo finnish this
+            LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+            if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                    || lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
+                mode = 1;
+            else
+                mode = 0;
+        }
+
+        return mode > 0;
     }
 
 
-    public static void saveUserLocation(Context context, Location location){
+    public static void saveUserLocation(Context context, Location location) {
         SharedPreferences.Editor spEditor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-        spEditor.putLong(PREF_LAT,Double.doubleToRawLongBits(location.getLatitude()));
-        spEditor.putLong(PREF_LNG,Double.doubleToRawLongBits(location.getLongitude()));
+        spEditor.putLong(PREF_USER_LAT, Double.doubleToRawLongBits(location.getLatitude()));
+        spEditor.putLong(PREF_USER_LNG, Double.doubleToRawLongBits(location.getLongitude()));
         spEditor.apply();
+        Log.d(TAG, "Saving user location. LAT:"+location.getLatitude()+" LNG:"+location.getLongitude());
     }
-
-    public static Location loadUserLocation(Context context){
+    public static void saveSyncLocation(Context context, Location location) {
+        SharedPreferences.Editor spEditor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        spEditor.putLong(PREF_SYNC_LAT, Double.doubleToRawLongBits(location.getLatitude()));
+        spEditor.putLong(PREF_SYNC_LNG, Double.doubleToRawLongBits(location.getLongitude()));
+        spEditor.apply();
+        Log.d(TAG, "Saving sync location. LAT:"+location.getLatitude()+" LNG:"+location.getLongitude());
+    }
+    public static Location loadUserLocation(Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         Location location = new Location("");
-        location.setLatitude(Double.longBitsToDouble(sp.getLong(PREF_LAT, 0)));
-        location.setLongitude(Double.longBitsToDouble(sp.getLong(PREF_LNG, 0)));
+        location.setLatitude(Double.longBitsToDouble(sp.getLong(PREF_USER_LAT, 0)));
+        location.setLongitude(Double.longBitsToDouble(sp.getLong(PREF_USER_LNG, 0)));
+        Log.d(TAG, "Loading user location. LAT:"+location.getLatitude()+" LNG:"+location.getLongitude());
+        return location;
+    }
+    public static Location loadSyncLocation(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        Location location = new Location("");
+        location.setLatitude(Double.longBitsToDouble(sp.getLong(PREF_SYNC_LAT, 0)));
+        location.setLongitude(Double.longBitsToDouble(sp.getLong(PREF_SYNC_LNG, 0)));
+        Log.d(TAG, "Loading sync location. LAT:"+location.getLatitude()+" LNG:"+location.getLongitude());
         return location;
     }
 
-    public static boolean checkPermission(Context context){
+    public static boolean checkPermission(Context context) {
         return ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 }
