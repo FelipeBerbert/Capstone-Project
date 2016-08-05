@@ -36,6 +36,8 @@ import br.berbert.capstone.provider.place.PlaceContentValues;
 public class PlacesSyncAdapter extends AbstractThreadedSyncAdapter implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "PlacesSyncAdapter";
 
+    public static final String PLACES_DATA_UPDATED = "capstone.PLACES_DATA_UPDATED";
+
     ContentResolver mContentResolver;
     GoogleApiClient mGoogleApiClient;
 

@@ -104,7 +104,6 @@ public class PlacesFragment extends Fragment implements LoaderManager.LoaderCall
         return rootView;
     }
 
-
     public void selectFirstPosition() {
         ViewTreeObserver vto = mRvPlacesList.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -117,7 +116,6 @@ public class PlacesFragment extends Fragment implements LoaderManager.LoaderCall
         });
 
     }
-
 
     @Override
     public void onResume() {
