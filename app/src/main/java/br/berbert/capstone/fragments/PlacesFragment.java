@@ -1,18 +1,20 @@
 package br.berbert.capstone.fragments;
 
 import android.Manifest;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,13 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import br.berbert.capstone.R;
 import br.berbert.capstone.Utilities;
 import br.berbert.capstone.adapters.PlacesAdapter;
@@ -42,8 +37,9 @@ import br.berbert.capstone.provider.place.PlaceCursor;
 
 /**
  * Created by Felipe Berbert on 09/06/2016.
+ * Fragment that lists places
  */
-public class PlacesFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LoaderManager.LoaderCallbacks<Cursor> {
+public class PlacesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = "Capstone project";
     private static final int PLACES_LOADER = 0;
@@ -54,7 +50,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
     private LinearLayout mLlPermissionDenied;
     private Button mBtRetry;
     private PlacesAdapter mPlacesAdapter;
-    private GoogleApiClient mGoogleApiClient;
+    //private GoogleApiClient mGoogleApiClient;
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
     public Location mUserLocation;
 
@@ -70,7 +66,7 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
         mBtRetry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                requestLocation();
+                requestSync();
             }
         });
         mPbLoading = (ProgressBar) rootView.findViewById(R.id.pb_loading);
@@ -95,14 +91,6 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
 
         mRvPlacesList.setAdapter(mPlacesAdapter);
 
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(getContext())
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
-        }
-
         listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
                 if (key.equals(Utilities.PREF_USER_LAT) && mPlacesAdapter != null) {
@@ -112,19 +100,10 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
             }
         };
         PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(listener);
+
         return rootView;
     }
 
-
-    private List<Place> filterResults(List<Place> places) {
-        List<Place> filteredPlaces = new ArrayList<>();
-        for (Place place : places) {
-            if (place.getPhotos().size() == 0)  //For now, I dont see much sense in having places without pictures in the app
-                filteredPlaces.add(place);
-        }
-        places.removeAll(filteredPlaces);
-        return places;
-    }
 
     public void selectFirstPosition() {
         ViewTreeObserver vto = mRvPlacesList.getViewTreeObserver();
@@ -141,9 +120,9 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
 
 
     @Override
-    public void onStart() {
-        mGoogleApiClient.connect();
-        super.onStart();
+    public void onResume() {
+        super.onResume();
+        requestSync();
     }
 
     @Override
@@ -153,26 +132,37 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
     }
 
     @Override
-    public void onStop() {
-        mGoogleApiClient.disconnect();
-        super.onStop();
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         PreferenceManager.getDefaultSharedPreferences(getContext()).unregisterOnSharedPreferenceChangeListener(listener);
     }
 
-    @Override
-    public void onConnected(Bundle connectionHint) {
-        Log.d(TAG, "Google API connected");
-        requestLocation();
+
+    private void showActivateLocationDialog(){
+        new AlertDialog.Builder(getContext())
+                .setTitle("Location settings")
+                .setMessage("This app requires the location setting to be activated.")
+                .setPositiveButton(R.string.lb_settings, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent viewIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(viewIntent);
+                    }
+                })
+                .setNegativeButton(R.string.lb_cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                        dialog.cancel();
+                    }
+                })
+                .show();
     }
 
-    private void requestLocation() {
-        Log.d(TAG, "requestLocation");
+    private void requestSync() {
+        Log.d(TAG, "requestSync");
         if (Utilities.checkPermission(getContext())) {
+            if (!Utilities.checkLocationStatus(getContext())){
+                showActivateLocationDialog();
+            }
             PlacesSyncAdapter.syncNow(getContext());
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
@@ -181,21 +171,11 @@ public class PlacesFragment extends Fragment implements GoogleApiClient.Connecti
 
     public void permissionGranted() {
         mLlPermissionDenied.setVisibility(View.GONE);
-        requestLocation();
+        requestSync();
     }
 
     public void permissionDenied() {
         mLlPermissionDenied.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.e("GoogleApi Error", " " + connectionResult.getErrorMessage());
-        //todo message
     }
 
     @Override

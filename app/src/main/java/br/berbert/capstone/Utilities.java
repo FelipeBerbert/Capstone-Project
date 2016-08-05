@@ -83,6 +83,9 @@ public class Utilities {
         return connectivityManager.getActiveNetworkInfo().getType();
     }
 
+    /**
+     * Returns true if location is activated
+     */
     public static boolean checkLocationStatus(Context context) {
 //        LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
         int mode;
