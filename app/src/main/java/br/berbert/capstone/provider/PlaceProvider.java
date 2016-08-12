@@ -4,15 +4,14 @@
 */
 package br.berbert.capstone.provider;
 
-import java.util.Arrays;
-
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.util.Log;
+
+import java.util.Arrays;
 
 import br.berbert.capstone.BuildConfig;
 import br.berbert.capstone.provider.base.BaseContentProvider;
@@ -28,7 +27,7 @@ public class PlaceProvider extends BaseContentProvider {
     private static final String TYPE_CURSOR_ITEM = "vnd.android.cursor.item/";
     private static final String TYPE_CURSOR_DIR = "vnd.android.cursor.dir/";
 
-    public static final String AUTHORITY = "br.berbert.capstone.provider";
+    public static final String AUTHORITY = "br.berbert.capstone";
     public static final String CONTENT_URI_BASE = "content://" + AUTHORITY;
 
     private static final int URI_TYPE_PHOTO = 0;

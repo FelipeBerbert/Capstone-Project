@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Capstone</string>
-    <string name="content_provider_authority">br.berbert.capstone.provider</string>
+    <string name="content_provider_authority">br.berbert.capstone</string>
     <string name="account_type">capstone.example.com</string>
 
     <string name="lb_meter">%d m</string>

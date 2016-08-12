@@ -32,8 +32,8 @@
             android:theme="@style/AppTheme.Detail" />
         
         <provider
-            android:authorities="br.berbert.capstone.provider"
             android:name=".provider.PlaceProvider"
+            android:authorities="@string/content_provider_authority"
             android:exported="false"
             android:syncable="true" />
 
@@ -56,6 +56,23 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
+        <receiver
+            android:name=".widget.WidgetProvider"
+            android:enabled="true"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.example.android.sunshine.app.ACTION_DATA_UPDATED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
+        </receiver>
+        <service
+            android:name=".widget.WidgetRemoteViewsService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 

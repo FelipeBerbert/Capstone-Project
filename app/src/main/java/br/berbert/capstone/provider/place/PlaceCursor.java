@@ -6,6 +6,7 @@ package br.berbert.capstone.provider.place;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Binder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -167,8 +168,10 @@ public class PlaceCursor extends AbstractCursor implements PlaceModel {
         PhotoSelection where = new PhotoSelection();
         where.placeId(getId());
         String[] selection = {PhotoColumns.PHOTO_REFERENCE};
+        final long identityToken = Binder.clearCallingIdentity();
         Cursor c = context.getContentResolver().query(PhotoColumns.CONTENT_URI, selection,
                 where.sel(), where.args(), null);
+        Binder.restoreCallingIdentity(identityToken);
         PhotoCursor pc = new PhotoCursor(c);
         String photoReference;
         if (pc.moveToFirst()) {
