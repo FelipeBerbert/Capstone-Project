@@ -38,6 +38,7 @@ public class DetailFragment extends Fragment {
 
     public static final String ARG_PLACE = "PLACE";
     public static final String ARG_USER_LOCATION = "USER_LOCATION";
+    public static final String ARG_NAVIGATE = "NAVIGATE";
 
     FrameLayout mTitleBackground;
     RecyclerView mRvPhotoList;
@@ -55,6 +56,7 @@ public class DetailFragment extends Fragment {
     Location mUserLocation;
     Place mPlace;
     boolean mIsTabletLayout;
+    boolean mNavigate;
     SimpleTarget target;
 
 
@@ -76,6 +78,7 @@ public class DetailFragment extends Fragment {
         if (args != null) {
             mPlaceId = args.getString(ARG_PLACE);
             mUserLocation = args.getParcelable(ARG_USER_LOCATION);
+            mNavigate = args.getBoolean(ARG_NAVIGATE, false);
             requestDetails();
         }
 
@@ -86,10 +89,16 @@ public class DetailFragment extends Fragment {
         Utilities.buildPlaceDetailRequest(getContext(), mPlaceId, new Response.Listener<PlaceDetailsResponse>() {
             @Override
             public void onResponse(PlaceDetailsResponse response) {
-                Log.d("CAPSTONE PROJECT", "Response: " + response.getResult().getName());
                 mPlace = response.getResult();
                 if (mPlace != null) {
+                    Log.d("CAPSTONE PROJECT", "Response: " + mPlace.getName());
                     bindViews();
+                    if (mNavigate) {
+                        navigateToPlace();
+                    }
+                } else {
+                    Log.d("CAPSTONE PROJECT", "Response: Place is null");
+
                 }
             }
         }, new Response.ErrorListener() {
@@ -126,6 +135,8 @@ public class DetailFragment extends Fragment {
         //mDescription.setText(mPlace.getDescription());
         mAddress.setText(mPlace.getVicinity());
         mPhone.setText(mPlace.getPhoneNumber());
+        if (mUserLocation == null)
+            mUserLocation = Utilities.loadUserLocation(getContext());
         float distance = mPlace.getDistance(mUserLocation);
         if (distance > 0)
             mDistance.setText(getContext().getString(R.string.lb_meter, (long)distance));

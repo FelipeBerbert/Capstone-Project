@@ -71,7 +71,7 @@ public class WidgetRemoteViewsService extends RemoteViewsService {
                 if (position == AdapterView.INVALID_POSITION || placeCursor == null || !placeCursor.moveToPosition(position)) {
                     return null;
                 }
-                RemoteViews views = new RemoteViews(getPackageName(), R.layout.item_place_card);
+                RemoteViews views = new RemoteViews(getPackageName(), R.layout.item_place_widget);
 
                 String mainPhotoReference = placeCursor.getMainPhotoReference(WidgetRemoteViewsService.this);
                 if (mainPhotoReference != null) {
@@ -93,31 +93,38 @@ public class WidgetRemoteViewsService extends RemoteViewsService {
                     }
                 }
 
-                views.setTextViewText(R.id.tv_place_name, placeCursor.getName());
                 views.setTextViewText(R.id.tv_place_distance, getString(R.string.lb_meter, placeCursor.getDistance()!=null?placeCursor.getDistance().longValue():0L));
+                views.setTextViewText(R.id.tv_place_name, placeCursor.getName());
 
                 final Intent intent = new Intent();
                 intent.putExtra(DetailActivity.PARAM_PLACE, placeCursor.getExternalId());
                 intent.putExtra(DetailActivity.PARAM_PLACE_NAME, placeCursor.getName());
-                //intent.putExtra(DetailActivity.PARAM_USER_LOCATION, mPlacesFragment.mUserLocation); todo find a way to get userlocation
-
-                views.setOnClickFillInIntent(R.id.places_list_item, intent);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY|Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                views.setOnClickFillInIntent(R.id.tv_place_name, intent);
+                final Intent navigateIntent = new Intent();
+                navigateIntent.putExtra(DetailActivity.PARAM_PLACE, placeCursor.getExternalId());
+                navigateIntent.putExtra(DetailActivity.PARAM_PLACE_NAME, placeCursor.getName());
+                navigateIntent.putExtra(DetailActivity.PARAM_NAVIGATE, true);
+                navigateIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY|Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                views.setOnClickFillInIntent(R.id.iv_distance_background, navigateIntent);
                 return views;
             }
 
             @Override
             public RemoteViews getLoadingView() {
-                return null;
+                return new RemoteViews(getPackageName(), R.layout.item_place_widget);
             }
 
             @Override
             public int getViewTypeCount() {
-                return 0;
+                return 1;
             }
 
             @Override
             public long getItemId(int i) {
-                return 0;
+                if (placeCursor.moveToPosition(i))
+                    return placeCursor.getId();
+                return i;
             }
 
             @Override

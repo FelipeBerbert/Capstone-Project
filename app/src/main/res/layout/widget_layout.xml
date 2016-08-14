@@ -27,7 +27,8 @@
             android:id="@+id/rv_widget_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/item_place_card" />
+            android:paddingTop="1dp"
+            tools:listitem="@layout/item_place_widget" />
 
         <TextView
             android:id="@+id/tv_widget_empty"
