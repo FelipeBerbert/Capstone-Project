@@ -8,7 +8,8 @@
         android:id="@+id/iv_place_picture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@string/app_name"
+        android:focusable="false"
+        android:contentDescription="@null"
         android:scaleType="centerCrop"
         tools:src="@drawable/elevador_lacerda1" />
 
@@ -38,11 +39,6 @@
             android:textSize="18sp"
             tools:text="Elevador Lacerda" />
 
-
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -55,6 +51,7 @@
                     android:id="@+id/iv_distance_background"
                     android:layout_width="72dp"
                     android:layout_height="72dp"
+                    android:contentDescription="@string/cd_navigate"
                     android:src="@drawable/ic_circle" />
 
                 <TextView
@@ -69,11 +66,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center_horizontal"
+                    android:focusable="false"
+                    android:contentDescription="@null"
                     android:src="@drawable/ic_directions_black_24dp" />
 
             </FrameLayout>
-        </FrameLayout>
-
 
     </LinearLayout>
 </FrameLayout>

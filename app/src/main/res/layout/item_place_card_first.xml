@@ -21,7 +21,7 @@
                 android:id="@+id/iv_place_picture"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:contentDescription="@string/app_name"
+                android:contentDescription="@string/cd_place_image"
                 android:scaleType="centerCrop"
                 android:transitionName="@string/transition_image"
                 tools:src="@drawable/elevador_lacerda1" />
@@ -40,6 +40,8 @@
                     android:layout_height="96dp"
                     android:id="@+id/iv_distance_background"
                     android:transitionName="@string/transition_distance"
+                    android:contentDescription="@null"
+                    android:focusable="false"
                     app:srcCompat="@drawable/ic_circle"
 
                     />

@@ -24,29 +24,9 @@
     <string name="msg_permission_denied">This app requires the location permission to function :(</string>
     <string name="msg_no_data">No data found.\nMake sure you have internet connection and the GPS on.</string>
 
-        <string name="huge_lorem_ipsum">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur et vestibulum elit. Suspendisse pretium rhoncus justo in consequat. Integer bibendum mauris vitae ligula pellentesque, non elementum tortor maximus. Morbi aliquet enim eros, in porta urna ornare eget. Vivamus molestie augue ex, vitae elementum augue blandit at. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sed fringilla nisl, sed condimentum tortor. Fusce in cursus justo. Proin tincidunt justo et scelerisque dictum. Integer at tortor id leo bibendum vestibulum sit amet eu tellus. Praesent maximus sed enim sit amet efficitur. Ut eleifend vestibulum quam, ac molestie metus dictum eget. Nunc congue ut diam a gravida. Vestibulum nec lorem justo.
-
-Morbi scelerisque in tellus quis suscipit. Curabitur laoreet libero est, ullamcorper blandit metus luctus et. Nunc imperdiet lorem sit amet odio dictum, eget blandit justo faucibus. Vestibulum accumsan lacus vitae justo malesuada, id ultrices tellus lacinia. Donec maximus eros vitae quam dapibus bibendum. Pellentesque consequat at justo ac faucibus. In nec neque nisi. Suspendisse convallis malesuada mi vel pharetra. Phasellus blandit risus est, ultricies dictum elit ultrices id. Morbi eu interdum sapien, vitae ultricies orci. Nulla facilisi. Phasellus in placerat nisl.
-
-Quisque ante tellus, luctus ut sapien eget, fermentum gravida tellus. Sed varius orci vel turpis volutpat, at imperdiet neque hendrerit. In rutrum, eros vel pulvinar consectetur, erat neque rutrum urna, id viverra urna erat at mi. Nam vitae erat sed ipsum porttitor pulvinar. Suspendisse suscipit nisl vel ullamcorper laoreet. Donec sed nisi odio. Quisque sit amet nisi dapibus, semper elit et, semper sem. Nulla ultrices leo gravida odio laoreet, ut aliquet ante suscipit. In eget enim quis leo sollicitudin commodo. Vivamus nec ex neque. Etiam hendrerit placerat sagittis. Vestibulum volutpat lacinia turpis, egestas laoreet tellus aliquam vel. Vestibulum magna velit, bibendum condimentum dolor nec, imperdiet maximus mauris.
-
-Vestibulum vitae dolor auctor, condimentum eros ut, vehicula nisl. Vestibulum non lacus fringilla, congue leo eu, congue nibh. Aenean mattis neque a diam pharetra, eget vulputate nisi viverra. Sed mattis felis est, sit amet suscipit felis porta et. In bibendum enim non orci molestie, hendrerit ultrices ligula semper. Duis in purus ac quam volutpat malesuada. Donec vel lorem eget arcu maximus congue. Curabitur sed enim faucibus, molestie urna at, tincidunt mi. Integer vel neque non est aliquam dictum. Sed nec risus non eros scelerisque fringilla id non elit.
-
-Nam quis tincidunt nunc, varius gravida nibh. Integer semper ac urna a vehicula. Cras et sem sit amet neque gravida viverra. Nam vitae venenatis erat. Nam dictum, justo ut dignissim pretium, libero libero posuere ex, eu fermentum mauris turpis eu felis. Curabitur venenatis nibh ante, in facilisis mi faucibus sit amet. Nam vitae cursus neque.
-
-Integer rutrum felis nec mauris sagittis, eget molestie nisl ornare. Integer at justo eget nibh luctus aliquet. Proin dignissim malesuada urna. Vivamus vitae ligula enim. Suspendisse tempor, massa a accumsan commodo, nisl elit gravida mi, quis gravida nisl felis nec lectus. Aenean id sollicitudin purus. Duis eu malesuada tortor, id dignissim lorem.
-
-Nam dictum diam ligula, et tempus risus mollis sed. Mauris sed pellentesque mauris, varius dignissim velit. Fusce ut tincidunt neque. Nunc ante turpis, vulputate at leo et, laoreet venenatis mauris. Donec justo erat, eleifend sit amet molestie vel, tristique vel diam. Pellentesque malesuada ante mi, quis dapibus magna gravida id. Duis maximus scelerisque dui.
-
-Nam maximus interdum lacus, porta ultricies nunc venenatis a. Fusce porta auctor velit. Suspendisse potenti. Suspendisse nulla erat, laoreet vitae luctus eu, finibus vitae nunc. Quisque malesuada luctus velit, in egestas dui mollis nec. Duis placerat lacus et lorem faucibus suscipit. Nullam in mi sit amet nisl iaculis eleifend vitae vitae ex. Suspendisse id ultrices leo, a molestie nunc. Fusce bibendum tortor eu elit ornare feugiat quis sed massa. Phasellus ut est non magna posuere tincidunt. Integer hendrerit mauris ac massa consequat, quis hendrerit magna tempor. Etiam ut eleifend ex, ut imperdiet purus.
-
-Mauris maximus blandit ex, sit amet dapibus diam venenatis at. Cras at magna augue. Nullam eu justo id nisl luctus auctor at non dolor. Suspendisse quis mauris ante. Cras facilisis faucibus accumsan. Vivamus imperdiet libero risus, euismod laoreet mi commodo et. Nullam facilisis enim non dui dictum, vel cursus ex porttitor.
-
-Donec vel consequat nibh. Suspendisse in libero enim. Ut pulvinar libero et nisl pretium, ut mattis metus vestibulum. Aenean nec consectetur elit, ut cursus erat. Fusce gravida felis vel auctor pretium. Ut posuere egestas mauris, non tincidunt dui rutrum eu. Morbi et risus ex. Nam porta lectus non ligula malesuada, sed tempus mauris vehicula. Mauris feugiat mauris in purus dapibus, non ultrices diam varius. Donec vehicula placerat sapien quis tristique. Suspendisse a nulla ut ligula feugiat iaculis nec in erat. Sed sed lectus ac eros pretium posuere. Mauris mollis molestie elit, sit amet mattis nisi.
-        </string>
 
     //Content Description
 
-    <string name="cd_place_image">Place picture</string>
+    <string name="cd_place_image">A photo from this place</string>
+    <string name="cd_navigate">Navigate to this place</string>
 </resources>

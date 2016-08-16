@@ -3,6 +3,7 @@
     android:layout_width="@dimen/photo_img_size"
     android:layout_height="@dimen/photo_img_size"
     android:layout_margin="4dp"
+    android:contentDescription="@string/cd_place_image"
     android:scaleType="centerCrop"
     />
 

@@ -7,19 +7,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 import br.berbert.capstone.R;
 import br.berbert.capstone.Utilities;
 import br.berbert.capstone.models.Photo;
 import br.berbert.capstone.models.Place;
-import br.berbert.capstone.provider.photo.PhotoColumns;
-import br.berbert.capstone.provider.photo.PhotoCursor;
-import br.berbert.capstone.provider.photo.PhotoSelection;
 import br.berbert.capstone.provider.place.PlaceCursor;
 
 /**
@@ -34,8 +28,6 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
 
     private PlaceCursor mCursor;
     Context mContext;
-    //ArrayList<Place> mPlacesList;
-    Location mUserLocation;
     private final OnItemClickListener mListener;
 
     public PlacesAdapter(Context context, OnItemClickListener listener) {
@@ -100,6 +92,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
                 photo.setPhoto_reference(mainPhotoReference);
                 photo.fetchPhoto(picture);
             }
+            picture.setContentDescription(place.getName());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
