@@ -24,7 +24,7 @@
         android:layout_weight="1">
 
         <ListView
-            android:id="@+id/rv_widget_list"
+            android:id="@+id/lv_widget_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingTop="1dp"

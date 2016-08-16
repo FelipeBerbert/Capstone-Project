@@ -7,7 +7,7 @@
     android:minResizeHeight="110dp"
     android:minResizeWidth="250dp"
     android:minWidth="250dp"
-    android:previewImage="@drawable/common_google_signin_btn_icon_dark_focused"
+    android:previewImage="@drawable/widget_preview"
     android:resizeMode="vertical"
     android:updatePeriodMillis="0"
     android:widgetCategory="home_screen|keyguard"

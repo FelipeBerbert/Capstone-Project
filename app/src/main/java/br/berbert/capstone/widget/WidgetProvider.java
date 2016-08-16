@@ -32,7 +32,7 @@ public class WidgetProvider extends AppWidgetProvider {
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
             views.setOnClickPendingIntent(R.id.fl_header, pendingIntent);
 
-            views.setRemoteAdapter(R.id.rv_widget_list, new Intent(context, WidgetRemoteViewsService.class));
+            views.setRemoteAdapter(R.id.lv_widget_list, new Intent(context, WidgetRemoteViewsService.class));
 
             Intent clickIntent;
             if (context.getResources().getBoolean(R.bool.is_tablet_layout))
@@ -42,8 +42,8 @@ public class WidgetProvider extends AppWidgetProvider {
 
             PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
                     .addNextIntentWithParentStack(clickIntent).getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-            views.setPendingIntentTemplate(R.id.rv_widget_list, clickPendingIntentTemplate);
-            views.setEmptyView(R.id.rv_widget_list, R.id.tv_widget_empty);
+            views.setPendingIntentTemplate(R.id.lv_widget_list, clickPendingIntentTemplate);
+            views.setEmptyView(R.id.lv_widget_list, R.id.tv_widget_empty);
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
 
@@ -56,7 +56,7 @@ public class WidgetProvider extends AppWidgetProvider {
         if (intent.getAction().equals(PlacesSyncAdapter.PLACES_DATA_UPDATED)) {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, getClass()));
-            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.rv_widget_list);
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.lv_widget_list);
         }
     }
 }
