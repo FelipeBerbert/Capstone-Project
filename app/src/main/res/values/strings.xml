@@ -4,6 +4,7 @@
     <string name="account_type">capstone.example.com</string>
 
     <string name="lb_meter">%d m</string>
+    <string name="lb_kilometer">%.1f km</string>
 
     <string name="transition_image">image</string>
     <string name="transition_distance">distance</string>

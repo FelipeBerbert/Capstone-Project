@@ -92,8 +92,15 @@ public class WidgetRemoteViewsService extends RemoteViewsService {
                         views.setImageViewBitmap(R.id.iv_place_picture, placePicture);
                     }
                 }
+                Float distance = placeCursor.getDistance();
+                if (distance != null)
+                    if (distance > 1000)
+                        views.setTextViewText(R.id.tv_place_distance, getString(R.string.lb_kilometer, distance/1000));
+                    else
+                        views.setTextViewText(R.id.tv_place_distance, getString(R.string.lb_meter, distance.longValue()));
+                else
+                    views.setTextViewText(R.id.tv_place_distance, getString(R.string.lb_meter, 0L));
 
-                views.setTextViewText(R.id.tv_place_distance, getString(R.string.lb_meter, placeCursor.getDistance()!=null?placeCursor.getDistance().longValue():0L));
                 views.setTextViewText(R.id.tv_place_name, placeCursor.getName());
 
                 final Intent intent = new Intent();

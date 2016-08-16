@@ -85,7 +85,10 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
             mCursor.moveToPosition(position);
             final Place place = mCursor.getPlace(mContext, false);
             name.setText(place.getName());
-            distance.setText(distance.getContext().getString(R.string.lb_meter, (long) place.getDistance(userLocation)));
+            if (place.getDistance(userLocation) > 1000)
+                distance.setText(distance.getContext().getString(R.string.lb_kilometer, place.getDistance(userLocation)/1000));
+            else
+                distance.setText(distance.getContext().getString(R.string.lb_meter, (long) place.getDistance(userLocation)));
             String mainPhotoReference = mCursor.getMainPhotoReference(mContext);
             if (mainPhotoReference != null){
                 Photo photo = new Photo();
