@@ -23,7 +23,7 @@
     <string name="url_photos" translatable="false">https://maps.googleapis.com/maps/api/place/photo?</string>
 
     <string name="msg_permission_denied">This app requires the location permission to function :(</string>
-    <string name="msg_no_data">No data found.\nMake sure you have internet connection and the GPS on.</string>
+    <string name="msg_no_data">No data found.\nMake sure you have internet connection and the location function on.</string>
 
 
     //Content Description
