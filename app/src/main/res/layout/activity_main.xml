@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rl_body"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    tools:context="br.berbert.capstone.MainActivity">
+    tools:context="br.berbert.capstone.MainActivity"
+    android:orientation="vertical">
 
     <fragment
         android:id="@+id/frag_places_list"
@@ -14,4 +15,6 @@
         android:layout_height="match_parent"
         android:name="br.berbert.capstone.fragments.PlacesFragment"
         tools:layout="@layout/fragment_places" />
-</RelativeLayout>
+
+
+</LinearLayout>

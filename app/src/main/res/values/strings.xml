@@ -30,4 +30,5 @@
 
     <string name="cd_place_image">A photo from this place</string>
     <string name="cd_navigate">Navigate to this place</string>
+    <string name="cd_powered_by_google">Powered by google</string>
 </resources>
