@@ -1,21 +1,13 @@
 package br.berbert.capstone.models;
 
-import android.content.Context;
-import android.location.*;
 import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.request.target.Target;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import br.berbert.capstone.BuildConfig;
 
 /**
  * Created by Felipe Berbert on 09/06/2016.
@@ -32,8 +24,6 @@ public class Place implements Parcelable {
     @SerializedName("place_id")
     private String placeId;
 
-    private float rating;
-
     private String vicinity;
 
     @SerializedName("international_phone_number")
@@ -46,8 +36,6 @@ public class Place implements Parcelable {
     private List<String> types;
 
     private List<Review> reviews;
-
-    private String description;
 
     public Place(){
         photos = new ArrayList<>();
@@ -92,14 +80,6 @@ public class Place implements Parcelable {
         this.distance = distance;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -122,14 +102,6 @@ public class Place implements Parcelable {
 
     public void setPlaceId(String place_id) {
         this.placeId = place_id;
-    }
-
-    public float getRating() {
-        return rating;
-    }
-
-    public void setRating(float rating) {
-        this.rating = rating;
     }
 
     public String getVicinity() {

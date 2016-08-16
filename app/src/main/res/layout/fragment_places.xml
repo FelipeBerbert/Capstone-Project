@@ -7,6 +7,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ProgressBar
+            android:id="@+id/pb_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            />
+
+        <TextView
+            android:id="@+id/tv_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/msg_no_data"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_gravity="center"/>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_places_list"
             android:layout_width="match_parent"
@@ -17,20 +33,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:gravity="center"
             android:orientation="vertical"
-            android:visibility="gone"
-            android:gravity="center">
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/msg_permission_denied" />
+
             <Button
                 android:id="@+id/bt_retry"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/lb_retry"
-                />
+                android:text="@string/lb_retry" />
         </LinearLayout>
     </FrameLayout>
 </android.support.v4.widget.NestedScrollView>

@@ -17,7 +17,6 @@ import br.berbert.capstone.fragments.PlacesFragment;
 import br.berbert.capstone.models.Place;
 
 public class MainActivity extends AppCompatActivity implements PlacesFragment.Callback {
-
     private static final String DETAIL_FRAGMENT_TAG = "DETAILFRAGMENTTAG";
 
     boolean mIsTabletLayout;
@@ -47,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements PlacesFragment.Ca
 //                placesFragment.selectFirstPosition();
             }
         }
+
     }
 
     @Override
@@ -88,6 +88,4 @@ public class MainActivity extends AppCompatActivity implements PlacesFragment.Ca
             mPlacesFragment.permissionDenied();
         }
     }
-
-
 }

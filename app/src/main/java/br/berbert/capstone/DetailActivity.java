@@ -25,6 +25,7 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
 
     public static final String PARAM_PLACE = "place";
     public static final String PARAM_PLACE_NAME = "place_name";
+    public static final String PARAM_NAVIGATE = "navigate";
     public static final String PARAM_USER_LOCATION = "user_location";
 
     Toolbar mToolbar;
@@ -49,6 +50,7 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
 
         String placeId = getIntent().getStringExtra(PARAM_PLACE);
         Location userLocation = getIntent().getParcelableExtra(PARAM_USER_LOCATION);
+        boolean navigate = getIntent().getBooleanExtra(PARAM_NAVIGATE, false);
         setTitle(getIntent().getStringExtra(PARAM_PLACE_NAME)); // For some reason, setting the title after the server response is not working
 
         if (savedInstanceState == null) {
@@ -56,6 +58,7 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
             Bundle args = new Bundle();
             args.putString(DetailFragment.ARG_PLACE, placeId);
             args.putParcelable(DetailFragment.ARG_USER_LOCATION, userLocation);
+            args.putBoolean(DetailFragment.ARG_NAVIGATE, navigate);
 
             final DetailFragment fragment = new DetailFragment();
             fragment.setArguments(args);

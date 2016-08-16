@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/places_list_item"
     android:layout_width="match_parent"
     android:layout_height="@dimen/card_height"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="4dp">
 
     <LinearLayout
@@ -34,12 +35,11 @@
                 android:layout_marginTop="-24dp">
 
                 <ImageView
+                    android:id="@+id/iv_distance_background"
                     android:layout_width="72dp"
                     android:layout_height="72dp"
-                    android:id="@+id/iv_distance_background"
                     android:transitionName="@string/transition_distance"
-                    app:srcCompat="@drawable/ic_circle"
-                    />
+                    app:srcCompat="@drawable/ic_circle" />
 
                 <TextView
                     android:id="@+id/tv_place_distance"

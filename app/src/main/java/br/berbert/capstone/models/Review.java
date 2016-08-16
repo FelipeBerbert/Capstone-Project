@@ -7,8 +7,6 @@ public class Review {
 
     private String author_name;
 
-    private String author_url;
-
     private int rating;
 
     private String text;
@@ -19,14 +17,6 @@ public class Review {
 
     public void setAuthor_name(String author_name) {
         this.author_name = author_name;
-    }
-
-    public String getAuthor_url() {
-        return author_url;
-    }
-
-    public void setAuthor_url(String author_url) {
-        this.author_url = author_url;
     }
 
     public int getRating() {
