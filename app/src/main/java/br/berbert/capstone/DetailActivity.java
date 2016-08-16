@@ -114,7 +114,6 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         finish();
     }
 

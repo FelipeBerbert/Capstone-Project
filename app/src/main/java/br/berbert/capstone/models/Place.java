@@ -16,7 +16,6 @@ public class Place implements Parcelable {
 
 //    private static final long serialVersionUID = -5573854869178754964L;
 
-//    private int picture; //TODO change to url
     private List<Photo> photos;
 
     private String name;
