@@ -13,11 +13,20 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    signingConfigs  {
+        release {
+            storeFile file("capstonekeystore.jks")
+            storePassword "capstone"
+            keyAlias "explore"
+            keyPassword "capstone"
+        }
+    }
     buildTypes {
         all {
             buildConfigField 'String', 'PLACES_API_KEY', PLACES_API_KEY
         }
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
