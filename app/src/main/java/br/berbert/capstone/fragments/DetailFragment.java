@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -24,10 +25,14 @@ import com.android.volley.VolleyError;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
+import java.util.ArrayList;
+
 import br.berbert.capstone.R;
 import br.berbert.capstone.Utilities;
+import br.berbert.capstone.adapters.AttributionsAdapter;
 import br.berbert.capstone.adapters.PhotosAdapter;
 import br.berbert.capstone.adapters.ReviewsAdapter;
+import br.berbert.capstone.models.Photo;
 import br.berbert.capstone.models.Place;
 import br.berbert.capstone.models.PlaceDetailsResponse;
 
@@ -45,11 +50,14 @@ public class DetailFragment extends Fragment {
     RecyclerView mRvReviewList;
     PhotosAdapter mPhotosAdapter;
     ReviewsAdapter mReviewsAdapter;
+    AttributionsAdapter mAttributionsAdapter;
     //TextView mDescription;
     TextView mName;
     TextView mAddress;
     TextView mPhone;
     TextView mDistance;
+    RecyclerView mRvAttributions;
+    LinearLayout mAttributionsContainer;
     FloatingActionButton mFab;
     ImageView mPicture;
     String mPlaceId;
@@ -58,6 +66,7 @@ public class DetailFragment extends Fragment {
     boolean mIsTabletLayout;
     boolean mNavigate;
     SimpleTarget target;
+    ArrayList<String> mAttributionsList;
 
 
     @Nullable
@@ -65,6 +74,7 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         initiateViews(rootView);
+        mAttributionsList = new ArrayList<>();
         mRvPhotoList = (RecyclerView) rootView.findViewById(R.id.rv_photo_list);
         mRvPhotoList.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -74,6 +84,11 @@ public class DetailFragment extends Fragment {
         llm = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mRvReviewList.setLayoutManager(llm);
         mRvReviewList.setNestedScrollingEnabled(true);
+        mRvAttributions = (RecyclerView) rootView.findViewById(R.id.rv_attributions);
+        mRvAttributions.setHasFixedSize(true);
+        llm = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        mRvAttributions.setLayoutManager(llm);
+        mRvAttributions.setNestedScrollingEnabled(true);
         Bundle args = getArguments();
         if (args != null) {
             mPlaceId = args.getString(ARG_PLACE);
@@ -90,6 +105,10 @@ public class DetailFragment extends Fragment {
             @Override
             public void onResponse(PlaceDetailsResponse response) {
                 mPlace = response.getResult();
+                mAttributionsList.addAll(response.getHtml_attributions());
+                for (Photo photo : mPlace.getPhotos()){
+                    mAttributionsList.addAll(photo.getHtml_attributions());
+                }
                 if (mPlace != null) {
                     Log.d("CAPSTONE PROJECT", "Response: " + mPlace.getName());
                     bindViews();
@@ -129,6 +148,7 @@ public class DetailFragment extends Fragment {
         mAddress = (TextView) rootView.findViewById(R.id.tv_address);
         mPhone = (TextView) rootView.findViewById(R.id.tv_phone);
         mDistance = (TextView) rootView.findViewById(R.id.tv_distance);
+        mAttributionsContainer = (LinearLayout) rootView.findViewById(R.id.ll_attributions_container);
     }
 
     private void bindViews() {
@@ -146,6 +166,12 @@ public class DetailFragment extends Fragment {
         mReviewsAdapter = new ReviewsAdapter(mPlace.getReviews());
         mRvPhotoList.setAdapter(mPhotosAdapter);
         mRvReviewList.setAdapter(mReviewsAdapter);
+        if (mAttributionsList.size() > 0) {
+            mAttributionsAdapter = new AttributionsAdapter(getContext(), mAttributionsList);
+            mRvAttributions.setAdapter(mAttributionsAdapter);
+            mAttributionsContainer.setVisibility(View.VISIBLE);
+        }
+
         if (mIsTabletLayout) {  // If it is a tablet, all views are in the fragment
             mName.setText(mPlace.getName());
             if(mPlace.getPhotos().size() > 0) {

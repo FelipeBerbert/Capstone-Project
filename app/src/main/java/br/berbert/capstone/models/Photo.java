@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
 
+import java.util.List;
+
 import br.berbert.capstone.BuildConfig;
 import br.berbert.capstone.R;
 
@@ -22,6 +24,7 @@ public class Photo {
     private int width;
     private int height;
     private String photo_reference;
+    private List<String> html_attributions;
 
     public Photo() {
 
@@ -50,6 +53,14 @@ public class Photo {
 
     public void setPhoto_reference(String photo_reference) {
         this.photo_reference = photo_reference;
+    }
+
+    public List<String> getHtml_attributions() {
+        return html_attributions;
+    }
+
+    public void setHtml_attributions(List<String> html_attributions) {
+        this.html_attributions = html_attributions;
     }
 
     public void fetchPhoto(ImageView view){

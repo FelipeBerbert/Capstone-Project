@@ -36,6 +36,8 @@ public class Place implements Parcelable {
 
     private List<Review> reviews;
 
+
+
     public Place(){
         photos = new ArrayList<>();
         types = new ArrayList<>();

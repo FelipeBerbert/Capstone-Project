@@ -18,17 +18,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:textAppearanceListItem"
-            android:text="@string/lb_photos" />
+            android:text="@string/lb_photos"
+            android:textAppearance="?android:textAppearanceListItem" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_photo_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:importantForAccessibility="noHideDescendants"
-            android:focusable="false"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
-            />
+            android:focusable="false"
+            android:importantForAccessibility="noHideDescendants" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,9 +38,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:textAppearanceListItem"
+                android:text="@string/lb_address"
 
-                android:text="@string/lb_address" />
+                android:textAppearance="?android:textAppearanceListItem" />
 
             <TextView
                 android:id="@+id/tv_address"
@@ -63,8 +62,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:textAppearanceListItem"
-                    android:text="@string/lb_phone" />
+                    android:text="@string/lb_phone"
+                    android:textAppearance="?android:textAppearanceListItem" />
 
                 <TextView
                     android:id="@+id/tv_phone"
@@ -83,8 +82,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:textAppearanceListItem"
-                    android:text="@string/lb_distance" />
+                    android:text="@string/lb_distance"
+                    android:textAppearance="?android:textAppearanceListItem" />
 
                 <TextView
                     android:id="@+id/tv_distance"
@@ -98,10 +97,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:textAppearanceListItem"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:text="@string/lb_reviews" />
+        android:text="@string/lb_reviews"
+        android:textAppearance="?android:textAppearanceListItem" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_reviews"
@@ -110,14 +109,37 @@
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        />
-    
+        android:layout_marginTop="@dimen/activity_vertical_margin" />
+
+    <LinearLayout
+        android:id="@+id/ll_attributions_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:text="@string/lb_attributions"
+            android:textAppearance="?android:textAppearanceListItem" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_attributions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin" />
+    </LinearLayout>
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="4dp"
         android:layout_gravity="center_horizontal|bottom"
         android:contentDescription="@string/cd_powered_by_google"
+        android:padding="4dp"
         android:src="@drawable/powered_by_google_on_white" />
 </LinearLayout>

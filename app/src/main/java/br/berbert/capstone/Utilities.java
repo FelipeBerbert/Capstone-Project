@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -62,6 +63,11 @@ public class Utilities {
         String url = sb.toString();
         GsonRequest<NearbySearchResponse> request = new GsonRequest<>(url, NearbySearchResponse.class, null, resultListener, errorListener);
         VolleyConnection.getInstance(context).addToRequestQueue(request);
+    }
+
+    public static Uri extractUriFromAttribution(String attribution){
+        String url = attribution.substring(attribution.indexOf("\"")+1, attribution.lastIndexOf("\""));
+        return Uri.parse(url);
     }
 
     public static void buildPlaceDetailRequest(Context context, String placeId, Response.Listener<PlaceDetailsResponse> resultListener, Response.ErrorListener errorListener) {
