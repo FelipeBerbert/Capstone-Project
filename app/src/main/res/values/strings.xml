@@ -33,4 +33,13 @@
     <string name="cd_place_image">A photo from this place</string>
     <string name="cd_navigate">Navigate to this place</string>
     <string name="cd_powered_by_google">Powered by google</string>
+
+    // Analytics
+
+    <string name="lb_places">Places fragment</string>
+    <string name="lb_detail">"Detail: "</string>
+    <string name="lb_navigate">Navigate</string>
+    <string name="lb_click_photo">Photo</string>
+    <string name="lb_click_attribution">Attribution</string>
+    <string name="lb_category_click">Click</string>
 </resources>

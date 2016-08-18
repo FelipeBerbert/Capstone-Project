@@ -27,6 +27,10 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
+import br.berbert.capstone.CapstoneApplication;
 import br.berbert.capstone.R;
 import br.berbert.capstone.Utilities;
 import br.berbert.capstone.adapters.PlacesAdapter;
@@ -53,12 +57,16 @@ public class PlacesFragment extends Fragment implements LoaderManager.LoaderCall
     //private GoogleApiClient mGoogleApiClient;
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
     public Location mUserLocation;
+    public Tracker mTracker;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_places, container, false);
+
+        CapstoneApplication application = (CapstoneApplication) getActivity().getApplication();
+        mTracker = application.getDefaultTracker();
 
         mRvPlacesList = (RecyclerView) rootView.findViewById(R.id.rv_places_list);
         mLlPermissionDenied = (LinearLayout) rootView.findViewById(R.id.ll_permission_denied);
@@ -121,6 +129,8 @@ public class PlacesFragment extends Fragment implements LoaderManager.LoaderCall
     public void onResume() {
         super.onResume();
         requestSync();
+        mTracker.setScreenName(getContext().getString(R.string.lb_places));
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override

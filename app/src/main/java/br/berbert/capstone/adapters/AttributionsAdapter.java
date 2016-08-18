@@ -9,8 +9,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import java.util.List;
 
+import br.berbert.capstone.CapstoneApplication;
 import br.berbert.capstone.R;
 import br.berbert.capstone.Utilities;
 
@@ -21,9 +25,11 @@ import br.berbert.capstone.Utilities;
 public class AttributionsAdapter extends RecyclerView.Adapter<AttributionsAdapter.AttributionsViewHolder> {
 
     Context mContext;
+    Tracker mTracker;
     List<String> mAttributionsList;
 
-    public AttributionsAdapter(Context context, List<String> attributionsList) {
+    public AttributionsAdapter(CapstoneApplication app, Context context, List<String> attributionsList) {
+        mTracker = app.getDefaultTracker();
         mContext = context;
         mAttributionsList = attributionsList;
     }
@@ -42,6 +48,11 @@ public class AttributionsAdapter extends RecyclerView.Adapter<AttributionsAdapte
             @Override
             public void onClick(View view) {
                 try {
+                    mTracker.send(new HitBuilders.EventBuilder()
+                            .setCategory("Click")
+                            .setAction("Attribution")
+                            .setLabel(attribution)
+                            .build());
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Utilities.extractUriFromAttribution(attribution));
                     mContext.startActivity(intent);

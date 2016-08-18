@@ -6,8 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import java.util.List;
 
+import br.berbert.capstone.CapstoneApplication;
 import br.berbert.capstone.R;
 import br.berbert.capstone.models.Photo;
 
@@ -18,8 +22,10 @@ import br.berbert.capstone.models.Photo;
 public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosViewHolder> {
 
     List<Photo> photosList;
+    CapstoneApplication mApp;
 
-    public PhotosAdapter(List<Photo> photosList) {
+    public PhotosAdapter(CapstoneApplication app, List<Photo> photosList) {
+        mApp = app;
         this.photosList = photosList;
     }
 
@@ -31,7 +37,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
 
     @Override
     public void onBindViewHolder(PhotosAdapter.PhotosViewHolder holder, int position) {
-        holder.bind(photosList.get(position));
+        holder.bind(photosList.get(position), mApp);
     }
 
     @Override
@@ -47,12 +53,19 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
             ivPhoto = (ImageView) itemView;
         }
 
-        public void bind(final Photo photo){
+        public void bind(final Photo photo, final CapstoneApplication app){
             photo.fetchPhoto(ivPhoto);
             ivPhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Tracker tracker = app.getDefaultTracker();
+                    tracker.send(new HitBuilders.EventBuilder()
+                            .setCategory("Click")
+                            .setAction("Photo")
+                            .setLabel(photo.getPhoto_reference())
+                            .build());
                     photo.loadPhoto(ivPhoto.getContext());
+
                 }
             });
         }

@@ -24,9 +24,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 
+import br.berbert.capstone.CapstoneApplication;
 import br.berbert.capstone.R;
 import br.berbert.capstone.Utilities;
 import br.berbert.capstone.adapters.AttributionsAdapter;
@@ -67,11 +70,16 @@ public class DetailFragment extends Fragment {
     boolean mNavigate;
     SimpleTarget target;
     ArrayList<String> mAttributionsList;
+    public Tracker mTracker;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        CapstoneApplication application = (CapstoneApplication) getActivity().getApplication();
+        mTracker = application.getDefaultTracker();
+
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         initiateViews(rootView);
         mAttributionsList = new ArrayList<>();
@@ -105,6 +113,8 @@ public class DetailFragment extends Fragment {
             @Override
             public void onResponse(PlaceDetailsResponse response) {
                 mPlace = response.getResult();
+                mTracker.setScreenName(getContext().getString(R.string.lb_detail) + mPlace.getName());
+                mTracker.send(new HitBuilders.ScreenViewBuilder().build());
                 mAttributionsList.addAll(response.getHtml_attributions());
                 for (Photo photo : mPlace.getPhotos()){
                     mAttributionsList.addAll(photo.getHtml_attributions());
@@ -162,12 +172,12 @@ public class DetailFragment extends Fragment {
             mDistance.setText(getContext().getString(R.string.lb_meter, (long)distance));
         else
             mDistance.setText("-");
-        mPhotosAdapter = new PhotosAdapter(mPlace.getPhotos());
+        mPhotosAdapter = new PhotosAdapter((CapstoneApplication) getActivity().getApplication(), mPlace.getPhotos());
         mReviewsAdapter = new ReviewsAdapter(mPlace.getReviews());
         mRvPhotoList.setAdapter(mPhotosAdapter);
         mRvReviewList.setAdapter(mReviewsAdapter);
         if (mAttributionsList.size() > 0) {
-            mAttributionsAdapter = new AttributionsAdapter(getContext(), mAttributionsList);
+            mAttributionsAdapter = new AttributionsAdapter((CapstoneApplication) getActivity().getApplication(), getContext(), mAttributionsList);
             mRvAttributions.setAdapter(mAttributionsAdapter);
             mAttributionsContainer.setVisibility(View.VISIBLE);
         }
@@ -202,6 +212,11 @@ public class DetailFragment extends Fragment {
 
     public void navigateToPlace(){
         if (mPlace != null){
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory(getContext().getString(R.string.lb_category_click))
+                    .setAction(getContext().getString(R.string.lb_navigate))
+                    .setLabel(mPlace.getName())
+                    .build());
             Intent intent = new Intent(Intent.ACTION_VIEW,
                     Uri.parse("http://maps.google.com/maps?&daddr="+
                             mPlace.getGeometry().getLocation().getLat()+","+
