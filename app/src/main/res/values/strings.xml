@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Capstone</string>
+    <string name="app_name">Explore!</string>
     <string name="content_provider_authority">br.berbert.capstone</string>
     <string name="account_type">capstone.example.com</string>
 
