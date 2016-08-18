@@ -202,6 +202,8 @@ public class PlacesFragment extends Fragment implements LoaderManager.LoaderCall
         mPbLoading.setVisibility(View.GONE);
         if (!data.moveToFirst())
             updateEmptyView();
+        else
+            mTvNoData.setVisibility(View.GONE);
     }
 
     /**

@@ -54,8 +54,10 @@ public class Utilities {
 
     public static void buildPlacesRequest(Context context, Location location, Response.Listener<NearbySearchResponse> resultListener, Response.ErrorListener errorListener) {
         StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-        //sb.append("location=" + -13.008348 + "," + -38.492842);
-        sb.append("location=").append(location.getLatitude()).append(",").append(location.getLongitude());
+        if (location.getProvider() != null && location.getProvider().equals("Mock") && BuildConfig.DEBUG)
+            sb.append("location=" + -13.008348 + "," + -38.492842);
+        else
+            sb.append("location=").append(location.getLatitude()).append(",").append(location.getLongitude());
         sb.append("&radius=").append(context.getResources().getInteger(R.integer.search_distance));
         sb.append("&types=").append("amusement_park|aquarium|art_gallery|campground|museum|park|zoo");
         sb.append("&key=").append(BuildConfig.PLACES_API_KEY);
@@ -93,6 +95,7 @@ public class Utilities {
      * Returns true if location is activated
      */
     public static boolean checkLocationStatus(Context context) {
+        if (context == null) return false;
 //        LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
         int mode;
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -118,6 +121,7 @@ public class Utilities {
 
 
     public static void saveUserLocation(Context context, Location location) {
+        if (context == null) return;
         SharedPreferences.Editor spEditor = PreferenceManager.getDefaultSharedPreferences(context).edit();
         spEditor.putLong(PREF_USER_LAT, Double.doubleToRawLongBits(location.getLatitude()));
         spEditor.putLong(PREF_USER_LNG, Double.doubleToRawLongBits(location.getLongitude()));
@@ -125,6 +129,7 @@ public class Utilities {
         Log.d(TAG, "Saving user location. LAT:"+location.getLatitude()+" LNG:"+location.getLongitude());
     }
     public static void saveSyncLocation(Context context, Location location) {
+        if (context == null) return;
         SharedPreferences.Editor spEditor = PreferenceManager.getDefaultSharedPreferences(context).edit();
         spEditor.putLong(PREF_SYNC_LAT, Double.doubleToRawLongBits(location.getLatitude()));
         spEditor.putLong(PREF_SYNC_LNG, Double.doubleToRawLongBits(location.getLongitude()));
@@ -132,6 +137,7 @@ public class Utilities {
         Log.d(TAG, "Saving sync location. LAT:"+location.getLatitude()+" LNG:"+location.getLongitude());
     }
     public static Location loadUserLocation(Context context) {
+        if (context == null) return new Location("");
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         Location location = new Location("");
         location.setLatitude(Double.longBitsToDouble(sp.getLong(PREF_USER_LAT, 0)));
@@ -140,6 +146,7 @@ public class Utilities {
         return location;
     }
     public static Location loadSyncLocation(Context context) {
+        if (context == null) return new Location("");
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         Location location = new Location("");
         location.setLatitude(Double.longBitsToDouble(sp.getLong(PREF_SYNC_LAT, 0)));

@@ -113,8 +113,10 @@ public class DetailFragment extends Fragment {
             @Override
             public void onResponse(PlaceDetailsResponse response) {
                 mPlace = response.getResult();
-                mTracker.setScreenName(getContext().getString(R.string.lb_detail) + mPlace.getName());
-                mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+                if (getContext() != null) {
+                    mTracker.setScreenName(getContext().getString(R.string.lb_detail) + mPlace.getName());
+                    mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+                }
                 mAttributionsList.addAll(response.getHtml_attributions());
                 for (Photo photo : mPlace.getPhotos()){
                     mAttributionsList.addAll(photo.getHtml_attributions());
