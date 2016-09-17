@@ -148,8 +148,8 @@ public class PlacesFragment extends Fragment implements LoaderManager.LoaderCall
 
     private void showActivateLocationDialog(){
         new AlertDialog.Builder(getContext())
-                .setTitle("Location settings")
-                .setMessage("This app requires the location setting to be activated.")
+                .setTitle(getContext().getString(R.string.lb_location_settings))
+                .setMessage(getContext().getString(R.string.msg_location_required))
                 .setPositiveButton(R.string.lb_settings, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent viewIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
