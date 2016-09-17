@@ -6,6 +6,7 @@ import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SyncResult;
 import android.location.Location;
 import android.net.Uri;
@@ -97,7 +98,7 @@ public class PlacesSyncAdapter extends AbstractThreadedSyncAdapter implements Go
             Log.d(TAG, "userLocation null");
     }
 
-    private void performSync(final Location userLocation){
+    private void performSync(final Location userLocation) {
         Utilities.saveUserLocation(getContext(), userLocation);
         float distanceFromLastSync = userLocation.distanceTo(Utilities.loadSyncLocation(getContext()));
             /*
@@ -134,6 +135,7 @@ public class PlacesSyncAdapter extends AbstractThreadedSyncAdapter implements Go
                         }
                     }
                     Utilities.saveSyncLocation(getContext(), userLocation);
+                    updateWidgets();
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage(), e);
                     e.printStackTrace();
@@ -149,11 +151,10 @@ public class PlacesSyncAdapter extends AbstractThreadedSyncAdapter implements Go
     }
 
     private void updateWidgets() {
-        /*Context context = getContext();
-        // Setting the package ensures that only components in our app will receive the broadcast
-        Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED)
-                .setPackage(context.getPackageName());
-        context.sendBroadcast(dataUpdatedIntent);*/
+        Context context = getContext();
+        Intent dataUpdatedIntent = new Intent(PLACES_DATA_UPDATED).setPackage(context.getPackageName());
+        context.sendBroadcast(dataUpdatedIntent);
+        Log.d("CAPSTONE PROJECT", "updateWidgets send broadcast");
     }
 
     /**
@@ -195,7 +196,7 @@ public class PlacesSyncAdapter extends AbstractThreadedSyncAdapter implements Go
 
     private static void setSyncPeriod(Context context, Account account) {
         Log.d(TAG, "setSyncPeriod");
-        final long SYNC_INTERVAL = 60 * 60 * 6; //every 6 hours; todo set a preference, so this can be changed in a preferenceActivity
+        final long SYNC_INTERVAL = 60;// * 60 * 6; //every 6 hours; todo set a preference, so this can be changed in a preferenceActivity
         String authority = context.getString(R.string.content_provider_authority);
         ContentResolver.setSyncAutomatically(account, context.getString(R.string.content_provider_authority), true);
         ContentResolver.addPeriodicSync(account, authority, new Bundle(), SYNC_INTERVAL);
