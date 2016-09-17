@@ -18,8 +18,7 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/cd_place_image"
             android:scaleType="centerCrop"
-            android:transitionName="@string/transition_image"
-            tools:src="@drawable/elevador_lacerda1" />
+            android:transitionName="@string/transition_image" />
 
         <FrameLayout
             android:layout_width="wrap_content"

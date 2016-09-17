@@ -123,7 +123,11 @@ public class DetailFragment extends Fragment {
                 }
                 if (mPlace != null) {
                     Log.d("CAPSTONE PROJECT", "Response: " + mPlace.getName());
-                    bindViews();
+                    try {
+                        bindViews();
+                    } catch (NullPointerException e){
+                        Log.d("CAPSTONE PROJECT","Activity was terminated before response, ignore results");
+                    }
                     if (mNavigate) {
                         navigateToPlace();
                     }
